@@ -11,7 +11,7 @@ argo()
       next(env);
     });
   })
-  .get('*', function(handle) {
+  .get('.+', function(handle) {
     handle('request', function(env, next) {
       if (env.request.url === '/' + __filename.split('/').pop() ||
           !!~env.request.url.indexOf('./')) {
