@@ -35,4 +35,4 @@ argo()
       });
     });
   })
-  .listen(3001);
+  .listen(process.env.PORT || 3001);
