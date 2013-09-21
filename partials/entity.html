@@ -1,0 +1,101 @@
+<!--<div ng-init="init()">-->
+<div class="row-fluid">
+  <form class="form-inline">
+    <label for="url"><small>You are here:</small></label>
+    <input type="text" style="height: 16px; font-size: 12px; line-height: 16px"
+       id="url" class="input-xlarge" readonly value="{{url}}" select-on-click />
+  </form>
+</div>
+<div id="response" class="row-fluid" ng-cloak ng-init="init()">
+  <div class="span4">
+    <div id="class" ng-show="main.class">
+      <h3>Class</h3>
+      <pre>{{main.class}}</pre>
+    </div>
+    <div id="properties" ng-show="main.properties.length">
+      <h3>Properties</h3>
+      <pre>{{main.properties}}</pre>
+    </div>
+    <div id="links" ng-show="main.links.length">
+      <h3>Links</h3>
+      <ul>
+        <li ng-repeat="link in main.links">
+        <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
+         class="entity-link {{ link.rel }}">{{ link.rel }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="span6">
+    <div id="entities" ng-show="main.entities.length">
+      <h3>Entities</h3>
+      <div>
+        <label class="checkbox">
+          <input type="checkbox" ng-model="isOneAtATime" id="oneAtATime" />
+          Open only one at a time
+        </label>
+      </div>
+      <br/>
+      <accordion close-others="isOneAtATime">
+        <accordion-group ng-repeat="entity in main.entities" heading="{{entity.heading}}" is-open="$first">
+          <div ng-show="entity.properties.length">
+            <h4>Properties</h4>
+            <pre>{{entity.properties}}</pre>
+          </div>
+          <div ng-show="entity.links.length">
+            <h4>Links</h4>
+            <ul>
+              <li ng-repeat="link in entity.links">
+              <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
+               class="entity-link {{ link.rel }}">{{ link.rel }}</a>
+              </li>
+            </ul>
+          </div>
+          <div ng-show="entity.href">
+            <button class="btn btn-primary" ng-click="go(entity.href)">Go</button>
+          </div>
+        </accordion-group>
+      </accordion>
+    </div>
+    <div id="actions" ng-show="main.actions.length">
+      <h3>Actions</h3>
+        <!--<pre>{{ main.actions | prettify }}</pre>-->
+      <accordion close-others="isOneAtATime">
+        <accordion-group ng-repeat="action in main.actions" heading="name: {{action.name}}" is-open="$first">
+        <pre>{{ action | prettify }}</pre>
+        <!--
+          <div ng-show="action.fields.length">
+            <form class="form-horizontal">
+
+              <div ng-repeat="field in action.fields" class="control-group">
+
+                <div ng-show="field.type === 'text' || !field.type">
+                  <label class="control-label" for="{{action.name + field.name }}">{{field.name}}</label>
+                  <div class="controls">
+                    <input type="text" id="{{action.name + field.name}}" name="{{field.name}}" value="{{field.value}}">
+                  </div>
+                </div>
+
+                <div ng-show="field.type === 'radio'">
+                  <label class="control-label" for="{{action.name + field.name}}">{{field.name}}</label>
+                  <div class="controls">
+                    <select name="{{field.name}}" id="{{action.name + field.name}}">
+                      <option ng-repeat="value in field.value" value="{{value}}">{{value}}</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+              <div class="control-group">
+                <div class="controls">
+                  <button type="submit" class="btn">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          -->
+        </accordion-group>
+      </accordion>
+    </div>
+  </div>
+</div>

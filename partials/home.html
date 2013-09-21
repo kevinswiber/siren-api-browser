@@ -1,0 +1,18 @@
+<div ng-init="init()">
+  <div>
+    <em>{{model.url}}</em>
+    <br/><br/>
+  </div>
+  <form class="form-inline" ng-hide="true">
+    <input type="text" ng-model="model.url">
+    <button class="btn">Go</button>
+  </form>
+  <form>
+    <label class="control-label" for="collection">Collection:</label>
+    <select autofocus name="collection" id="collection" ng-model="model.collection" ng-options="c for c in fields.collection.value"></select>
+
+    <label class="control-label" for="query">Query:</label>
+    <input type="text" size="100" placeholder="ex: select * where name='fred'" class="input-xxlarge" id="query" name="query" ng-model="model.query"/><br/>
+    <button class="btn btn-primary" ng-click="search(model)">Search</button>
+  </form>
+</div>

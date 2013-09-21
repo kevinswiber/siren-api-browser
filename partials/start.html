@@ -1,0 +1,9 @@
+<div id="control-panel" ng-init="init()">
+  <form id="settings" class="form-inline">
+    <label class="control-label" for="url">Surface URL:</label>
+    <input type="text" size="60" class="input-xlarge" id="url" name="url" ng-model="params.url" autofocus/>
+
+    <button class="btn btn-primary" ng-click="fetchUrl(params)">Go</button>
+  </form>
+</div>
+<div id="entity" siren-view />
