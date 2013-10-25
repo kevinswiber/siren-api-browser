@@ -4,6 +4,10 @@ angular
       var map = {};
 
       this.when = function(klass, state) {
+        if (!klass) {
+          map[null] = { known: false, state: state };
+          return this;
+        }
         var c = klass.sort().join(' ');
         map[c] = { known: true, state: state };
         return this;
@@ -16,6 +20,9 @@ angular
       this.$get = function() {
         return {
           resolve: function(klass) {
+            if (!klass) {
+              return map[null];
+            }
             var c = klass.sort().join(' ');
             return map[c] || map[null];
           }
