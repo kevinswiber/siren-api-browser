@@ -44,7 +44,9 @@ angular
   })
   .filter('prettify', function() {
     return function(obj) {
-      return JSON.stringify(obj, null, 2);
+      return JSON.stringify(obj, function(key, val) {
+        return (key === '$$hashKey') ? undefined : val;
+      }, 2);
     };
   })
   .directive('selectOnClick', function() {
