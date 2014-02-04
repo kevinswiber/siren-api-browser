@@ -31,7 +31,7 @@ angular
   /*.controller('HomeCtrl',
       ['$scope', '$state', 'navigator', 'appState', SurfaceCtrls.HomeCtrl])*/
   .controller('EntityCtrl',
-      ['$scope', '$state', '$location', 'navigator', SurfaceCtrls.EntityCtrl])
+      ['$scope', '$state', '$http', '$location', 'navigator', SurfaceCtrls.EntityCtrl])
   .controller('NavCtrl', ['$scope', function($scope) {
     $scope.switch = function(config) {
     };
