@@ -63,7 +63,6 @@
       <accordion close-others="isOneAtATime">
         <accordion-group ng-repeat="action in main.actions" heading="name: {{action.name}}" is-open="$first">
         <pre>{{ action | prettify }}</pre>
-        <!-- -->
           <div ng-show="action.fields.length">
             <form class="form-horizontal">
 
@@ -90,7 +89,6 @@
               </div>
             </form>
           </div>
-          <!-- -->
         </accordion-group>
       </accordion>
     </div>

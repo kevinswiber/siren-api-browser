@@ -70,10 +70,16 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
   };
 
   $scope.execute = function(action) {
+    var contentType = action.type || 'application/x-www-form-urlencoded';
     var options = {
       method: action.method || 'GET',
-      url: action.href
+      url: action.href,
+      headers: {
+        'Content-Type': contentType,
+        'Accept': 'application/vnd.siren+json, application/json, text/plain, */*'
+      }
     };
+    console.log(options);
 
     if (options.method === 'GET') {
       var params = {};
@@ -98,15 +104,26 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
       $state.transitionTo('entity', { url: url });
       return;
     } else {
-      $http(options).success(function(data, status, headers, config) {
-        console.log('success');
-        console.log(config);
-        console.log(data);
+      if (contentType === 'application/json') {
+        options.data = {};
+        angular.forEach(action.fields, function(field) {
+          options.data[field.name] = field.value;
+        });
+      } else if (contentType === 'application/x-www-form-urlencoded') {
+        var data = [];
+        angular.forEach(action.fields, function(field) {
+          data.push(encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value));
+        });
 
+        options.data = data.join('&');
+      }
+
+      $http(options).success(function(data, status, headers, config) {
         $scope.main.properties = null;
         $scope.main.class = null;
         $scope.main.actions = [];
         $scope.main.entities = [];
+        $scope.main.links = [];
 
         $scope.url = config.url;
         $state.params.url = config.url;
