@@ -123,4 +123,47 @@ angular
         }
       }
     };
-  }]);
+  }])
+  .directive('srnAction', function($compile) {
+    function link(scope, element, attrs) {
+      if (!scope.action) {
+        return;
+      }
+
+      var container = $('<div>');
+      var inputHtml = '';
+      for(var i = 0; i < scope.action.fields.length; i++) {
+        var field = scope.action.fields[i];
+
+        var label = $('<label>')
+          .addClass('control-label')
+          .attr('for', scope.action.name + field.name)
+          .text(field.title || field.name);
+
+        var controls = $('<div>').addClass('controls');
+
+        var input = $('<input>')
+          .attr('name', field.name)
+          .attr('id', scope.action.name + field.name)
+          .attr('type', field.type || 'text')
+          .attr('ng-model', 'action.fields[' + i + '].value')
+          .val(field.value);
+
+
+        $compile(input)(scope);
+
+        controls.append(input);
+        container.append(label).append(controls);
+      };
+
+      element.replaceWith(container);
+    }
+
+    return {
+      restrict: 'E',
+      scope: {
+        action: '=value'
+      },
+      link: link
+    };
+  });;

@@ -67,14 +67,9 @@
           <div ng-show="action.fields.length">
             <form class="form-horizontal">
 
+              <srn-action value="action"></srn-action>
+              <!--
               <div ng-repeat="field in action.fields" class="control-group">
-
-                <div ng-show="field.type === 'text' || !field.type">
-                  <label class="control-label" for="{{action.name + field.name }}">{{field.name}}</label>
-                  <div class="controls">
-                    <input type="text" id="{{action.name + field.name}}" ng-model="field.value" name="{{field.name}}" value="{{field.value}}">
-                  </div>
-                </div>
 
                 <div ng-show="field.type === 'radio'">
                   <label class="control-label" for="{{action.name + field.name}}">{{field.name}}</label>
@@ -85,11 +80,9 @@
                   </div>
                 </div>
 
-                <div ng-show="field.type === 'hidden'">
-                  <input type="hidden" id="{{action.name + field.name }}" name="{{field.name}}" value="{{field.value}}" />
-                </div>
 
               </div>
+              -->
               <div class="control-group">
                 <div class="controls">
                   <button type="submit" class="btn" ng-click="execute(action)">Submit</button>
