@@ -67,21 +67,7 @@
             <form class="form-horizontal">
 
               <srn-action value="action"></srn-action>
-              <!--
-              <div ng-repeat="field in action.fields" class="control-group">
 
-                <div ng-show="field.type === 'radio'">
-                  <label class="control-label" for="{{action.name + field.name}}">{{field.name}}</label>
-                  <div class="controls">
-                    <select name="{{field.title || field.name}}" id="{{action.name + field.name}}">
-                      <option ng-repeat="value in field.value" value="{{value}}">{{value}}</option>
-                    </select>
-                  </div>
-                </div>
-
-
-              </div>
-              -->
               <div class="control-group">
                 <div class="controls">
                   <button type="submit" class="btn" ng-click="execute(action)">Submit</button>

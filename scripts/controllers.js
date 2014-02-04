@@ -70,79 +70,29 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
   };
 
   $scope.execute = function(action) {
-    var contentType = action.type || 'application/x-www-form-urlencoded';
-    var options = {
-      method: action.method || 'GET',
-      url: action.href,
-      headers: {
-        'Content-Type': contentType,
-        'Accept': 'application/vnd.siren+json, application/json, text/plain, */*'
-      }
-    };
-    console.log(options);
-
-    if (options.method === 'GET') {
-      var params = {};
-      console.log(action.fields);
-      angular.forEach(action.fields, function(field) {
-        params[field.name] = field.value;
-      });
-
-      var url = options.url;
-
-      var serialize = function(obj) {
-        var str = [];
-        for(var p in obj)
-          if (obj.hasOwnProperty(p)) {
-            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-          }
-        return str.join("&");
-      };
-
-      url = url.split('?')[0] + '?' + serialize(params); 
-
-      $state.transitionTo('entity', { url: url });
-      return;
-    } else {
-      if (contentType === 'application/json') {
-        options.data = {};
-        angular.forEach(action.fields, function(field) {
-          options.data[field.name] = field.value;
-        });
-      } else if (contentType === 'application/x-www-form-urlencoded') {
-        var data = [];
-        angular.forEach(action.fields, function(field) {
-          data.push(encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value));
-        });
-
-        options.data = data.join('&');
+    navigator.execute(action).then(function(result) {
+      if (result.noop) {
+        return;
       }
 
-      $http(options).success(function(data, status, headers, config) {
-        $scope.main.properties = null;
-        $scope.main.class = null;
-        $scope.main.actions = [];
-        $scope.main.entities = [];
-        $scope.main.links = [];
+      var data = result.data;
+      var config = result.config;
 
-        $scope.url = config.url;
-        $state.params.url = config.url;
+      $scope.main.properties = null;
+      $scope.main.class = null;
+      $scope.main.actions = [];
+      $scope.main.entities = [];
+      $scope.main.links = [];
 
-        showData(data);
-      })
-      .error(function(data, status, headers, config) {
-        console.log('error');
-        console.log(status);
-      });
-    }
+      $scope.url = config.url;
+      $state.params.url = config.url;
+
+      showData(data);
+    });
   };
 
   var showData = function(data) {
     if (typeof data === 'string') data = JSON.parse(data);
-
-    /*angular.forEach(data.properties, function(value, key) {
-      $scope.main.properties.push({ key: key, value: value });
-    });*/
 
     $scope.main.properties = JSON.stringify(data.properties, null, 2);
     $scope.main.class = JSON.stringify(data.class);
@@ -151,15 +101,6 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {
         entity.properties = JSON.stringify(entity.properties, null, 2);
-        /*if (entity.properties) {
-          var properties = []
-          angular.forEach(entity.properties, function(value, key) {
-            properties.push({ key: key, value: value });
-          });
-
-          entity.properties = properties;
-        }*/
-
         var heading = [];
 
         if (entity.class) {
