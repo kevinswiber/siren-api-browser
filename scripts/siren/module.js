@@ -82,41 +82,66 @@ angular
           return deferred.promise;
         }
       },
-      execute: function(name, fields, stateParams, redirectIfKnown) {
-        var action;
-        angular.forEach(this.current.entity.actions, function(a) {
-          if (a.name === name) {
-            action = a;
+      execute: function(action) {
+        var contentType = action.type || 'application/x-www-form-urlencoded';
+        var options = {
+          method: action.method || 'GET',
+          url: action.href,
+          headers: {
+            'Content-Type': contentType,
+            'Accept': 'application/vnd.siren+json, application/json, text/plain, */*'
           }
-        });
+        };
 
-        if (action) {
-          var deferred = $q.defer();
+        if (options.method === 'GET') {
+          var params = {};
 
-          var config = {
-            method: action.method || 'GET',
-            url: action.href
+          angular.forEach(action.fields, function(field) {
+            params[field.name] = field.value;
+          });
+
+          var url = options.url;
+
+          var serialize = function(obj) {
+            var str = [];
+            for(var p in obj)
+              if (obj.hasOwnProperty(p)) {
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+              }
+            return str.join("&");
           };
 
-          if (config.method === 'GET') {
-            config.params = fields;
-          } else {
-            config.data = fields;
+          url = url.split('?')[0] + '?' + serialize(params); 
+
+          $state.transitionTo('entity', { url: url });
+
+          var deferred = $q.defer();
+
+          deferred.resolve({ noop: true });
+
+          return deferred.promise;
+        } else {
+          if (contentType === 'application/json') {
+            options.data = {};
+            angular.forEach(action.fields, function(field) {
+              options.data[field.name] = field.value;
+            });
+          } else if (contentType === 'application/x-www-form-urlencoded') {
+            var data = [];
+            angular.forEach(action.fields, function(field) {
+              data.push(encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value));
+            });
+
+            options.data = data.join('&');
           }
 
-          var self = this;
+          var deferred = $q.defer();
 
-          $http(config).success(function(data) {
-            var state = classRouter.resolve(data.class);
-
-            self.current = { state: state, entity: data };
-            self.cache.push(self.current);
-
-            $state.transitionTo(state.state, stateParams);
-
-            if (state.known && !redirectIfKnown) {
-              deferred.resolve(data);
-            }
+          $http(options).success(function(data, status, headers, config) {
+            deferred.resolve({ data: data, config: config });
+          })
+          .error(function(data, status, headers, config) {
+            deferred.reject(status);
           });
 
           return deferred.promise;
