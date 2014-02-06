@@ -1,9 +1,9 @@
 <div class="row">
-  <form class="form-inline">
+  <div class="col-md-12">
     <label for="url"><small>You are here:</small></label>
-    <input type="text" style="height: 16px; font-size: 12px; line-height: 16px"
-       id="url" class="input-xlarge" readonly value="{{url}}" select-on-click />
-  </form>
+    <input type="text" size=60 style="height: 16px; font-size: 12px; line-height: 16px"
+       id="url" readonly value="{{url}}" select-on-click />
+  </div>
 </div>
 <div id="response" class="row" ng-cloak ng-init="init()">
   <div class="col-md-4">
@@ -38,7 +38,9 @@
               <div ng-show="action.fields.length">
                 <form class="form-horizontal">
 
+                  <br/>
                   <srn-action value="action"></srn-action>
+                  <br/>
 
                   <div class="control-group">
                     <div class="controls">
