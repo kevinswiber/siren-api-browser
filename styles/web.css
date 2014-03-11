@@ -7,3 +7,13 @@ body {
 }
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+#elroy-start label {
+	display: block;
+	width: 100%
+	clear: both;
+}
+
+#response {
+	margin-bottom: 6em;
+}

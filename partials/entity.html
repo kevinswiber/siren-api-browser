@@ -1,11 +1,15 @@
-<div class="row">
-  <div class="col-md-12">
-    <label for="url">Entity URI:</label>
-    <input type="text" size=60
-       id="url" readonly value="{{url}}" select-on-click />
-  </div>
-</div>
+	
+
 <div id="response" class="row" ng-cloak ng-init="init()">
+  <div class="col-md-12" id="breadcrumbs">
+	{{ url | breadcrumb }}
+  </div>
+
+  <div class="col-md-12" id="breadcrumbs">
+  	<h1>nightlight</h1>
+  	<!-- <h1>{{main.properties.name}}</h1> -->
+  </div>
+	
   <div class="col-md-4">
     <div id="class" ng-show="main.class">
       <h3>Class</h3>

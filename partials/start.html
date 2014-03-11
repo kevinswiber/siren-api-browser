@@ -1,8 +1,10 @@
 <div id="control-panel" ng-init="init()">
-  <form class="form-inline" role="form">
-    <div class="form-group">
-      <label class="sr-only" for="url">Siren API URL</label>
-      <input type="text" size=60 class="form-control" id="url" name="url" ng-model="params.url" placeholder="Siren API URL" autofocus/>
+  <form class="form-inline" role="form" id="elroy-start">
+    
+	<label for="url"><h1>Elroy Fog App URL</h1></label>
+	
+	<div class="form-group">
+      <input type="text" size=60 class="form-control" id="url" name="url" ng-model="params.url" placeholder="Elroy Fog App URL" autofocus/>
     </div>
     <button class="btn btn-default btn-primary" ng-click="fetchUrl(params)">Go</button>
   </form>

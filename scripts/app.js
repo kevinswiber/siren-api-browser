@@ -37,6 +37,53 @@ angular
       }, 2);
     };
   })
+  .filter('breadcrumb', function(){
+		return function(url){
+			//break up the url
+			var protocol = url.split("//");
+			var _crumbs = protocol[1].split("/");
+			var crumbs = [];
+			
+			//create a verbose representation of the breadcrumbs
+			for(var i = 0; i < _crumbs.length; i++){
+				var url = protocol[0] + "//";
+				for(var a = 0; a < i; a++){
+					url += _crumbs[a] + "/";
+				}
+				
+				//that url should not be hardcoded here - maybe in angular?
+				crumbs[i] = {
+					"text": _crumbs[i],
+					"url": "/#/entity?url=" + encodeURI(url + _crumbs[i])
+				}
+			}
+			
+			/* 
+				there's an "angular-y" way to do this, I just don't know what that is -Alan
+				Something along the lines of this example:
+					http://jsfiddle.net/api/post/library/pure/
+			*/
+			$("#breadcrumbs").empty();
+			var output = $("<ol>").addClass("breadcrumb");
+			for(var i = 0; i < crumbs.length; i++){
+				if(i == crumbs.length -1){
+					$("<li>")
+						.html(crumbs[i].text)
+						.addClass('active')
+						.appendTo(output);
+				}else {
+					$("<li>")
+						.append($("<a>")
+								.attr('href', crumbs[i].url)
+								.html(crumbs[i].text))
+						.appendTo(output);
+				}
+			}
+			$("#breadcrumbs").append(output);
+			//obviously a hack
+			return "";
+		};
+  })
   .directive('selectOnClick', function() {
     return function(scope, element, attrs) {
       element.bind('click', function() {

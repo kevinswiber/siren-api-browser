@@ -10,6 +10,9 @@ SurfaceCtrls.MainCtrl = function($scope, $state, navigator, appState) {
     appState.url = url;
     navigator.transitionTo(url, { url: url });
   };
+	
+	
+	
 };
 
 SurfaceCtrls.HomeCtrl = function($scope, $state, navigator, appState) {
@@ -40,6 +43,9 @@ SurfaceCtrls.HomeCtrl = function($scope, $state, navigator, appState) {
         $scope.model.query = $scope.fields.query.value;
       }
     });
+	  
+	
+	  
   };
 
   $scope.search = function(fields) {
@@ -68,7 +74,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
   $scope.go = function(url) {
     $state.transitionTo('entity', { url: url });
   };
-
+  
   $scope.execute = function(action) {
     navigator.execute(action).then(function(result) {
       if (result.noop) {
@@ -90,7 +96,8 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
       showData(data);
     });
   };
-
+	
+	
   var showData = function(data) {
     if (typeof data === 'string') data = JSON.parse(data);
 
