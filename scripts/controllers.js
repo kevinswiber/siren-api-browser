@@ -121,7 +121,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
       $('#state').animate({ 'color': 'red' }, 500)
         .animate({ 'color': 'inherit' }, 500);
     }
-
+	  
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {
         entity.properties = JSON.stringify(entity.properties, null, 2);
