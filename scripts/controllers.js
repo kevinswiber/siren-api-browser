@@ -118,8 +118,13 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
     if (oldState !== undefined && oldState !== $scope.main.state) {
       console.log('old:', oldState);
       console.log('new:', $scope.main.state);
-      $('#state').animate({ 'color': 'red' }, 500)
-        .animate({ 'color': 'inherit' }, 500);
+
+      $scope.main.stateClass = 'highlight';
+      setTimeout(function() {
+        $scope.$apply(function() {
+          $scope.main.stateClass = '';
+        });
+      }, 1000)
     }
 	  
     if (data.entities) {

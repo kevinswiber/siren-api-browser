@@ -1,5 +1,5 @@
 angular
-  .module('surface', ['siren', 'ui.state', 'ui.bootstrap'])
+  .module('surface', ['siren', 'ui.state', 'ui.bootstrap', 'ngAnimate'])
   .config(['classRouterProvider', '$stateProvider',
       function(classRouterProvider, $stateProvider) {
 

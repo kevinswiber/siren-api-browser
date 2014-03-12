@@ -18,6 +18,10 @@ body {
 	margin-bottom: 6em;
 }
 
-.updated {
-  background-color: red;
+.state {
+  transition: background-color 0.8s ease;
+}
+
+.state.highlight {
+  background-color: orange;
 }
