@@ -91,7 +91,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
       $scope.main.entities = [];
       $scope.main.links = [];
 		
-	  $scope.main.breadcrumbs = [];
+      $scope.main.breadcrumbs = [];
 
       $scope.url = config.url;
       $state.params.url = config.url;
@@ -104,11 +104,23 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
   var showData = function(data) {
     if (typeof data === 'string') data = JSON.parse(data);
 
-	$scope.main._properties = data.properties;
-	$scope.main.state = data.properties.state;
+    $scope.main._properties = data.properties;
     $scope.main.properties = JSON.stringify(data.properties, null, 2);
     $scope.main.class = JSON.stringify(data.class);
     $scope.main.actions = data.actions;
+
+    var oldState = $scope.main.state;
+
+    if (data.properties && data.properties.state) {
+      $scope.main.state = data.properties.state;
+    }
+
+    if (oldState !== undefined && oldState !== $scope.main.state) {
+      console.log('old:', oldState);
+      console.log('new:', $scope.main.state);
+      $('#state').animate({ 'color': 'red' }, 500)
+        .animate({ 'color': 'inherit' }, 500);
+    }
 
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {
@@ -150,32 +162,24 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
       });
     }
 	  
-	if($scope.url){		  
-		
-		var protocol = $scope.url.split("//");
-		var _crumbs = protocol[1].split("/");
-/*
-		for(var i = 0; i < _crumbs.length; i++){
-			var url = protocol[0] + "//";
-			for(var a = 0; a < i; a++){
-				url += _crumbs[a] + "/";
-			}
+    if($scope.url){		  
+      var protocol = $scope.url.split("//");
+      var _crumbs = protocol[1].split("/");
 
-			$scope.main.breadcrumbs.push = {
-				"text": _crumbs[i],
-				"href": url + _crumbs[i]
-			}
-		}
-		*/
-		angular.forEach(_crumbs, function(crumb, i){
-			
-		});
-				
-	}
-	
-	  
-	  
-	  
+      $scope.main.breadcrumbs = [];
+
+      for(var i = 1; i < _crumbs.length; i++){
+        var url = protocol[0] + "//";
+        for(var a = 0; a < i; a++){
+          url += _crumbs[a] + "/";
+        }
+
+        $scope.main.breadcrumbs.push({
+          "text": _crumbs[i],
+          "href": url + _crumbs[i]
+        });
+      }
+    }
   };
 
   var follow = function(rootUrl, collection, query) {

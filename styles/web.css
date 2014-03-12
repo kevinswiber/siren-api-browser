@@ -17,3 +17,7 @@ body {
 #response {
 	margin-bottom: 6em;
 }
+
+.updated {
+  background-color: red;
+}
