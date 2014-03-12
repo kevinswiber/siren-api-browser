@@ -18,6 +18,7 @@ body {
 	margin-bottom: 6em;
 }
 
-.updated {
-  background-color: red;
+h1.animated #state {
+	background-color: red;
 }
+

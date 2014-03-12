@@ -84,8 +84,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
 
       var data = result.data;
       var config = result.config;
-
-      $scope.main.properties = null;
+		
       $scope.main.class = null;
       $scope.main.actions = [];
       $scope.main.entities = [];
@@ -103,7 +102,10 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
 	
   var showData = function(data) {
     if (typeof data === 'string') data = JSON.parse(data);
-
+	
+	$scope.main.oldProperties = $scope.main.properties;
+	$scope.main.properties = null;
+	  
     $scope.main._properties = data.properties;
     $scope.main.properties = JSON.stringify(data.properties, null, 2);
     $scope.main.class = JSON.stringify(data.class);
@@ -116,10 +118,15 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
     }
 
     if (oldState !== undefined && oldState !== $scope.main.state) {
-      console.log('old:', oldState);
-      console.log('new:', $scope.main.state);
-      $('#state').animate({ 'color': 'red' }, 500)
-        .animate({ 'color': 'inherit' }, 500);
+      console.log("State tranny");
+		//console.log('old:', oldState);
+      //console.log('new:', $scope.main.state);
+      $('h1').addClass('animated bounce');
+	  $('h1').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+	  	console.log("ended");
+		 $(this).removeClass('animated bounce');
+	  });
+
     }
 	  
     if (data.entities) {
