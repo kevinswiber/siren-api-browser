@@ -25,7 +25,7 @@ SurfaceCtrls.HomeCtrl = function($scope, $state, navigator, appState) {
     $scope.model.url = appState.url;
     $scope.model.collection = appState.collection;
     $scope.model.query = appState.query;
-
+	  
     navigator.fetch($state.params.url, $state.params).then(function(data) {
       angular.forEach(data.actions, function(action) {
         if (action.name === 'search') {
@@ -67,7 +67,6 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
     var rootUrl = params.url;
     var collection = params.collection;
     var query = params.query;
-
     follow(rootUrl, collection, query);
   };
 
@@ -85,12 +84,22 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
       var data = result.data;
       var config = result.config;
 
-      $scope.main.properties = null;
+      
       $scope.main.class = null;
       $scope.main.actions = [];
       $scope.main.entities = [];
       $scope.main.links = [];
-		
+	
+		angular.extend($scope.main.properties, {
+			"text": null,
+			"raw": null,
+			"diff": {
+				"raw": null,
+				"html": null,
+				"formatted": null
+			}
+		});
+			
       $scope.main.breadcrumbs = [];
 
       $scope.url = config.url;
@@ -103,14 +112,42 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
 	
   var showData = function(data) {
     if (typeof data === 'string') data = JSON.parse(data);
-
-    $scope.main._properties = data.properties;
-    $scope.main.properties = JSON.stringify(data.properties, null, 2);
+	
+	angular.extend($scope.main.properties, {
+			"old": $scope.main.properties,
+			"text": JSON.stringify(data.properties, null, 2),
+			"raw": data.properties,
+			"diff": {
+				"raw": null,
+				"html": null,
+				"formatted": null
+			}
+		});
+    $scope.main.properties.diff.raw = jsondiffpatch.diff(
+		$scope.main.properties.old, 
+		$scope.main.properties.raw
+	);
+	$scope.main.properties.diff.html = jsondiffpatch.formatters.html.format(
+		$scope.main.properties.old, 
+		$scope.main.properties.raw
+	);
+	  
+	$scope.main.properties.diff.formatted = jsondiffpatch.formatters.annotated.format(
+		$scope.main.properties.diff, 
+		$scope.main.properties.old
+	);
+	console.log($scope.main.properties.diff.formatted);
+	  
+	//test the diff to see if it should be displayed
+	  
+	  
     $scope.main.class = JSON.stringify(data.class);
     $scope.main.actions = data.actions;
+	$scope.main.stateClass = 'label-info';
 
     var oldState = $scope.main.state;
-
+	
+	  
     if (data.properties && data.properties.state) {
       $scope.main.state = data.properties.state;
     }
@@ -119,10 +156,10 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
       console.log('old:', oldState);
       console.log('new:', $scope.main.state);
 
-      $scope.main.stateClass = 'highlight';
+      $scope.main.stateClass = 'label-warning';
       setTimeout(function() {
         $scope.$apply(function() {
-          $scope.main.stateClass = '';
+          $scope.main.stateClass = 'label-info';
         });
       }, 800)
     }

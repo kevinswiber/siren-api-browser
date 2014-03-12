@@ -28,8 +28,7 @@
   </div>
 
   <div class="col-md-12" id="breadcrumbs">
-  	<h1>{{main._properties.name}} <span id="state" ng-class="main.stateClass", class="state label label-default">{{main.state}}</span></h1>
-  	<!-- <h1>{{main.properties.name}}</h1> -->
+  	<h1>{{main.properties.raw.name}} <span id="state" ng-class="main.stateClass", class="state label">{{main.state}}</span></h1>
   </div>
 	
   <div class="col-md-4">
@@ -37,9 +36,9 @@
       <h3>Class</h3>
       <pre>{{main.class}}</pre>
     </div>
-    <div id="properties" ng-show="main.properties.length">
+    <div id="properties" ng-show="main.properties.text.length">
       <h3>Properties</h3>
-      <pre>{{main.properties}}</pre>
+      {{main.properties.diff.formatted}}
     </div>
     
   </div>

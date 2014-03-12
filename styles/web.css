@@ -19,9 +19,7 @@ body {
 }
 
 .state {
-  transition: background-color 0.8s ease;
+  transition: background 0.8s ease;
+  -webkit-transition: background 0.8s ease;
 }
 
-.state.highlight {
-  background-color: orange;
-}
