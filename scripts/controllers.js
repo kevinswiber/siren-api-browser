@@ -25,7 +25,7 @@ SurfaceCtrls.HomeCtrl = function($scope, $state, navigator, appState) {
     $scope.model.url = appState.url;
     $scope.model.collection = appState.collection;
     $scope.model.query = appState.query;
-
+	  
     navigator.fetch($state.params.url, $state.params).then(function(data) {
       angular.forEach(data.actions, function(action) {
         if (action.name === 'search') {
@@ -61,13 +61,12 @@ SurfaceCtrls.HomeCtrl = function($scope, $state, navigator, appState) {
   };
 };
 
-SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) {
+SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
   $scope.init = function() {
     var params = $state.params;
     var rootUrl = params.url;
     var collection = params.collection;
     var query = params.query;
-
     follow(rootUrl, collection, query);
   };
 
@@ -84,12 +83,27 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
 
       var data = result.data;
       var config = result.config;
+<<<<<<< HEAD
 		
+=======
+
+      
+>>>>>>> state-animation
       $scope.main.class = null;
       $scope.main.actions = [];
       $scope.main.entities = [];
       $scope.main.links = [];
+	  $scope.formattedDiff = "";
 		
+		angular.extend($scope.main.properties, {
+			"text": null,
+			"raw": null,
+			"diff": {
+				"raw": null,
+				"html": null
+			}
+		});
+			
       $scope.main.breadcrumbs = [];
 
       $scope.url = config.url;
@@ -103,21 +117,52 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
   var showData = function(data) {
     if (typeof data === 'string') data = JSON.parse(data);
 	
+<<<<<<< HEAD
 	$scope.main.oldProperties = $scope.main.properties;
 	$scope.main.properties = null;
 	  
     $scope.main._properties = data.properties;
     $scope.main.properties = JSON.stringify(data.properties, null, 2);
+=======
+	angular.extend($scope.main.properties, {
+			"old": $scope.main.properties,
+			"text": JSON.stringify(data.properties, null, 2),
+			"raw": data.properties,
+			"diff": {
+				"raw": null,
+				"html": null
+			}
+		});
+    $scope.main.properties.diff.raw = jsondiffpatch.diff(
+		$scope.main.properties.old, 
+		$scope.main.properties.raw
+	);
+	$scope.main.properties.diff.html = jsondiffpatch.formatters.html.format(
+		$scope.main.properties.diff.raw, 
+		$scope.main.properties.raw
+	);
+	  
+	
+	  
+	$scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.diff.html);
+	  
+	//test the diff to see if it should be displayed
+	  
+	  
+>>>>>>> state-animation
     $scope.main.class = JSON.stringify(data.class);
     $scope.main.actions = data.actions;
+	$scope.main.stateClass = 'label-info';
 
     var oldState = $scope.main.state;
-
+	
+	  
     if (data.properties && data.properties.state) {
       $scope.main.state = data.properties.state;
     }
 
     if (oldState !== undefined && oldState !== $scope.main.state) {
+<<<<<<< HEAD
       console.log("State tranny");
 		//console.log('old:', oldState);
       //console.log('new:', $scope.main.state);
@@ -127,6 +172,17 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
 		 $(this).removeClass('animated bounce');
 	  });
 
+=======
+      console.log('old:', oldState);
+      console.log('new:', $scope.main.state);
+
+      $scope.main.stateClass = 'label-warning';
+      setTimeout(function() {
+        $scope.$apply(function() {
+          $scope.main.stateClass = 'label-info';
+        });
+      }, 800)
+>>>>>>> state-animation
     }
 	  
     if (data.entities) {

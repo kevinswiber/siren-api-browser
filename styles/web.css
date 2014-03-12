@@ -18,7 +18,25 @@ body {
 	margin-bottom: 6em;
 }
 
+<<<<<<< HEAD
 h1.animated #state {
 	background-color: red;
 }
 
+=======
+.state {
+  transition: background 0.8s ease;
+  -webkit-transition: background 0.8s ease;
+}
+
+ul.dropdown-menu-form {
+    padding: .5em 1em;
+	min-width: 300px;
+    overflow-y: scroll;
+}
+
+pre {
+	background-color: none;
+	border-color: none;
+}
+>>>>>>> state-animation
