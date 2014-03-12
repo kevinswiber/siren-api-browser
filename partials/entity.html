@@ -2,11 +2,31 @@
 
 <div id="response" class="row" ng-cloak ng-init="init()">
   <div class="col-md-12" id="breadcrumbs">
-	{{ url | breadcrumb }}
+	  <ol class="breadcrumb">
+		  <li ng-repeat="link in main.breadcrumbs">
+			<a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
+			 class="entity-link">{{ link.text }}</a>
+		  </li>
+	  </ol>
+	
   </div>
 
   <div class="col-md-12" id="breadcrumbs">
-  	<h1>nightlight</h1>
+  	<h1>{{main._properties.name}} <span class="label label-default">{{main.state}}</span></h1>
+	<div class="btn-group" id="links" ng-show="main.links.length">
+		<button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+		  Links
+		  <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+		  <li ng-repeat="link in main.links">
+			<a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
+			 class="entity-link {{ link.rel }}">{{ link.rel }}</a>
+		  </li>
+		  <li role="presentation" class="divider"></li>
+		  <li><a href="#raw">Raw Response</a></li>
+		</ul>
+	  </div>
   	<!-- <h1>{{main.properties.name}}</h1> -->
   </div>
 	
@@ -19,15 +39,7 @@
       <h3>Properties</h3>
       <pre>{{main.properties}}</pre>
     </div>
-    <div id="links" ng-show="main.links.length">
-      <h3>Links</h3>
-      <ul>
-        <li ng-repeat="link in main.links">
-        <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-         class="entity-link {{ link.rel }}">{{ link.rel }}</a>
-        </li>
-      </ul>
-    </div>
+    
   </div>
   <div class="col-md-6">
     <div id="actions" ng-show="main.actions.length">

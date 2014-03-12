@@ -74,7 +74,8 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
   $scope.go = function(url) {
     $state.transitionTo('entity', { url: url });
   };
-  
+
+	
   $scope.execute = function(action) {
     navigator.execute(action).then(function(result) {
       if (result.noop) {
@@ -89,6 +90,8 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
       $scope.main.actions = [];
       $scope.main.entities = [];
       $scope.main.links = [];
+		
+	  $scope.main.breadcrumbs = [];
 
       $scope.url = config.url;
       $state.params.url = config.url;
@@ -101,6 +104,8 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
   var showData = function(data) {
     if (typeof data === 'string') data = JSON.parse(data);
 
+	$scope.main._properties = data.properties;
+	$scope.main.state = data.properties.state;
     $scope.main.properties = JSON.stringify(data.properties, null, 2);
     $scope.main.class = JSON.stringify(data.class);
     $scope.main.actions = data.actions;
@@ -127,9 +132,11 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
               links.push({ rel: rel, href: link.href });
             });
           });
-
+		 
           entity.links = links;
         }
+		  
+		
 
         $scope.main.entities.push(entity);
       });
@@ -142,6 +149,33 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
         });
       });
     }
+	  
+	if($scope.url){		  
+		
+		var protocol = $scope.url.split("//");
+		var _crumbs = protocol[1].split("/");
+/*
+		for(var i = 0; i < _crumbs.length; i++){
+			var url = protocol[0] + "//";
+			for(var a = 0; a < i; a++){
+				url += _crumbs[a] + "/";
+			}
+
+			$scope.main.breadcrumbs.push = {
+				"text": _crumbs[i],
+				"href": url + _crumbs[i]
+			}
+		}
+		*/
+		angular.forEach(_crumbs, function(crumb, i){
+			
+		});
+				
+	}
+	
+	  
+	  
+	  
   };
 
   var follow = function(rootUrl, collection, query) {
