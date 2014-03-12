@@ -23,3 +23,13 @@ body {
   -webkit-transition: background 0.8s ease;
 }
 
+ul.dropdown-menu-form {
+    padding: .5em 1em;
+	min-width: 300px;
+    overflow-y: scroll;
+}
+
+pre {
+	background-color: none;
+	border-color: none;
+}

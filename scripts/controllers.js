@@ -61,7 +61,7 @@ SurfaceCtrls.HomeCtrl = function($scope, $state, navigator, appState) {
   };
 };
 
-SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) {
+SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
   $scope.init = function() {
     var params = $state.params;
     var rootUrl = params.url;
@@ -89,14 +89,14 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
       $scope.main.actions = [];
       $scope.main.entities = [];
       $scope.main.links = [];
-	
+	  $scope.formattedDiff = "";
+		
 		angular.extend($scope.main.properties, {
 			"text": null,
 			"raw": null,
 			"diff": {
 				"raw": null,
-				"html": null,
-				"formatted": null
+				"html": null
 			}
 		});
 			
@@ -119,8 +119,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
 			"raw": data.properties,
 			"diff": {
 				"raw": null,
-				"html": null,
-				"formatted": null
+				"html": null
 			}
 		});
     $scope.main.properties.diff.raw = jsondiffpatch.diff(
@@ -128,15 +127,13 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
 		$scope.main.properties.raw
 	);
 	$scope.main.properties.diff.html = jsondiffpatch.formatters.html.format(
-		$scope.main.properties.old, 
+		$scope.main.properties.diff.raw, 
 		$scope.main.properties.raw
 	);
 	  
-	$scope.main.properties.diff.formatted = jsondiffpatch.formatters.annotated.format(
-		$scope.main.properties.diff, 
-		$scope.main.properties.old
-	);
-	console.log($scope.main.properties.diff.formatted);
+	
+	  
+	$scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.diff.html);
 	  
 	//test the diff to see if it should be displayed
 	  
