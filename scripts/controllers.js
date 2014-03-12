@@ -83,12 +83,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 
       var data = result.data;
       var config = result.config;
-<<<<<<< HEAD
-		
-=======
 
-      
->>>>>>> state-animation
       $scope.main.class = null;
       $scope.main.actions = [];
       $scope.main.entities = [];
@@ -117,13 +112,6 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
   var showData = function(data) {
     if (typeof data === 'string') data = JSON.parse(data);
 	
-<<<<<<< HEAD
-	$scope.main.oldProperties = $scope.main.properties;
-	$scope.main.properties = null;
-	  
-    $scope.main._properties = data.properties;
-    $scope.main.properties = JSON.stringify(data.properties, null, 2);
-=======
 	angular.extend($scope.main.properties, {
 			"old": $scope.main.properties,
 			"text": JSON.stringify(data.properties, null, 2),
@@ -148,8 +136,6 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 	  
 	//test the diff to see if it should be displayed
 	  
-	  
->>>>>>> state-animation
     $scope.main.class = JSON.stringify(data.class);
     $scope.main.actions = data.actions;
 	$scope.main.stateClass = 'label-info';
@@ -162,17 +148,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
     }
 
     if (oldState !== undefined && oldState !== $scope.main.state) {
-<<<<<<< HEAD
-      console.log("State tranny");
-		//console.log('old:', oldState);
-      //console.log('new:', $scope.main.state);
-      $('h1').addClass('animated bounce');
-	  $('h1').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-	  	console.log("ended");
-		 $(this).removeClass('animated bounce');
-	  });
 
-=======
       console.log('old:', oldState);
       console.log('new:', $scope.main.state);
 
@@ -182,7 +158,6 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
           $scope.main.stateClass = 'label-info';
         });
       }, 800)
->>>>>>> state-animation
     }
 	  
     if (data.entities) {
