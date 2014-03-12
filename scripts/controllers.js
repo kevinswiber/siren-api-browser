@@ -124,7 +124,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
         $scope.$apply(function() {
           $scope.main.stateClass = '';
         });
-      }, 1000)
+      }, 800)
     }
 	  
     if (data.entities) {
