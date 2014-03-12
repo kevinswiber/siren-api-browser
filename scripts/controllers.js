@@ -105,11 +105,14 @@ SurfaceCtrls.EntityCtrl = function($scope, $state, $http, $location, navigator) 
     if (typeof data === 'string') data = JSON.parse(data);
 
 	$scope.main._properties = data.properties;
-	$scope.main.state = data.properties.state;
     $scope.main.properties = JSON.stringify(data.properties, null, 2);
     $scope.main.class = JSON.stringify(data.class);
     $scope.main.actions = data.actions;
 
+	if (data.properties && data.properties.state) {
+	  $scope.main.state = data.properties.state;
+	}
+	  
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {
         entity.properties = JSON.stringify(entity.properties, null, 2);
