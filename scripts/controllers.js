@@ -186,28 +186,36 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 	  
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {
+		entity.raw = entity.properties;
         entity.properties = JSON.stringify(entity.properties, null, 2);
         var heading = [];
+		
+		if(entity.raw.name && entity.raw.name.length > 0){
+			entity.heading = entity.raw.name;
+		}else{
+			if (entity.class) {
+			  heading.push('class: ' + JSON.stringify(entity.class));
+			}
 
-        if (entity.class) {
-          heading.push('class: ' + JSON.stringify(entity.class));
-        }
+			if (entity.rel) {
+			  heading.push('rel: ' + JSON.stringify(entity.rel));
+			}
 
-        if (entity.rel) {
-          heading.push('rel: ' + JSON.stringify(entity.rel));
-        }
-
-        entity.heading = heading.join(', ') || '[unknown class]';
+			entity.heading = heading.join(', ') || '[unknown class]';
+		
+		}
 
         if (entity.links) {
           var links = [];
           angular.forEach(entity.links, function(link) {
             angular.forEach(link.rel, function(rel) {
+			  if(rel == "self"){ entity.selfLink = { rel: rel, href: link.href }; }
               links.push({ rel: rel, href: link.href });
             });
           });
 		 
           entity.links = links;
+		  entity.manyLinks = entity.links.length > 1;
         }
 		  
 		
