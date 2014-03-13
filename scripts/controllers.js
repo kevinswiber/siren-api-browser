@@ -88,17 +88,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
       $scope.main.actions = [];
       $scope.main.entities = [];
       $scope.main.links = [];
-	  $scope.formattedDiff = "";
-		/*
-		angular.extend($scope.main.properties, {
-			"text": null,
-			"raw": null,
-			"diff": {
-				"raw": null,
-				"html": null
-			}
-		});
-		*/	
+      $scope.formattedDiff = "";
       $scope.main.breadcrumbs = [];
 
       $scope.url = config.url;
