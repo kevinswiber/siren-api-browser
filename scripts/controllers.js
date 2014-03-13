@@ -75,11 +75,20 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
   };
 
 	
+	
+	
   $scope.execute = function(action) {
+	  
+	 
+	  
     if (action.class.indexOf('event-subscription') !== -1) {
-      var ws = new WebSocket(action.href);
+      
+		 
+	  //console.log($scope.main.properties.raw.sreams);	
+	  var ws = new WebSocket(action.href);
 
       ws.onmessage = function(event) {
+		//Add data to model w/ timestamp here
         console.log(JSON.parse(event.data));
       }
 
@@ -100,6 +109,9 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
         return;
       }
 
+		
+		
+		
       var data = result.data;
       var config = result.config;
 
@@ -123,6 +135,8 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
       data = JSON.parse(data);
     }
 
+	
+	  
     $scope.main.properties.old = $scope.main.properties.raw;
     $scope.main.properties.text = "<pre>" + JSON.stringify(data.properties, null, 2) + "</pre>";
     $scope.main.properties.raw = data.properties;
@@ -133,14 +147,34 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
     $scope.main.class = JSON.stringify(data.class);
     $scope.main.actions = data.actions;
     $scope.main.stateClass = 'label-info';
-
+	  
     var oldState = $scope.main.state;
 	
     if (data.properties && data.properties.state) {
       $scope.main.state = data.properties.state;
     }
-
+  
+	if(!$scope.main.streams){  
+		console.log("initialize data streams");
+		$scope.main.streams = {
+			_state: {
+					name: '_state',
+					data: []
+				}
+		}
+		angular.forEach($scope.main.properties.raw.streams, function(stream){
+			$scope.main.streams[stream] = {
+				name: stream,
+				data: []
+			}
+		});
+		console.log($scope.main.streams);
+	}
+	  
     if (oldState !== undefined && oldState !== $scope.main.state) {
+	  console.log(now());
+	  //$scope.main.streams._state.date.push([timestamp, $scope.main.state])	
+		
       $scope.main.stateClass = 'label-warning';
       setTimeout(function() {
         $scope.$apply(function() {
@@ -148,11 +182,11 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
         });
       }, 800);
     
-	  	$scope.main.properties.diff.raw = jsondiffpatch.diff(
-          $scope.main.properties.old, $scope.main.properties.raw);
+	  $scope.main.properties.diff.raw = jsondiffpatch.diff(
+      $scope.main.properties.old, $scope.main.properties.raw);
 
       $scope.main.properties.diff.html = jsondiffpatch.formatters.html.format(
-        $scope.main.properties.diff.raw, $scope.main.properties.raw);
+      $scope.main.properties.diff.raw, $scope.main.properties.raw);
 
       $scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.diff.html);
 
