@@ -76,12 +76,11 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 
 	
   $scope.execute = function(action) {
-    if (action.class.indexOf('event-subscription') {
+    if (action.class.indexOf('event-subscription') !== -1) {
       var ws = new WebSocket(action.href);
 
       ws.onmessage = function(event) {
-        console.log('on message');
-        console.log(event);
+        console.log(JSON.parse(event.data));
       }
 
       var command = { cmd: action.method };
@@ -89,7 +88,10 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
         command[field.name] = field.value;
       });
 
-      ws.send(JSON.stringify(command));
+      ws.onopen = function(event) {
+        ws.send(JSON.stringify(command));
+      };
+
       return;
     }
 
