@@ -110,46 +110,28 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 	
 	
   var showData = function(data) {
-    if (typeof data === 'string') data = JSON.parse(data);
-	/*
-	angular.extend($scope.main.properties, {
-			old: $scope.main.properties.raw,
-			text: "<pre>" + JSON.stringify(data.properties, null, 2) + "</pre>",
-			raw: data.properties,
-			diff: {
-				raw: null,
-				html: null
-			}
-		});
-	  */
-	$scope.main.properties.old = $scope.main.properties.raw;
-	$scope.main.properties.text = "<pre>" + JSON.stringify(data.properties, null, 2) + "</pre>";
-	$scope.main.properties.raw = data.properties;
-	$scope.main.properties.diff = {
-				raw: null,
-				html: null
-			}
-	  
-	$scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.text);
-	  
-	//test the diff to see if it should be displayed
+    if (typeof data === 'string') {
+      data = JSON.parse(data);
+    }
+
+    $scope.main.properties.old = $scope.main.properties.raw;
+    $scope.main.properties.text = "<pre>" + JSON.stringify(data.properties, null, 2) + "</pre>";
+    $scope.main.properties.raw = data.properties;
+    $scope.main.properties.diff = { raw: null, html: null };
+
+    $scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.text);
 	  
     $scope.main.class = JSON.stringify(data.class);
     $scope.main.actions = data.actions;
-	$scope.main.stateClass = 'label-info';
+    $scope.main.stateClass = 'label-info';
 
     var oldState = $scope.main.state;
 	
-	  
     if (data.properties && data.properties.state) {
       $scope.main.state = data.properties.state;
     }
 
     if (oldState !== undefined && oldState !== $scope.main.state) {
-      //Update state label on entity title
-	  //console.log('old:', oldState);
-      //console.log('new:', $scope.main.state);
-
       $scope.main.stateClass = 'label-warning';
       setTimeout(function() {
         $scope.$apply(function() {
@@ -157,32 +139,22 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
         });
       }, 800);
     
-	  //Properties diffing
-		
-	
 	  	$scope.main.properties.diff.raw = jsondiffpatch.diff(
-			$scope.main.properties.old, 
-			$scope.main.properties.raw
-		);
-		$scope.main.properties.diff.html = jsondiffpatch.formatters.html.format(
-			$scope.main.properties.diff.raw, 
-			$scope.main.properties.raw
-		);
+          $scope.main.properties.old, $scope.main.properties.raw);
 
-		//console.log("some shit changed. Show me", $scope.main.properties);
-		$scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.diff.html);
-		clearTimeout($scope.main.properties.clearHighlight);
-		
-		$scope.main.properties.clearHighlight = setTimeout(function(){
-			$scope.$apply(function(){
-				$scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.text);
-			});
-			
-		}, 1500);
-	
-	
-	
-	}
+      $scope.main.properties.diff.html = jsondiffpatch.formatters.html.format(
+        $scope.main.properties.diff.raw, $scope.main.properties.raw);
+
+      $scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.diff.html);
+
+      clearTimeout($scope.main.properties.clearHighlight);
+
+      $scope.main.properties.clearHighlight = setTimeout(function(){
+        $scope.$apply(function(){
+          $scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.text);
+        });
+      }, 1500);
+    }
 	  
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {
@@ -206,15 +178,13 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
               links.push({ rel: rel, href: link.href });
             });
           });
-		 
+
           entity.links = links;
         }
-		  
-		
 
         $scope.main.entities.push(entity);
       });
-    };
+    }
 
     if (data.links) {
       angular.forEach(data.links, function(link) {
@@ -223,7 +193,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
         });
       });
     }
-	  
+
     if($scope.url){		  
       var protocol = $scope.url.split("//");
       var _crumbs = protocol[1].split("/");
