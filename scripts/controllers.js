@@ -76,6 +76,23 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 
 	
   $scope.execute = function(action) {
+    if (action.class.indexOf('event-subscription') {
+      var ws = new WebSocket(action.href);
+
+      ws.onmessage = function(event) {
+        console.log('on message');
+        console.log(event);
+      }
+
+      var command = { cmd: action.method };
+      action.fields.forEach(function(field) {
+        command[field.name] = field.value;
+      });
+
+      ws.send(JSON.stringify(command));
+      return;
+    }
+
     navigator.execute(action).then(function(result) {
       if (result.noop) {
         return;
