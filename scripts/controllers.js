@@ -76,7 +76,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 
 	
   $scope.execute = function(action) {
-    if (action.class.indexOf('event-subscription') !== -1) {
+    if (action.class && action.class.indexOf('event-subscription') !== -1) {
       var ws = new WebSocket(action.href);
 
       ws.onmessage = function(event) {
