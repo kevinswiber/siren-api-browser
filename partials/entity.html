@@ -32,7 +32,7 @@
   	<h1>{{main.properties.raw.name}} <span id="state" ng-class="main.stateClass", class="state label">{{main.state}}</span></h1>
   </div>
 	
-  <div class="col-md-4">
+  <div class="col-md-6">
     
     <div id="actions" ng-show="main.actions.length">
       <h3>Actions</h3>
@@ -119,7 +119,7 @@
 	  
     <div id="properties" >
 	  <h3>Properties</h3>
-      <div ng-show="main.properties.diff.html.length" ng-bind-html="formattedDiff"></div>
+      <div ng-bind-html="formattedDiff"></div>
     
     </div>
 </div>

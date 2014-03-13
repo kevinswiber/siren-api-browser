@@ -89,7 +89,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
       $scope.main.entities = [];
       $scope.main.links = [];
 	  $scope.formattedDiff = "";
-		
+		/*
 		angular.extend($scope.main.properties, {
 			"text": null,
 			"raw": null,
@@ -98,7 +98,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 				"html": null
 			}
 		});
-			
+		*/	
       $scope.main.breadcrumbs = [];
 
       $scope.url = config.url;
@@ -111,28 +111,26 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 	
   var showData = function(data) {
     if (typeof data === 'string') data = JSON.parse(data);
-	
+	/*
 	angular.extend($scope.main.properties, {
-			"old": $scope.main.properties,
-			"text": JSON.stringify(data.properties, null, 2),
-			"raw": data.properties,
-			"diff": {
-				"raw": null,
-				"html": null
+			old: $scope.main.properties.raw,
+			text: "<pre>" + JSON.stringify(data.properties, null, 2) + "</pre>",
+			raw: data.properties,
+			diff: {
+				raw: null,
+				html: null
 			}
 		});
-    $scope.main.properties.diff.raw = jsondiffpatch.diff(
-		$scope.main.properties.old, 
-		$scope.main.properties.raw
-	);
-	$scope.main.properties.diff.html = jsondiffpatch.formatters.html.format(
-		$scope.main.properties.diff.raw, 
-		$scope.main.properties.raw
-	);
+	  */
+	$scope.main.properties.old = $scope.main.properties.raw;
+	$scope.main.properties.text = "<pre>" + JSON.stringify(data.properties, null, 2) + "</pre>";
+	$scope.main.properties.raw = data.properties;
+	$scope.main.properties.diff = {
+				raw: null,
+				html: null
+			}
 	  
-	
-	  
-	$scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.diff.html);
+	$scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.text);
 	  
 	//test the diff to see if it should be displayed
 	  
@@ -148,17 +146,43 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
     }
 
     if (oldState !== undefined && oldState !== $scope.main.state) {
-
-      console.log('old:', oldState);
-      console.log('new:', $scope.main.state);
+      //Update state label on entity title
+	  //console.log('old:', oldState);
+      //console.log('new:', $scope.main.state);
 
       $scope.main.stateClass = 'label-warning';
       setTimeout(function() {
         $scope.$apply(function() {
           $scope.main.stateClass = 'label-info';
         });
-      }, 800)
-    }
+      }, 800);
+    
+	  //Properties diffing
+		
+	
+	  	$scope.main.properties.diff.raw = jsondiffpatch.diff(
+			$scope.main.properties.old, 
+			$scope.main.properties.raw
+		);
+		$scope.main.properties.diff.html = jsondiffpatch.formatters.html.format(
+			$scope.main.properties.diff.raw, 
+			$scope.main.properties.raw
+		);
+
+		//console.log("some shit changed. Show me", $scope.main.properties);
+		$scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.diff.html);
+		clearTimeout($scope.main.properties.clearHighlight);
+		
+		$scope.main.properties.clearHighlight = setTimeout(function(){
+			$scope.$apply(function(){
+				$scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.text);
+			});
+			
+		}, 1500);
+	
+	
+	
+	}
 	  
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {
