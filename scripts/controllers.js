@@ -62,6 +62,7 @@ SurfaceCtrls.HomeCtrl = function($scope, $state, navigator, appState) {
 };
 
 SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
+	
   $scope.init = function() {
     var params = $state.params;
     var rootUrl = params.url;
@@ -73,23 +74,27 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
   $scope.go = function(url) {
     $state.transitionTo('entity', { url: url });
   };
-
-	
-	
 	
   $scope.execute = function(action) {
-	  
-	 
-	  
-    if (action.class.indexOf('event-subscription') !== -1) {
-      
-		 
-	  //console.log($scope.main.properties.raw.sreams);	
-	  var ws = new WebSocket(action.href);
+
+    if (action.class && action.class.indexOf('event-subscription') !== -1) {
+      var ws = new WebSocket(action.href);
 
       ws.onmessage = function(event) {
 		//Add data to model w/ timestamp here
-        console.log(JSON.parse(event.data));
+		var d = JSON.parse(event.data);
+        console.log(d);
+		var update = {
+			target: d.destination.replace("/", "_"),
+			data: d.data
+		}  
+		//console.log($scope);  
+		  
+		$scope.main.streams[update.target].data.push([Date.now(), update.data]);	  
+		if($scope.main.streams[update.target].data.length > 25){
+			$scope.main.streams[update.target].data.shift();
+		}
+		$scope.$apply();
       }
 
       var command = { cmd: action.method };
@@ -135,10 +140,22 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
       data = JSON.parse(data);
     }
 
-	
+	//sort the data! This should be done on the api or UNDONE in jsondiff formatters.js
+	  var tosort = []
+	  angular.forEach(data.properties, function(prop, i){ tosort.push(i); });
+	  tosort.sort();
+	  
+	  data.abc_properties = {};
+	  angular.forEach(tosort, function(key){
+	  	data.abc_properties[key] = data.properties[key];
+	  });
+	  
+	  //console.log(data.abc_properties);
+	  
+	//done with sorting
 	  
     $scope.main.properties.old = $scope.main.properties.raw;
-    $scope.main.properties.text = "<pre>" + JSON.stringify(data.properties, null, 2) + "</pre>";
+    $scope.main.properties.text = "<pre>" + JSON.stringify(data.abc_properties, null, 2).replace(/\"([^(\")"]+)\":/g,"$1:") + "</pre>";
     $scope.main.properties.raw = data.properties;
     $scope.main.properties.diff = { raw: null, html: null };
 
@@ -156,25 +173,34 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
   
 	if(!$scope.main.streams){  
 		console.log("initialize data streams");
+		$scope.main.streams = {};
+		/*
 		$scope.main.streams = {
 			_state: {
-					name: '_state',
-					data: []
+					name: 'state',
+					data: [],
+					xFunction: function(){ return function(d){ return d[0]; } },
+					yFunction: function(){ return function(d){ return d[1]; } }
 				}
 		}
+		*/
+
 		angular.forEach($scope.main.properties.raw.streams, function(stream){
+			stream = stream.replace("/", "_");
+			
 			$scope.main.streams[stream] = {
 				name: stream,
-				data: []
+				data: [],
+				xFunction: function(){ return function(d){ return d[0]; } },
+				yFunction: function(){ return function(d){ return d[1]; } }
 			}
 		});
 		console.log($scope.main.streams);
 	}
 	  
+	  
     if (oldState !== undefined && oldState !== $scope.main.state) {
-	  console.log(now());
-	  //$scope.main.streams._state.date.push([timestamp, $scope.main.state])	
-		
+	  	
       $scope.main.stateClass = 'label-warning';
       setTimeout(function() {
         $scope.$apply(function() {
@@ -198,6 +224,9 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
         });
       }, 1500);
     }
+	  
+	  
+	
 	  
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {

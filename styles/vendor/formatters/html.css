@@ -1,14 +1,14 @@
 .jsondiffpatch-delta {
-    font-family: 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Courier, monospace;
-    font-size: 12px;
+	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+	font-size: 13px;
+	line-height: 1.428571429;
     margin: 0;
     padding: 0 0 0 12px;
     display: inline-block;
 }
 
 .jsondiffpatch-delta pre {
-    font-family: 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Courier, monospace;
-    font-size: 12px;
+	
     margin: 0;
     padding: 0;
     display: inline-block;
@@ -22,7 +22,7 @@ ul.jsondiffpatch-delta {
 
 .jsondiffpatch-delta ul {
     list-style-type: none;
-    padding: 0 0 0 20px;
+    padding: 0 0 0 16px;
     margin: 0;
 }
 
@@ -89,7 +89,7 @@ ul.jsondiffpatch-delta {
 
 .jsondiffpatch-property-name {
     display: inline-block;
-    padding-right: 5px;
+    padding-right: 8px;
     vertical-align: top;
 }
 
@@ -114,7 +114,7 @@ div.jsondiffpatch-child-node-type-array:after {
 }
 
 .jsondiffpatch-child-node-type-object > .jsondiffpatch-property-name:after {
-    content: ': {';
+    content: 's: {';
 }
 
 .jsondiffpatch-child-node-type-object:after {

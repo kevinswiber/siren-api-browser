@@ -1,8 +1,7 @@
 
 
-
 angular
-  .module('surface', ['siren', 'ui.state', 'ui.bootstrap', 'ngAnimate'])
+  .module('surface', ['siren', 'ui.state', 'ui.bootstrap', 'ngAnimate', 'nvd3ChartDirectives'])
   .config(['classRouterProvider', '$stateProvider',
       function(classRouterProvider, $stateProvider) {
 

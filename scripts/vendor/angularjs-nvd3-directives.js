@@ -2437,7 +2437,7 @@
           }
         ],
         link: function ( scope, element, attrs ) {
-          scope.$watch( 'data', function ( data ) {
+          scope.$watchCollection( 'data', function ( data ) {
             if ( data ) {
               //if the chart exists on the scope, do not call addGraph again, update data and call the chart.
               if ( scope.chart ) {
