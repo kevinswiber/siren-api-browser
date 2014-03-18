@@ -174,7 +174,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 	if(!$scope.main.streams){  
 		console.log("initialize data streams");
 		$scope.main.streams = {};
-		/*
+		
 		$scope.main.streams = {
 			_state: {
 					name: 'state',
@@ -183,7 +183,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 					yFunction: function(){ return function(d){ return d[1]; } }
 				}
 		}
-		*/
+		
 
 		angular.forEach($scope.main.properties.raw.streams, function(stream){
 			stream = stream.replace("/", "_");
@@ -197,10 +197,34 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 		});
 		console.log($scope.main.streams);
 	}
-	  
+	
+	if(!$scope.main.stateHistory){
+		$scope.main.stateHistory = {
+		
+		}
+	
+	}
 	  
     if (oldState !== undefined && oldState !== $scope.main.state) {
-	  	
+	  	var index = $scope.main.streams["_state"].data.length -1;
+		var current = $scope.main.streams["_state"].data[index]
+		var update;
+		
+		if(current !== undefined){ current = current[1]; }
+		
+		if(current == 20){ 
+			update = 0; 
+		}else{
+			update = 20;
+		}
+		
+		
+		$scope.main.streams["_state"].data.push([Date.now(), update]);
+		
+		if($scope.main.streams["_state"].data.length > 25){
+			$scope.main.streams["_state"].data.shift();
+		}
+		
       $scope.main.stateClass = 'label-warning';
       setTimeout(function() {
         $scope.$apply(function() {
