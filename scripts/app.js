@@ -1,7 +1,5 @@
-
-
 angular
-  .module('surface', ['siren', 'ui.state', 'ui.bootstrap', 'ngAnimate', 'nvd3ChartDirectives'])
+  .module('elroy', ['siren', 'ui.state', 'ui.bootstrap', 'ngAnimate', 'nvd3ChartDirectives'])
   .config(['classRouterProvider', '$stateProvider',
       function(classRouterProvider, $stateProvider) {
 
@@ -29,11 +27,11 @@ angular
       });
   }])
   .controller('MainCtrl',
-      ['$scope', '$state', 'navigator', 'appState', SurfaceCtrls.MainCtrl])
+      ['$scope', '$state', 'navigator', 'appState', ElroyCtrls.MainCtrl])
   .controller('AppCtrl',
-      ['$scope', SurfaceCtrls.AppCtrl])
+      ['$scope', ElroyCtrls.AppCtrl])
   .controller('EntityCtrl',
-      ['$scope', '$sce', '$state', '$http', '$location', 'navigator', SurfaceCtrls.EntityCtrl])
+      ['$scope', '$sce', '$state', '$http', '$location', 'navigator', ElroyCtrls.EntityCtrl])
   .factory('appState', function() {
     return { url: '', collection: '', query: '' };
   })

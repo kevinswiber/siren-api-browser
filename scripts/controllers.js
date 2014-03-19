@@ -1,6 +1,6 @@
-var SurfaceCtrls = {};
+var ElroyCtrls = {};
 
-SurfaceCtrls.MainCtrl = function($scope, $state, navigator, appState) {
+ElroyCtrls.MainCtrl = function($scope, $state, navigator, appState) {
   $scope.init = function() {
     $scope.params = { url: appState.url || '' };
   };
@@ -13,13 +13,13 @@ SurfaceCtrls.MainCtrl = function($scope, $state, navigator, appState) {
   };
 };
 
-SurfaceCtrls.AppCtrl = function($scope) {
+ElroyCtrls.AppCtrl = function($scope) {
   $scope.init = function() {
     console.log('yoyoyoyo');
   };
 };
 
-SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
+ElroyCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 	
   $scope.init = function() {
     var params = $state.params;
@@ -268,7 +268,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
   };
 
   var follow = function(rootUrl, collection, query) {
-    var url = SurfaceCtrls.Common.buildUrl(rootUrl, collection, query);
+    var url = ElroyCtrls.Common.buildUrl(rootUrl, collection, query);
 
     $scope.main = {
       properties: [],
@@ -289,7 +289,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
   };
 };
 
-SurfaceCtrls.Common = {
+ElroyCtrls.Common = {
   buildUrl: function(rootUrl, collection, query) {
     var url = '';
     if (rootUrl) {
