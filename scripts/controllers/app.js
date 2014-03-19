@@ -4,7 +4,68 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
     var rootUrl = params.url;
 
     follow(rootUrl);
-    console.log('yoyoyoyo');
+  };
+
+  $scope.execute = function(action, stream) {
+    //this can't be true for entities being viewed from the app root
+    if (action.class && action.class.indexOf('event-subscription') !== -1) {
+      var ws = new WebSocket(action.href);
+		
+      console.log('new web socket');
+      //when there's a stream message	
+      ws.onmessage = function(event) {
+        //Add data to model w/ timestamp here
+        var d = JSON.parse(event.data);
+        console.log(d);
+
+        var update = {
+          target: d.destination.replace("/", "_"),
+          data: d.data
+        }  
+        //console.log($scope);  
+          
+        console.log('pushing data:', update);
+        stream.data.push([Date.now(), update.data]);	  
+
+        if(stream.data.length > 25){
+          stream.data.shift();
+        }
+
+        $scope.$apply();
+      }
+
+      var command = { cmd: action.method };
+      action.fields.forEach(function(field) {
+        command[field.name] = field.value;
+      });
+
+      ws.onopen = function(event) {
+        ws.send(JSON.stringify(command));
+      };
+
+      return;
+    }
+
+    navigator.execute(action).then(function(result) {
+      if (result.noop) {
+        return;
+      }
+		
+      var data = result.data;
+      var config = result.config;
+
+      $scope.main.class = null;
+      $scope.main.actions = [];
+      $scope.main.entities = [];
+      $scope.main.links = [];
+      $scope.formattedDiff = "";
+      $scope.main.breadcrumbs = [];
+
+      $scope.url = config.url;
+      $state.params.url = config.url;
+
+      showData(data);
+    });
   };
 
   var follow = function(rootUrl) {
@@ -46,7 +107,6 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 	  });
 	  
 	  //console.log(data.abc_properties);
-	  
 	  
     $scope.main.properties.old = $scope.main.properties.raw;
     $scope.main.properties.text = "<pre>" + JSON.stringify(data.abc_properties, null, 2).replace(/\"([^(\")"]+)\":/g,"$1:") + "</pre>"; //regex to remove quotes (") from stringify
@@ -134,41 +194,69 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
       }, 1500);
     }
 	  
-	  
-	
-	  
+    var getStreamsFor = function(entity, href) {
+      $http.get(href).success(function(response) {
+        console.log(response.actions);
+        console.log(response.actions.length);
+        if (response.actions && response.actions.length) {
+          angular.forEach(response.actions, function(action) {
+            console.log('class:',action.class);
+            if (action.class && action.class.indexOf('event-subscription') !== -1) {
+              var stream = {
+                name: action.name.replace('/', '_'),
+                data: [],
+                xFunction: function(){ return function(d){ return d[0]; } },
+                yFunction: function(){ return function(d){ return d[1]; } }
+              };
+
+              entity.streams[stream.name] = stream;
+
+              console.log('$scope.execute');
+              $scope.execute(action, stream);
+            }
+          });
+        }
+      });
+    };
+
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {
-		entity.raw = entity.properties;
+        entity.streams = {};
+        entity.raw = entity.properties;
         entity.properties = JSON.stringify(entity.properties, null, 2);
         var heading = [];
 		
-		if(entity.raw.name && entity.raw.name.length > 0){
-			entity.heading = entity.raw.name;
-		}else{
-			if (entity.class) {
-			  heading.push('class: ' + JSON.stringify(entity.class));
-			}
+        if (entity.raw.name && entity.raw.name.length > 0) {
+          entity.heading = entity.raw.name;
+        } else {
+          if (entity.class) {
+            heading.push('class: ' + JSON.stringify(entity.class));
+          }
 
-			if (entity.rel) {
-			  heading.push('rel: ' + JSON.stringify(entity.rel));
-			}
+          if (entity.rel) {
+            heading.push('rel: ' + JSON.stringify(entity.rel));
+          }
 
-			entity.heading = heading.join(', ') || '[unknown class]';
-		
-		}
+          entity.heading = heading.join(', ') || '[unknown class]';
+        
+        }
+
 
         if (entity.links) {
           var links = [];
           angular.forEach(entity.links, function(link) {
             angular.forEach(link.rel, function(rel) {
-			  if(rel == "self"){ entity.selfLink = { rel: rel, href: link.href }; }
+              if(rel == "self") {
+                entity.selfLink = { rel: rel, href: link.href };
+                getStreamsFor(entity, link.href);
+              }
+
               links.push({ rel: rel, href: link.href });
             });
           });
 
           entity.links = links;
-		  entity.manyLinks = entity.links.length > 1;
+          entity.manyLinks = entity.links.length > 1;
         }
 
         $scope.main.entities.push(entity);
@@ -203,4 +291,3 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
     }
   };
 };
-

@@ -25,8 +25,7 @@
 	
   </div>
 
-  <div class="col-md-12" id="breadcrumbs">
-
+  <div class="col-md-12">
   	<h1>{{main.properties.raw.name}} <span ng-class="main.stateClass", class="state label">{{main.state}}</span></h1>
   </div>
 	
@@ -76,12 +75,12 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu dropdown-menu-form" role="menu">
-            <li role="presentation" >
-					<label class="checkbox">
-					  <input type="checkbox" ng-model="isOneAtATime" id="oneAtATime" />
-					  Open only one at a time
-					</label>
-			</li>
+          <li role="presentation" >
+            <label class="checkbox">
+              <input type="checkbox" ng-model="isOneAtATime" id="oneAtATime" />
+              Open only one at a time
+            </label>
+          </li>
           </ul>
          </div>
 	</h3>
@@ -111,6 +110,20 @@
           <div ng-show="entity.href">
             <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
           </div>
+		  <div class="streams" ng-show="entity.streams">
+            <h4>Streams</h4>
+            <div class="stream" ng-repeat="stream in entity.streams">
+              {{ stream.name }}
+              <nvd3-sparkline-chart
+                data="stream.data"
+                id="{{ stream.name }}"
+                x="stream.xFunction()"
+                y="stream.yFunction()"
+                rightalignValue="true">
+              <svg></svg>
+              </nvd3-sparkline-chart>
+            </div>
+          </div>
         </accordion-group>
       </accordion>
     </div>
@@ -128,21 +141,5 @@
       <div ng-bind-html="formattedDiff"></div>
     
     </div>
-	<div id="streams" ng-show="main.streams">
-		<h3>Streams</h3>
-		
-		<div ng-repeat="stream in main.streams">
-			{{ stream.name }}
-			<nvd3-sparkline-chart
-				data="stream.data"
-				id="{{ stream.name }}"
-				x="stream.xFunction()"
-				y="stream.yFunction()"
-				rightalignValue="true">
-			<svg></svg>
-			</nvd3-sparkline-chart>
-		</div>
-	</div>
-	  
 </div>
 </div>
