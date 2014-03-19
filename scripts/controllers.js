@@ -77,9 +77,13 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 	
   $scope.execute = function(action) {
 
+	//this can't be true for entities being viewed from the app root
     if (action.class && action.class.indexOf('event-subscription') !== -1) {
       var ws = new WebSocket(action.href);
 
+		
+		
+	//when there's a stream message	
       ws.onmessage = function(event) {
 		//Add data to model w/ timestamp here
 		var d = JSON.parse(event.data);
@@ -139,8 +143,10 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
     if (typeof data === 'string') {
       data = JSON.parse(data);
     }
-
+	
+	 
 	//sort the data! This should be done on the api or UNDONE in jsondiff formatters.js
+	//This is all for displaying the properties array in the json diff object
 	  var tosort = []
 	  angular.forEach(data.properties, function(prop, i){ tosort.push(i); });
 	  tosort.sort();
@@ -152,10 +158,9 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 	  
 	  //console.log(data.abc_properties);
 	  
-	//done with sorting
 	  
     $scope.main.properties.old = $scope.main.properties.raw;
-    $scope.main.properties.text = "<pre>" + JSON.stringify(data.abc_properties, null, 2).replace(/\"([^(\")"]+)\":/g,"$1:") + "</pre>";
+    $scope.main.properties.text = "<pre>" + JSON.stringify(data.abc_properties, null, 2).replace(/\"([^(\")"]+)\":/g,"$1:") + "</pre>"; //regex to remove quotes (") from stringify
     $scope.main.properties.raw = data.properties;
     $scope.main.properties.diff = { raw: null, html: null };
 
@@ -195,7 +200,7 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 				yFunction: function(){ return function(d){ return d[1]; } }
 			}
 		});
-		console.log($scope.main.streams);
+		//console.log($scope.main.streams);
 	}
 	
 	if(!$scope.main.stateHistory){
