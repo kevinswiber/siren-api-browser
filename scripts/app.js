@@ -7,6 +7,7 @@ angular
 
     // Route Siren entity classes to UI states.
     classRouterProvider
+      .when(['app'], 'app')
       .otherwise('entity');
 
     // Configure UI states for app.
@@ -16,6 +17,11 @@ angular
         templateUrl: 'partials/start.html',
         controller: 'MainCtrl'
       })
+      .state('app', {
+        url: '/app?url',
+        templateUrl: 'partials/app.html',
+        controller: 'AppCtrl'
+      })
       .state('entity', {
         url: '/entity?url',
         templateUrl: 'partials/entity.html',
@@ -24,6 +30,8 @@ angular
   }])
   .controller('MainCtrl',
       ['$scope', '$state', 'navigator', 'appState', SurfaceCtrls.MainCtrl])
+  .controller('AppCtrl',
+      ['$scope', SurfaceCtrls.AppCtrl])
   .controller('EntityCtrl',
       ['$scope', '$sce', '$state', '$http', '$location', 'navigator', SurfaceCtrls.EntityCtrl])
   .factory('appState', function() {

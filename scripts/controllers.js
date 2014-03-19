@@ -6,9 +6,16 @@ SurfaceCtrls.MainCtrl = function($scope, $state, navigator, appState) {
   };
 
   $scope.fetchUrl = function(params) {
+    // TODO: Add URL validation here.
     var url = params.url;
     appState.url = url;
     navigator.transitionTo(url, { url: url });
+  };
+};
+
+SurfaceCtrls.AppCtrl = function($scope) {
+  $scope.init = function() {
+    console.log('yoyoyoyo');
   };
 };
 
@@ -27,29 +34,28 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
   };
 	
   $scope.execute = function(action) {
-
-	//this can't be true for entities being viewed from the app root
+    //this can't be true for entities being viewed from the app root
     if (action.class && action.class.indexOf('event-subscription') !== -1) {
       var ws = new WebSocket(action.href);
-
 		
-		
-	//when there's a stream message	
+      //when there's a stream message	
       ws.onmessage = function(event) {
-		//Add data to model w/ timestamp here
-		var d = JSON.parse(event.data);
+        //Add data to model w/ timestamp here
+        var d = JSON.parse(event.data);
         console.log(d);
-		var update = {
-			target: d.destination.replace("/", "_"),
-			data: d.data
-		}  
-		//console.log($scope);  
-		  
-		$scope.main.streams[update.target].data.push([Date.now(), update.data]);	  
-		if($scope.main.streams[update.target].data.length > 25){
-			$scope.main.streams[update.target].data.shift();
-		}
-		$scope.$apply();
+
+        var update = {
+          target: d.destination.replace("/", "_"),
+          data: d.data
+        }  
+        //console.log($scope);  
+          
+        $scope.main.streams[update.target].data.push([Date.now(), update.data]);	  
+
+        if($scope.main.streams[update.target].data.length > 25){
+          $scope.main.streams[update.target].data.shift();
+        }
+        $scope.$apply();
       }
 
       var command = { cmd: action.method };
@@ -68,9 +74,6 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
       if (result.noop) {
         return;
       }
-
-		
-		
 		
       var data = result.data;
       var config = result.config;
@@ -94,10 +97,9 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
     if (typeof data === 'string') {
       data = JSON.parse(data);
     }
-	
 	 
-	//sort the data! This should be done on the api or UNDONE in jsondiff formatters.js
-	//This is all for displaying the properties array in the json diff object
+    //sort the data! This should be done on the api or UNDONE in jsondiff formatters.js
+    //This is all for displaying the properties array in the json diff object
 	  var tosort = []
 	  angular.forEach(data.properties, function(prop, i){ tosort.push(i); });
 	  tosort.sort();
@@ -140,7 +142,6 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 				}
 		}
 		
-
 		angular.forEach($scope.main.properties.raw.streams, function(stream){
 			stream = stream.replace("/", "_");
 			
@@ -151,14 +152,6 @@ SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navig
 				yFunction: function(){ return function(d){ return d[1]; } }
 			}
 		});
-		//console.log($scope.main.streams);
-	}
-	
-	if(!$scope.main.stateHistory){
-		$scope.main.stateHistory = {
-		
-		}
-	
 	}
 	  
     if (oldState !== undefined && oldState !== $scope.main.state) {
