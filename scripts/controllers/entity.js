@@ -1,32 +1,10 @@
-var ElroyCtrls = {};
-
-ElroyCtrls.MainCtrl = function($scope, $state, navigator, appState) {
-  $scope.init = function() {
-    $scope.params = { url: appState.url || '' };
-  };
-
-  $scope.fetchUrl = function(params) {
-    // TODO: Add URL validation here.
-    var url = params.url;
-    appState.url = url;
-    navigator.transitionTo(url, { url: url });
-  };
-};
-
-ElroyCtrls.AppCtrl = function($scope) {
-  $scope.init = function() {
-    console.log('yoyoyoyo');
-  };
-};
-
-ElroyCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
+var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 	
   $scope.init = function() {
     var params = $state.params;
     var rootUrl = params.url;
-    var collection = params.collection;
-    var query = params.query;
-    follow(rootUrl, collection, query);
+
+    follow(rootUrl);
   };
 
   $scope.go = function(url) {
@@ -267,8 +245,8 @@ ElroyCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navigat
     }
   };
 
-  var follow = function(rootUrl, collection, query) {
-    var url = ElroyCtrls.Common.buildUrl(rootUrl, collection, query);
+  var follow = function(rootUrl) {
+    var url = rootUrl;
 
     $scope.main = {
       properties: [],
@@ -280,31 +258,9 @@ ElroyCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navigat
     $scope.url = url;
 
     $state.params.url = url;
-    $state.params.collection = collection;
-    $state.params.query = query;
 
     navigator.redirectOrFetch(url, $state.params).then(function(data) {
       showData(data);
     });
   };
-};
-
-ElroyCtrls.Common = {
-  buildUrl: function(rootUrl, collection, query) {
-    var url = '';
-    if (rootUrl) {
-      url += rootUrl;
-    }
-    if (collection) {
-      if (url.slice(-1) === '/') {
-        url = url.slice(0, -1);
-      }
-      url += '/' + encodeURIComponent(collection);
-    }
-    if (query) {
-      url += '?query=' + encodeURIComponent(query);
-    }
-
-    return url;
-  }
 };

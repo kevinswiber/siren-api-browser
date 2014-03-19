@@ -1,4 +1,148 @@
-<div class="row" ng-cloak ng-init="init()">
-  App
-</div>
+<div id="response" class="row" ng-cloak ng-init="init()">
+  <div class="col-md-12" id="breadcrumbs">
+	  <ol class="breadcrumb">
+		  <li ng-repeat="link in main.breadcrumbs">
+			<a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
+			 class="entity-link">{{ link.text }}</a>
+		  </li>
+      <li>
+        <div class="btn-group" id="links" ng-show="main.links.length">
+          <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+            Links
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li ng-repeat="link in main.links">
+            <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
+             class="entity-link {{ link.rel }}">{{ link.rel }}</a>
+            </li>
+            <li role="presentation" class="divider"></li>
+            <li><a href="#raw">Raw Response</a></li>
+          </ul>
+          </div>
+        </li>
+      </ol>
+	
+  </div>
 
+  <div class="col-md-12" id="breadcrumbs">
+
+  	<h1>{{main.properties.raw.name}} <span ng-class="main.stateClass", class="state label">{{main.state}}</span></h1>
+  </div>
+	
+  <div class="col-md-6">
+    
+    <div id="actions" ng-show="main.actions.length">
+      <h3>Actions</h3>
+      <accordion close-others="true">
+        <accordion-group ng-repeat="action in main.actions" is-open="$first">
+          <accordion-heading>
+            <span ng-show="action.title">{{action.title}}</span>
+            <span ng-show="!action.title">{{action.name}}</span>
+          </accordion-heading>
+          <tabset>
+            <tab heading="Form">
+              <div ng-show="action.fields.length">
+                <form class="form-horizontal">
+
+                  <br/>
+                  <srn-action value="action"></srn-action>
+                  <br/>
+
+                  <div class="control-group">
+                    <div class="controls">
+                      <button class="btn btn-default" ng-click="execute(action)">Submit</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </tab>
+            <tab heading="Source">
+              <pre>{{ action | prettify }}</pre>
+            </tab>
+          </tabset>
+        </accordion-group>
+      </accordion>
+    </div>
+	  
+	
+    <div id="entities" ng-show="main.entities.length">
+      
+      <h3>Entities
+		
+		<div class="btn-group" id="links">
+          <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+            Options
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-form" role="menu">
+            <li role="presentation" >
+					<label class="checkbox">
+					  <input type="checkbox" ng-model="isOneAtATime" id="oneAtATime" />
+					  Open only one at a time
+					</label>
+			</li>
+          </ul>
+         </div>
+	</h3>
+      <accordion close-others="isOneAtATime">
+        <accordion-group ng-repeat="entity in main.entities" heading="{{entity.heading}}" is-open="$first">
+          <div>
+			  <h4>Links</h4>
+				<a class="btn btn-primary" ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}" class="entity-link {{ entity.selfLink.rel }}">{{ entity.selfLink.rel }}</a>	
+
+				  <div class="btn-group" ng-show="entity.manyLinks">
+						<button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+							More Links <span class="caret"></span>
+						</button> 
+
+						<ul class="dropdown-menu" role="menu">
+							<li ng-repeat="link in entity.links">
+								<a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
+								   class="entity-link {{ link.rel }}">{{ link.rel }}</a>
+							</li>
+						</ul> 
+				  </div>
+		  </div>
+		  <div ng-show="entity.properties.length">
+            <h4>Properties</h4>
+            <pre>{{entity.properties}}</pre>
+          </div>
+          <div ng-show="entity.href">
+            <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
+          </div>
+        </accordion-group>
+      </accordion>
+    </div>
+	
+	<div id="class" ng-show="main.class">
+      <h3>Class</h3>
+      <pre>{{main.class}}</pre>
+    </div>
+  </div>
+	
+  <div class="col-md-6">
+	  
+    <div id="properties" >
+	  <h3>Properties</h3>
+      <div ng-bind-html="formattedDiff"></div>
+    
+    </div>
+	<div id="streams" ng-show="main.streams">
+		<h3>Streams</h3>
+		
+		<div ng-repeat="stream in main.streams">
+			{{ stream.name }}
+			<nvd3-sparkline-chart
+				data="stream.data"
+				id="{{ stream.name }}"
+				x="stream.xFunction()"
+				y="stream.yFunction()"
+				rightalignValue="true">
+			<svg></svg>
+			</nvd3-sparkline-chart>
+		</div>
+	</div>
+	  
+</div>
+</div>

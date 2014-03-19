@@ -27,11 +27,11 @@ angular
       });
   }])
   .controller('MainCtrl',
-      ['$scope', '$state', 'navigator', 'appState', ElroyCtrls.MainCtrl])
+      ['$scope', '$state', 'navigator', 'appState', MainCtrl])
   .controller('AppCtrl',
-      ['$scope', ElroyCtrls.AppCtrl])
+      ['$scope', '$sce', '$state', '$http', '$location', 'navigator', AppCtrl])
   .controller('EntityCtrl',
-      ['$scope', '$sce', '$state', '$http', '$location', 'navigator', ElroyCtrls.EntityCtrl])
+      ['$scope', '$sce', '$state', '$http', '$location', 'navigator', EntityCtrl])
   .factory('appState', function() {
     return { url: '', collection: '', query: '' };
   })

@@ -72,7 +72,6 @@ angular
           var stateIsUnknown = !state.known;
           var resolveIfKnown = !redirectIfKnown;
           
-          
           if (immediateReturn && (stateIsUnknown || resolveIfKnown)) {
             deferred.resolve(data);
           }
