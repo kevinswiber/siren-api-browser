@@ -10,55 +10,6 @@ SurfaceCtrls.MainCtrl = function($scope, $state, navigator, appState) {
     appState.url = url;
     navigator.transitionTo(url, { url: url });
   };
-	
-	
-	
-};
-
-SurfaceCtrls.HomeCtrl = function($scope, $state, navigator, appState) {
-  $scope.init = function() {
-    $scope.model = { collection: null, query: null };
-    $scope.fields = {};
-
-    $scope.model.url = appState.url = $state.params.url;
-
-    $scope.model.url = appState.url;
-    $scope.model.collection = appState.collection;
-    $scope.model.query = appState.query;
-	  
-    navigator.fetch($state.params.url, $state.params).then(function(data) {
-      angular.forEach(data.actions, function(action) {
-        if (action.name === 'search') {
-          angular.forEach(action.fields, function(field) {
-            $scope.fields[field.name] = field;
-          });
-        }
-      });
-
-      if (!$scope.model.collection || $scope.model.collection === '') {
-        $scope.model.collection = $scope.fields.collection.value[0];
-      }
-
-      if (!$scope.model.query || $scope.model.query === '') {
-        $scope.model.query = $scope.fields.query.value;
-      }
-    });
-	  
-	
-	  
-  };
-
-  $scope.search = function(fields) {
-    var rootUrl = appState.url = fields.url;
-    var collection = appState.collection = fields.collection;
-    var query = appState.query = fields.query;
-
-    var url = SurfaceCtrls.Common.buildUrl(rootUrl, collection, query);
-    
-    var params = fields;
-
-    navigator.execute('search', fields, params);
-  };
 };
 
 SurfaceCtrls.EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
