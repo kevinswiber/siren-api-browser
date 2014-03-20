@@ -39,11 +39,11 @@ body {
 }
 
 .panel-title.entity-title {
-  min-height: 35px ;
+  min-height: 20px ;
 }
 .panel-title a.title{
   text-transform: uppercase;
-  margin-top: 10px;
+  margin-top: 0px;
 
 }
 ul.dropdown-menu-form {

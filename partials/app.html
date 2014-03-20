@@ -55,15 +55,13 @@
       <div id="accordion" ng-repeat="entity in main.entities">
         <div class="col-sm-6">
           <div class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading bg-primary">
               <h4 class="panel-title entity-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#{{entity.heading}}" class="title pull-left">
-                  {{entity.heading}}
-                </a>
-                <ul class="nav nav-pills pull-right small">
-                  <li class="disabled"><a href="#"><i class="fa fa-link"></i>  Links</a></li>
-                  <li class="active"><a class="self-link" ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}" class="entity-link {{ entity.selfLink.rel }}">View</a></li>
-                  <li class="dropdown" ng-show="entity.manyLinks">
+                
+                <a class="self-link title pull-left" ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{entity.heading}}</a>
+                
+                
+                  <div class="dropdown" ng-show="entity.manyLinks">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                       More Links <span class="caret"></span>
                     </a>
@@ -73,8 +71,9 @@
                                    class="entity-link {{ link.rel }}">{{ link.rel }}</a>
                       </li>
                     </ul>
-                  </li>
-                </ul>
+                  </div>
+                
+                <a data-toggle="collapse" data-parent="#accordion" href="#{{entity.heading}}" class="pull-right small">Toggle Visibility</a>
               </h4>
             </div>
             <div id="{{entity.heading}}" class="panel-collapse collapse in">
