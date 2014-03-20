@@ -1,29 +1,47 @@
 <div id="response" class="row" ng-cloak ng-init="init()">
-  <div class="col-md-12" id="breadcrumbs">
-	  <ol class="breadcrumb">
-		  <li ng-repeat="link in main.breadcrumbs">
-			<a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-			 class="entity-link">{{ link.text }}</a>
-		  </li>
-      <li>
-        <div class="btn-group" id="links" ng-show="main.links.length">
-          <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-            Links
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li ng-repeat="link in main.links">
-            <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-             class="entity-link {{ link.rel }}">{{ link.rel }}</a>
+  
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+     <div class="container">
+       <div class="navbar-header">
+         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+           <span class="sr-only">Toggle navigation</span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </button>
+         <a class="navbar-brand" href="#"><i class="fa fa-bolt"></i> Elroy Browser</a>
+         
+       </div>
+       
+       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li ng-repeat="link in main.breadcrumbs">
+              <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
+               class="entity-link">{{ link.text }} / </a>
             </li>
-            <li role="presentation" class="divider"></li>
-            <li><a href="#raw">Raw Response</a></li>
+            <li>
+              <div class="btn-group" id="links" ng-show="main.links.length">
+                
+                <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" id="navbar_links_button">
+                  Links <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li ng-repeat="link in main.links">
+                  <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
+                   class="entity-link {{ link.rel }}">{{ link.rel }}</a>
+                  </li>
+                  <li role="presentation" class="divider"></li>
+                  <li><a href="#raw">Raw Response</a></li>
+                </ul>
+              </div>
+            </li>
           </ul>
-          </div>
-        </li>
-      </ol>
-	
-  </div>
+       </div>
+       
+       
+      </div>
+    </div>
+  
 
   <div class="col-md-12">
   	<h1>{{main.properties.raw.name}} <span ng-class="main.stateClass", class="state label">{{main.state}}</span></h1>
@@ -31,40 +49,6 @@
 	
   <div class="col-md-6">
     
-    <div id="actions" ng-show="main.actions.length">
-      <h3>Actions</h3>
-      <accordion close-others="true">
-        <accordion-group ng-repeat="action in main.actions" is-open="$first">
-          <accordion-heading>
-            <span ng-show="action.title">{{action.title}}</span>
-            <span ng-show="!action.title">{{action.name}}</span>
-          </accordion-heading>
-          <tabset>
-            <tab heading="Form">
-              <div ng-show="action.fields.length">
-                <form class="form-horizontal">
-
-                  <br/>
-                  <srn-action value="action"></srn-action>
-                  <br/>
-
-                  <div class="control-group">
-                    <div class="controls">
-                      <button class="btn btn-default" ng-click="execute(action)">Submit</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </tab>
-            <tab heading="Source">
-              <pre>{{ action | prettify }}</pre>
-            </tab>
-          </tabset>
-        </accordion-group>
-      </accordion>
-    </div>
-	  
-	
     <div id="entities" ng-show="main.entities.length">
       
       <h3>Entities
@@ -86,33 +70,33 @@
 	</h3>
       <accordion close-others="isOneAtATime">
         <accordion-group ng-repeat="entity in main.entities" heading="{{entity.heading}}" is-open="$first">
-          <div>
-			  <h4>Links</h4>
-				<a class="btn btn-primary" ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}" class="entity-link {{ entity.selfLink.rel }}">{{ entity.selfLink.rel }}</a>	
+          
+          <ul class="nav nav-pills">
+            <li class="disabled"><a href="#"><i class="fa fa-link"></i>  Links</a></li>
+            <li class="active"><a class="self-link" ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}" class="entity-link {{ entity.selfLink.rel }}">{{ entity.selfLink.rel }}</a></li>
+            <li class="dropdown" ng-show="entity.manyLinks">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                More Links <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li ng-repeat="link in entity.links">
+                  <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
+                             class="entity-link {{ link.rel }}">{{ link.rel }}</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
 
-				  <div class="btn-group" ng-show="entity.manyLinks">
-						<button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-							More Links <span class="caret"></span>
-						</button> 
-
-						<ul class="dropdown-menu" role="menu">
-							<li ng-repeat="link in entity.links">
-								<a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-								   class="entity-link {{ link.rel }}">{{ link.rel }}</a>
-							</li>
-						</ul> 
-				  </div>
-		  </div>
-		  <div ng-show="entity.properties.length">
-            <h4>Properties</h4>
-            <pre>{{entity.properties}}</pre>
+        <hr/>
+		  	
+		<div class="streams app_streams panel panel-default" ng-show="entity.streams">
+		  <div class="panel-heading">
+            <h4 class="panel-title">
+              <i class="fa fa-bar-chart-o"></i> Streams
+            </h4>
           </div>
-          <div ng-show="entity.href">
-            <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
-          </div>
-		  <div class="streams" ng-show="entity.streams">
-            <h4>Streams</h4>
-            <div class="stream" ng-repeat="stream in entity.streams">
+		  <div class="panel-body">
+			<div class="stream" ng-repeat="stream in entity.streams">
               {{ stream.name }}
               <nvd3-sparkline-chart
                 data="stream.data"
@@ -123,23 +107,40 @@
               <svg></svg>
               </nvd3-sparkline-chart>
             </div>
+		  </div>
+		</div>	
+        
+        <div class="panel-group" id="properties" ng-show="entity.properties.length">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#properties" href="#{{entity.selfLink.href | abc123}}">
+                  <i class="fa fa-list-ul"></i> Properties
+                </a>
+              </h4>
+            </div>
+            <div id="{{entity.selfLink.href | abc123}}" class="panel-collapse collapse">
+              <div class="panel-body">
+                <pre>{{entity.properties}}</pre>
+              </div>
+            </div>
           </div>
+        </div>  
+          
+          
+          
+          
+          
+          
+          
+          <div ng-show="entity.href">
+            <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
+          </div>
+		  
         </accordion-group>
       </accordion>
     </div>
 	
-	<div id="class" ng-show="main.class">
-      <h3>Class</h3>
-      <pre>{{main.class}}</pre>
-    </div>
   </div>
-	
-  <div class="col-md-6">
-	  
-    <div id="properties" >
-	  <h3>Properties</h3>
-      <div ng-bind-html="formattedDiff"></div>
-    
-    </div>
-</div>
+
 </div>

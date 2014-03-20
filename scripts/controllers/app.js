@@ -124,7 +124,7 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
     if (data.properties && data.properties.state) {
       $scope.main.state = data.properties.state;
     }
-  
+  /*
 	if(!$scope.main.streams){  
 		console.log("initialize data streams");
 		$scope.main.streams = {};
@@ -149,7 +149,7 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 			}
 		});
 	}
-	  
+	  */
     if (oldState !== undefined && oldState !== $scope.main.state) {
 	  	var index = $scope.main.streams["_state"].data.length -1;
 		var current = $scope.main.streams["_state"].data[index]
@@ -163,13 +163,13 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 			update = 20;
 		}
 		
-		
+		/*
 		$scope.main.streams["_state"].data.push([Date.now(), update]);
 		
 		if($scope.main.streams["_state"].data.length > 25){
 			$scope.main.streams["_state"].data.shift();
 		}
-		
+		*/
       $scope.main.stateClass = 'label-warning';
       setTimeout(function() {
         $scope.$apply(function() {

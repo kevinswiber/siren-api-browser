@@ -45,6 +45,12 @@ angular
       }, 2);
     };
   })
+  .filter('abc123', function(){
+    return function(obj){
+      //this doesn't really make things alphanumeric only, but it'll turn a non-urlencoded url into a valid js ID attribute :)
+      return obj.replace(/\//g, "").replace(/:/g, "");
+    }
+  })
   .directive('selectOnClick', function() {
     return function(scope, element, attrs) {
       element.bind('click', function() {
