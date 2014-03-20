@@ -55,25 +55,47 @@
           <accordion-heading>
             <span ng-show="action.title">{{action.title}}</span>
             <span ng-show="!action.title">{{action.name}}</span>
-            <span>Source</span>
+            
           </accordion-heading>
-          
-                <form class="form-horizontal">
+          <button class="btn btn-link" data-toggle="modal" data-target="#myModal">
+              Source
+            </button>
+            <form class="form-horizontal">
 
-                  <br/>
-                  <srn-action value="action"></srn-action>
-                  <br/>
+              <br/>
+              <srn-action value="action"></srn-action>
+              <br/>
 
-                  <div class="control-group">
-                    <div class="controls">
-                      <button class="btn btn-default" ng-click="execute(action)">Submit</button>
-                    </div>
-                  </div>
-                </form>
+              <div class="control-group">
+                <div class="controls">
+                  <button class="btn btn-default" ng-click="execute(action)">Submit</button>
+                </div>
               </div>
+            </form>
+          
             
-              <pre>{{ action | prettify }}</pre>
-            
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                  </div>
+                  <div class="modal-body">
+                    <pre>{{ action | prettify }}</pre>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Done</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+        
+        
+        
+        
         </accordion-group>
       </accordion>
     </div>
