@@ -23,6 +23,17 @@ body {
   transition: background 0.8s ease;
   -webkit-transition: background 0.8s ease;
 }
+.links .btn-primary {margin: 0 2em;}
+
+#properties.panel-group {
+  margin-top: 1em;
+}
+
+#navbar_links_button {
+  padding: 14px inherit 0 15px;
+  margin: 0;
+  line-height: 20px;
+}
 
 ul.dropdown-menu-form {
     padding: .5em 1em;
