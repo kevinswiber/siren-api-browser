@@ -28,19 +28,37 @@ body {
 #properties.panel-group {
   margin-top: 1em;
 }
+.action_source_modal {
+  float: right;
 
+}
 #navbar_links_button {
   padding: 14px inherit 0 15px;
   margin: 0;
   line-height: 20px;
 }
 
+.panel-title.entity-title {
+  min-height: 35px ;
+}
+.panel-title a.title{
+  text-transform: uppercase;
+  margin-top: 10px;
+
+}
 ul.dropdown-menu-form {
     padding: .5em 1em;
 	min-width: 300px;
     overflow-y: scroll;
 }
 
+.stream:not(:first-child) {
+  border-top: 1px solid #ccc;
+  padding-top: 1em;
+}
+.stream {
+  min-height: 60px;
+}
 .jsondiffpatch-delta {
 	display: block;
 	padding: 9.5px;

@@ -43,7 +43,7 @@
 
   <div class="col-md-12">
 
-  	<h1>{{main.properties.raw.name}} <span ng-class="main.stateClass", class="state label">{{main.state}}</span></h1>
+  	<h1><span class="text-muted">device:</span> {{main.properties.raw.name}} <span ng-class="main.stateClass", class="state label">{{main.state}}</span></h1>
   </div>
 	
   <div class="col-md-6">
@@ -57,8 +57,9 @@
             <span ng-show="!action.title">{{action.name}}</span>
             
           </accordion-heading>
-          <button class="btn btn-link" data-toggle="modal" data-target="#myModal">
-              Source
+          
+            <button class="btn btn-link action_source_modal" data-toggle="modal" data-target="#{{action.href | abc123}}">
+              <i class="fa fa-code"></i> Source
             </button>
             <form class="form-horizontal">
 
@@ -75,12 +76,16 @@
           
             
             <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal fade" id="{{action.href | abc123}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    <h4 class="modal-title" id="myModalLabel">
+                      <i class="fa fa-code"></i> Source
+                    </h4>
+                    <span ng-show="action.title">{{action.title}}</span>
+                      <span ng-show="!action.title">{{action.name}}</span>
                   </div>
                   <div class="modal-body">
                     <pre>{{ action | prettify }}</pre>

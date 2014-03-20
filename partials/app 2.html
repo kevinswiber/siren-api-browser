@@ -111,22 +111,14 @@
 		  <div class="panel-body">
 			<div class="stream" ng-repeat="stream in entity.streams">
               {{ stream.name }}
-              <nvd3-line-chart
-					data="stream.data"
-					id="{{ stream.name }}"
-					width="200"
-					height="50"
-					showXAxis="false"
-					showYAxis="false"
-					x="stream.xFunction()"
-            		y="stream.yFunction()"
-					noData="Loading..."
-					interactive="true"
-					objectEquality="true">
-				<extended-line-chart>
-					<svg></svg>
-				</extended-line-chart>
-			  </nvd3-line-chart>
+              <nvd3-sparkline-chart
+                data="stream.data"
+                id="{{ stream.name }}"
+                x="stream.xFunction()"
+                y="stream.yFunction()"
+                rightalignValue="true">
+              <svg></svg>
+              </nvd3-sparkline-chart>
             </div>
 		  </div>
 		</div>	

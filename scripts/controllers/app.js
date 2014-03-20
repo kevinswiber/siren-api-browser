@@ -214,7 +214,7 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
               };
 
               entity.streams[stream.name] = stream;
-
+              entity.totalStreams++;
               console.log('$scope.execute');
               $scope.execute(action, stream);
             }
@@ -226,6 +226,7 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {
         entity.streams = {};
+        entity.totalStreams = 0;
         entity.raw = entity.properties;
         entity.properties = JSON.stringify(entity.properties, null, 2);
         var heading = [];

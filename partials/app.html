@@ -13,7 +13,7 @@
          
        </div>
        
-       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+       <div class="collapse navbar-collapse" id="navbar-collapse-1">
           <ul class="nav navbar-nav">
             <li ng-repeat="link in main.breadcrumbs">
               <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
@@ -36,112 +36,105 @@
               </div>
             </li>
           </ul>
-       </div>
+       </div><!-- /.navbar-collapse -->
        
        
-      </div>
-    </div>
+      </div><!-- /.container (for navbar -->
+    </div><!-- /.navbar -->
   
 
+  
+  <!-- App Title -->
   <div class="col-md-12">
-  	<h1>{{main.properties.raw.name}} <span ng-class="main.stateClass", class="state label">{{main.state}}</span></h1>
+  	<h1><span class="text-muted">app:</span> {{main.properties.raw.name | uppercase}}</h1>
   </div>
 	
-  <div class="col-md-6">
-    
-    <div id="entities" ng-show="main.entities.length">
+    <div id="entities" ng-show="main.entities.length" class="container-fluid">
       
-      <h3>Entities
-		
-		<div class="btn-group" id="links">
-          <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-            Options
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-form" role="menu">
-          <li role="presentation" >
-            <label class="checkbox">
-              <input type="checkbox" ng-model="isOneAtATime" id="oneAtATime" />
-              Open only one at a time
-            </label>
-          </li>
-          </ul>
-         </div>
-	</h3>
-      <accordion close-others="isOneAtATime">
-        <accordion-group ng-repeat="entity in main.entities" heading="{{entity.heading}}" is-open="$first">
-          
-          <ul class="nav nav-pills">
-            <li class="disabled"><a href="#"><i class="fa fa-link"></i>  Links</a></li>
-            <li class="active"><a class="self-link" ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}" class="entity-link {{ entity.selfLink.rel }}">{{ entity.selfLink.rel }}</a></li>
-            <li class="dropdown" ng-show="entity.manyLinks">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                More Links <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li ng-repeat="link in entity.links">
-                  <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-                             class="entity-link {{ link.rel }}">{{ link.rel }}</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-
-        <hr/>
-		  	
-		<div class="streams app_streams panel panel-default" ng-show="entity.streams">
-		  <div class="panel-heading">
-            <h4 class="panel-title">
-              <i class="fa fa-bar-chart-o"></i> Streams
-            </h4>
-          </div>
-		  <div class="panel-body">
-			<div class="stream" ng-repeat="stream in entity.streams">
-              {{ stream.name }}
-              <nvd3-sparkline-chart
-                data="stream.data"
-                id="{{ stream.name }}"
-                x="stream.xFunction()"
-                y="stream.yFunction()",
-                xTickFormat="stream.xTickFunction"
-                rightalignValue="true">
-              <svg></svg>
-              </nvd3-sparkline-chart>
-            </div>
-		  </div>
-		</div>	
-        
-        <div class="panel-group" id="properties" ng-show="entity.properties.length">
+      
+      <div id="accordion" ng-repeat="entity in main.entities">
+        <div class="col-sm-6">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#properties" href="#{{entity.selfLink.href | abc123}}">
-                  <i class="fa fa-list-ul"></i> Properties
+              <h4 class="panel-title entity-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#{{entity.heading}}" class="title pull-left">
+                  {{entity.heading}}
                 </a>
+                <ul class="nav nav-pills pull-right small">
+                  <li class="disabled"><a href="#"><i class="fa fa-link"></i>  Links</a></li>
+                  <li class="active"><a class="self-link" ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}" class="entity-link {{ entity.selfLink.rel }}">View</a></li>
+                  <li class="dropdown" ng-show="entity.manyLinks">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                      More Links <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li ng-repeat="link in entity.links">
+                        <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
+                                   class="entity-link {{ link.rel }}">{{ link.rel }}</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
               </h4>
             </div>
-            <div id="{{entity.selfLink.href | abc123}}" class="panel-collapse collapse">
+            <div id="{{entity.heading}}" class="panel-collapse collapse in">
               <div class="panel-body">
-                <pre>{{entity.properties}}</pre>
+                
+<h4><span class="text-muted">state: </span><span class="label label-info">{{entity.raw.state}}</span></h4>
+
+                <div class="streams app_streams panel panel-default" ng-show="entity.totalStreams">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <i class="fa fa-bar-chart-o"></i> Streams
+                    </h4>
+                  </div>
+                  <div class="panel-body">
+                    <div class="stream row" ng-repeat="stream in entity.streams">
+                      <div class="col-sm-5" ><p class="text-success">{{ stream.name }}</p></div>
+                      <div class="col-sm-7">
+                        <nvd3-sparkline-chart
+                          data="stream.data"
+                          id="{{ stream.name }}"
+                          x="stream.xFunction()"
+                          y="stream.yFunction()",
+                          xTickFormat="stream.xTickFunction"
+                          rightalignValue="true"
+                          width="200"
+                          height="60"
+                                              >
+                        <svg></svg>
+                        </nvd3-sparkline-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>	
+
+                <div class="panel-group" id="properties" ng-show="entity.properties.length">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#properties" href="#{{entity.selfLink.href | abc123}}">
+                          <i class="fa fa-list-ul"></i> Properties
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="{{entity.selfLink.href | abc123}}" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <pre>{{entity.properties}}</pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>  
+
+                <div ng-show="entity.href">
+                  <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
+                </div>
               </div>
             </div>
-          </div>
-        </div>  
-          
-          
-          
-          
-          
-          
-          
-          <div ng-show="entity.href">
-            <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
-          </div>
-		  
-        </accordion-group>
-      </accordion>
-    </div>
-	
+          </div><!-- /.panel -->
+        </div>
+      </div><!-- /#accordion -->
   </div>
+	
 
 </div>
