@@ -2421,8 +2421,10 @@
           rightalignvalue: '@',
           nodata: '@',
           callback: '&',
-          xaxistickformat: '&',
-          yaxistickformat: '&',
+          xaxistickformat: '=',
+          yaxistickformat: '=',
+          xtickformat: '&',
+          ytickformat: '&',
           objectequality: '@',
           transitionduration: '@'
         },
@@ -2460,6 +2462,18 @@
                   scope.d3Call( data, chart );
                   nv.utils.windowResize( chart.update );
                   scope.chart = chart;
+
+                  var xformat = scope.xtickformat();
+                  var yformat = scope.ytickformat();
+
+                  if (xformat) {
+                    chart.xTickFormat(xformat(d3));
+                  }
+
+                  if (yformat) {
+                    chart.yTickFormat(yformat(d3));
+                  }
+
                   return chart;
                 },
                 callback: attrs.callback === undefined ? null : scope.callback()

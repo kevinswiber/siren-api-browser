@@ -25,7 +25,7 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
         //console.log($scope);  
           
         console.log('pushing data:', update);
-        stream.data.push([Date.now(), update.data]);	  
+        stream.data.push([new Date(), update.data]);	  
 
         if(stream.data.length > 25){
           stream.data.shift();
@@ -206,7 +206,8 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
                 name: action.name.replace('/', '_'),
                 data: [],
                 xFunction: function(){ return function(d){ return d[0]; } },
-                yFunction: function(){ return function(d){ return d[1]; } }
+                yFunction: function(){ return function(d){ return d[1]; } },
+                xTickFunction: function(d3) { return d3.time.format('%H:%M:%S'); }
               };
 
               entity.streams[stream.name] = stream;
