@@ -28,7 +28,7 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
         }  
         //console.log($scope);  
           
-        $scope.main.streams[update.target].data.push([Date.now(), update.data]);	  
+        $scope.main.streams[update.target].data.push([new Date(), update.data]);	  
 
         if($scope.main.streams[update.target].data.length > 25){
           $scope.main.streams[update.target].data.shift();
@@ -116,7 +116,8 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 					name: 'state',
 					data: [],
 					xFunction: function(){ return function(d){ return d[0]; } },
-					yFunction: function(){ return function(d){ return d[1]; } }
+					yFunction: function(){ return function(d){ return d[1]; } },
+          xTickFunction: function(d3) { return d3.time.format('%H:%M:%S'); }
 				}
 		}
 		
@@ -127,7 +128,8 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 				name: stream,
 				data: [],
 				xFunction: function(){ return function(d){ return d[0]; } },
-				yFunction: function(){ return function(d){ return d[1]; } }
+				yFunction: function(){ return function(d){ return d[1]; } },
+        xTickFunction: function(d3) { return d3.time.format('%H:%M:%S'); }
 			}
 		});
 	}
@@ -146,7 +148,7 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 		}
 		
 		
-		$scope.main.streams["_state"].data.push([Date.now(), update]);
+		$scope.main.streams["_state"].data.push([new Date(), update]);
 		
 		if($scope.main.streams["_state"].data.length > 25){
 			$scope.main.streams["_state"].data.shift();
