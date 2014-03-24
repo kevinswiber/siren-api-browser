@@ -19,7 +19,7 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
         console.log(d);
 
         var update = {
-          target: d.destination.replace("/", "_"),
+          target: d.destination.replace(/\//g, '_'),
           data: d.data
         }  
         //console.log($scope);  
@@ -206,7 +206,7 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
             console.log('class:',action.class);
             if (action.class && action.class.indexOf('event-subscription') !== -1) {
               var stream = {
-                name: action.name.replace('/', '_'),
+                name: action.name.replace(/\//g, '_'),
                 data: [],
                 xFunction: function(){ return function(d){ return d[0]; } },
                 yFunction: function(){ return function(d){ return d[1]; } },

@@ -23,7 +23,7 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
         console.log(d);
 
         var update = {
-          target: d.destination.replace("/", "_"),
+          target: d.destination.replace(/\//g, '_'),
           data: d.data
         }  
         //console.log($scope);  
@@ -122,7 +122,7 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 		}
 		
 		angular.forEach($scope.main.properties.raw.streams, function(stream){
-			stream = stream.replace("/", "_");
+			stream = stream.replace(/\//g, '_');
 			
 			$scope.main.streams[stream] = {
 				name: stream,
