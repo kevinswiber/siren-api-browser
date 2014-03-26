@@ -32,11 +32,7 @@ body {
   float: right;
 
 }
-#navbar_links_button {
-  padding: 14px inherit 0 15px;
-  margin: 0;
-  line-height: 20px;
-}
+
 
 .panel-title.entity-title {
   min-height: 20px ;
@@ -77,6 +73,37 @@ ul.dropdown-menu-form {
 	background-color: transparent;
 	border: none;
 }
+
+#entities {
+  
+}
+
+.state_log {
+  max-height: 200px;
+  overflow-x: auto;
+
+}
+.state_log ul, .state_log li {
+  list-style-type: none;
+  margin: 0; padding: 0;
+}
+.state_log li {
+  font-family: "courier new", "andale mono", monospace;
+  margin-bottom: .5em;
+  color: #666;
+}
+.state_log li span{
+  font-size: .8em;
+}
+.state_log li strong {
+  display: inline-block;
+  min-width: 100px;
+}
+.state_log li.latest {
+  color: #2765a3;
+  
+}
+
 
 
 

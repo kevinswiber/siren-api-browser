@@ -16,7 +16,7 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
       ws.onmessage = function(event) {
         //Add data to model w/ timestamp here
         var d = JSON.parse(event.data);
-        console.log(d);
+        //console.log(d);
 
         var update = {
           target: d.destination.replace(/\//g, '_'),
@@ -24,10 +24,10 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
         }  
         //console.log($scope);  
           
-        console.log('pushing data:', update);
+        //console.log('pushing data:', update);
         stream.data.push([new Date(), update.data]);	  
 
-        if(stream.data.length > 25){
+        if(stream.data.length > 75){
           stream.data.shift();
         }
 
@@ -169,7 +169,7 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 		/*
 		$scope.main.streams["_state"].data.push([Date.now(), update]);
 		
-		if($scope.main.streams["_state"].data.length > 25){
+		if($scope.main.streams["_state"].data.length > 75){
 			$scope.main.streams["_state"].data.shift();
 		}
 		*/
@@ -199,8 +199,8 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 	  
     var getStreamsFor = function(entity, href) {
       $http.get(href).success(function(response) {
-        console.log(response.actions);
-        console.log(response.actions.length);
+        //console.log(response.actions);
+        //console.log(response.actions.length);
         if (response.actions && response.actions.length) {
           angular.forEach(response.actions, function(action) {
             console.log('class:',action.class);
@@ -215,7 +215,7 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 
               entity.streams[stream.name] = stream;
               entity.totalStreams++;
-              console.log('$scope.execute');
+              //console.log('$scope.execute');
               $scope.execute(action, stream);
             }
           });

@@ -5,6 +5,8 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
     var rootUrl = params.url;
 
     follow(rootUrl);
+    $scope.stateLogs = [];
+    $scope.logger("ws://localhost:3000/events");
   };
 
   $scope.go = function(url) {
@@ -30,7 +32,7 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
           
         $scope.main.streams[update.target].data.push([new Date(), update.data]);	  
 
-        if($scope.main.streams[update.target].data.length > 25){
+        if($scope.main.streams[update.target].data.length > 75){
           $scope.main.streams[update.target].data.shift();
         }
         $scope.$apply();
@@ -60,6 +62,7 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
       $scope.main.actions = [];
       $scope.main.entities = [];
       $scope.main.links = [];
+      
       $scope.formattedDiff = "";
       $scope.main.breadcrumbs = [];
 
@@ -70,7 +73,42 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
     });
   };
 	
-	
+  $scope.logger = function(url){
+    
+    var ws = new WebSocket(url);
+    
+    //when there's a stream message	
+    ws.onmessage = function(event) {
+      //Add data to model w/ timestamp here
+      var d = JSON.parse(event.data);
+      var dt = new Date(d.data.time);
+      var etime = 0;
+      if($scope.stateLogs.length){
+        etime = d.data.unixtime -  $scope.stateLogs[$scope.stateLogs.length -1].time.unixtime;
+      }
+      
+      $scope.stateLogs.push({
+        transition: d.data.transition,
+        state: d.data.properties.state,
+        msg: d.data.msg,
+        time: {
+          time: d.data.time,
+          unixtime: d.data.unixtime,
+          localTime: dt.toLocaleString(),
+          elapsed: etime
+        }
+      });
+      //console.log("log: ", $scope.stateLogs);
+      if($scope.stateLogs.length > 500){ $scope.stateLogs.shift() } //keep things civil
+    }
+
+    var command = { cmd: "subscribe", name: "_logs" };
+    
+    ws.onopen = function(event) {
+      ws.send(JSON.stringify(command));
+    };
+  };
+  
   var showData = function(data) {
     if (typeof data === 'string') {
       data = JSON.parse(data);
@@ -110,17 +148,7 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 	if(!$scope.main.streams){  
 		console.log("initialize data streams");
 		$scope.main.streams = {};
-		
-		$scope.main.streams = {
-			_state: {
-					name: 'state',
-					data: [],
-					xFunction: function(){ return function(d){ return d[0]; } },
-					yFunction: function(){ return function(d){ return d[1]; } },
-          xTickFunction: function(d3) { return d3.time.format('%H:%M:%S'); }
-				}
-		}
-		
+		$scope.main.totalStreams = 0;
 		angular.forEach($scope.main.properties.raw.streams, function(stream){
 			stream = stream.replace(/\//g, '_');
 			
@@ -129,30 +157,32 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
 				data: [],
 				xFunction: function(){ return function(d){ return d[0]; } },
 				yFunction: function(){ return function(d){ return d[1]; } },
-        xTickFunction: function(d3) { return d3.time.format('%H:%M:%S'); }
+                xTickFunction: function(d3) { return d3.time.format('%H:%M:%S'); }
 			}
+            
+            $scope.main.totalStreams++;
 		});
 	}
 	  
     if (oldState !== undefined && oldState !== $scope.main.state) {
-	  	var index = $scope.main.streams["_state"].data.length -1;
-		var current = $scope.main.streams["_state"].data[index]
+//	  	var index = $scope.main.streams["_state"].data.length -1;
+//		var current = $scope.main.streams["_state"].data[index]
 		var update;
 		
-		if(current !== undefined){ current = current[1]; }
+//		if(current !== undefined){ current = current[1]; }
+//		
+//		if(current == 20){ 
+//			update = 0; 
+//		}else{
+//			update = 20;
+//		}
 		
-		if(current == 20){ 
-			update = 0; 
-		}else{
-			update = 20;
-		}
 		
-		
-		$scope.main.streams["_state"].data.push([new Date(), update]);
-		
-		if($scope.main.streams["_state"].data.length > 25){
-			$scope.main.streams["_state"].data.shift();
-		}
+//		$scope.main.streams["_state"].data.push([new Date(), update]);
+//		
+//		if($scope.main.streams["_state"].data.length > 75){
+//			$scope.main.streams["_state"].data.shift();
+//		}
 		
       $scope.main.stateClass = 'label-warning';
       setTimeout(function() {
@@ -184,6 +214,7 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {
 		entity.raw = entity.properties;
+        entity.logs = [];
         entity.properties = JSON.stringify(entity.properties, null, 2);
         var heading = [];
 		
