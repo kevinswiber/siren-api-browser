@@ -5,27 +5,34 @@
     <meta charset="utf-8" />
     <meta name="fragment" content="!" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+<!--    Bootstrap   -->
     <link rel="stylesheet" href="styles/vendor/bootstrap.min.css">
     <link rel="stylesheet" href="styles/vendor/bootstrap-theme.min.css">
 	  
-    <link href="styles/vendor/fonts/source_sans_pro200+300+400+700.css" rel="stylesheet"> <!-- fonts -->
+<!--    Multiple weights of Source Sans Pro   -->
+    <link href="styles/vendor/fonts/source_sans_pro200+300+400+700.css" rel="stylesheet"> 
 
+<!--     Icons, yo!   -->
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
- <!-- icons, yo -->
-	  
+    <!-- Graph Styles -->
     <link rel="stylesheet" href="styles/vendor/nv.d3.css">
+    <!-- animations in angular -->
     <link rel="stylesheet" href="styles/vendor/animate.css">
+    <!-- Formatter for JSON diff/patch -->
 	<link rel="stylesheet" href="styles/vendor/formatters/html.css">
+    
+<!--    Our Stylesheet    -->
     <link href="styles/web.css" rel="stylesheet" />
     
+<!--    Load angular as soon as possible    -->
     <script src="scripts/vendor/angular.min.js"></script>
     
   </head>
   <body>
 
     <div class="container">
-	
       <div class="row">
         <div class="col-md-12">
           <!--<h1>Explore your data</h1>-->
@@ -34,56 +41,54 @@
       </div>
     </div> <!-- /container -->
 
+
+<!--    Library angular directives    -->
+    <script src="scripts/vendor/angular-animate.js"></script>
+    <script src="scripts/vendor/angular-ui-router.min.js"></script>
+	<script src="scripts/vendor/angular-sanitize.min.js"></script>
+    
+<!--    jQuery    -->
     <script src="scripts/vendor/jquery-1.9.1.min.js"></script>
+    
+<!--    JSON diff/patch   -->
     <script src="scripts/vendor/bundle-full.min.js"></script>
 	<script src="scripts/vendor/formatters.min.js"></script>
-	<script src="scripts/vendor/angular-animate.js"></script>
-    <script src="scripts/vendor/angular-ui-router.min.js"></script>
+	
+<!--    Bootstrap     -->
     <script src="scripts/vendor/bootstrap.min.js"></script>
-	<script src="scripts/vendor/angular-sanitize.min.js"></script>
-
     <script src="scripts/vendor/ui-bootstrap-custom-0.10.0.min.js"></script>
     <script src="scripts/vendor/ui-bootstrap-custom-tpls-0.10.0.min.js"></script>
 
+<!--    Data Driven Documents (D3) + angular directive  -->
 	<script src="scripts/vendor/d3.js"></script>
     <script src="scripts/vendor/nv.d3.js"></script>
     <script src="scripts/vendor/angularjs-nvd3-directives.js"></script>
     
+<!--    Angular directive for smart scrolling to emulate console behavior   -->
     <script src="scripts/vendor/scrollglue.js"></script>
 	
+<!--    Siren routing   -->
     <script src="scripts/siren/module.js"></script>
     
-    <script src="bower_components/jquery-bridget/jquery.bridget.js"></script>
-    <script src="bower_components/get-style-property/get-style-property.js"></script>
-    <script src="bower_components/get-size/get-size.js"></script>
-    <script src="bower_components/eventEmitter/EventEmitter.js"></script>
-    <script src="bower_components/eventie/eventie.js"></script>
-    <script src="bower_components/doc-ready/doc-ready.js"></script>
-    <script src="bower_components/matches-selector/matches-selector.js"></script>
-    <script src="bower_components/outlayer/item.js"></script>
-    <script src="bower_components/outlayer/outlayer.js"></script>
-    <script src="bower_components/masonry/masonry.js"></script>
-    <script src="bower_components/imagesloaded/imagesloaded.js"></script>
-
-    <script src="bower_components/angular-masonry/angular-masonry.js"></script>
-    
+<!--    Controller    -->
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/app.js"></script>
     <script src="scripts/controllers/entity.js"></script>
 	
+<!--    Our App   -->
+    <script src="scripts/filters.js"></script>
     <script src="scripts/app.js"></script>
 	
 	<script>
 	  $(document).ready(function(){
+
+        //  Responsive dropdown menu niceties
 			$('.dropdown-menu').on('click', function(e) {
 				if($(this).hasClass('dropdown-menu-form')) {
-					e.stopPropagation();
+					//e.stopPropagation();
 					e.preventDefault();
 				}
 			});  
-        
-            
-            
         
 		});
 	  

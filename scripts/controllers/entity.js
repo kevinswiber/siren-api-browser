@@ -1,4 +1,17 @@
-var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
+'use strict';
+
+/* Controllers */
+
+var sirenEntityController = angular.module('sirenEntityController', []);
+
+sirenEntityController.controller('EntityCtrl', [
+  '$scope'
+  , '$sce'
+  , '$state'
+  , '$http'
+  , '$location'
+  , 'navigator'
+  , function($scope, $sce, $state, $http, $location, navigator) {
 	
   $scope.init = function() {
     var params = $state.params;
@@ -296,4 +309,8 @@ var EntityCtrl = function($scope, $sce, $state, $http, $location, navigator) {
       showData(data);
     });
   };
-};
+}
+
+
+]); //.controller closure
+

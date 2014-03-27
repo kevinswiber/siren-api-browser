@@ -1,76 +1,47 @@
-angular
-  .module('elroy', ['siren', 'ui.state', 'ui.bootstrap', 'ngAnimate', 'nvd3ChartDirectives', 'wu.masonry', 'luegg.directives'])
-  .config(['classRouterProvider', '$stateProvider',
-      function(classRouterProvider, $stateProvider) {
+var siren = angular
+  .module('elroy', [
+    'siren'
+    , 'ui.state'
+    , 'ui.bootstrap'
+    , 'ngAnimate'
+    , 'nvd3ChartDirectives'
+    , 'luegg.directives'
+    , 'sirenFilters'
+    , 'sirenAppController'
+    , 'sirenEntityController'
+    , 'sirenMainController'
+  ]);
 
-    // Route Siren entity classes to UI states.
-    classRouterProvider
-      .when(['app'], 'app')
-      .otherwise('entity');
+  siren.config([
+    'classRouterProvider'
+    , '$stateProvider'
+    , function(classRouterProvider, $stateProvider) {
+      // Route Siren entity classes to UI states.
+      classRouterProvider
+        .when(['app'], 'app')
+        .otherwise('entity');
 
-    // Configure UI states for app.
-    $stateProvider
-      .state('index', {
-        url: '',
-        templateUrl: 'partials/start.html',
-        controller: 'MainCtrl'
-      })
-      .state('app', {
-        url: '/app?url',
-        templateUrl: 'partials/app.html',
-        controller: 'AppCtrl'
-      })
-      .state('entity', {
-        url: '/entity?url',
-        templateUrl: 'partials/entity.html',
-        controller: 'EntityCtrl'
-      });
-  }])
-  .controller('MainCtrl',
-      ['$scope', '$state', 'navigator', 'appState', MainCtrl])
-  .controller('AppCtrl',
-      ['$scope', '$sce', '$state', '$http', '$location', 'navigator', AppCtrl])
-  .controller('EntityCtrl',
-      ['$scope', '$sce', '$state', '$http', '$location', 'navigator', EntityCtrl])
+      // Configure UI states for app. (this should be rolled up into the .when declarations above
+      $stateProvider
+        .state('index', {
+          url: '',
+          templateUrl: 'partials/start.html',
+          controller: 'MainCtrl'
+        })
+        .state('app', {
+          url: '/app?url',
+          templateUrl: 'partials/app.html',
+          controller: 'AppCtrl'
+        })
+        .state('entity', {
+          url: '/entity?url',
+          templateUrl: 'partials/entity.html',
+          controller: 'EntityCtrl'
+        });
+    }
+  ])
   .factory('appState', function() {
     return { url: '', collection: '', query: '' };
-  })
-  .filter('encodeURIComponent', function() {
-    return window.encodeURIComponent;
-  })
-  .filter('prettify', function() {
-    return function(obj) {
-      return JSON.stringify(obj, function(key, val) {
-        return (key === '$$hashKey') ? undefined : val;
-      }, 2);
-    };
-  })
-  .filter('abc123', function(){
-    return function(obj){
-      //this doesn't really make things alphanumeric only, but it'll turn a non-urlencoded url into a valid js ID attribute :)
-      return obj.replace(/\//g, "").replace(/:/g, "");
-    }
-  })
-  .filter('pluralize', function() {
-    return function(ordinal, noun) {
-      if (ordinal == 1) {
-        return ordinal + ' ' + noun;
-      } else {
-        var plural = noun;
-        if (noun.substr(noun.length - 2) == 'us') {
-          plural = plural.substr(0, plural.length - 2) + 'i';
-        } else if (noun.substr(noun.length - 2) == 'ch' || noun.charAt(noun.length - 1) == 'x' || noun.charAt(noun.length - 1) == 's') {
-          plural += 'es';
-        } else if (noun.charAt(noun.length - 1) == 'y' && ['a','e','i','o','u'].indexOf(noun.charAt(noun.length - 2)) == -1) {
-          plural = plural.substr(0, plural.length - 1) + 'ies';
-        } else if (noun.substr(noun.length - 2) == 'is') {
-          plural = plural.substr(0, plural.length - 2) + 'es';
-        } else {
-          plural += 's';
-        }
-        return ordinal + ' ' + plural;
-      }
-    };
   })
   .directive('selectOnClick', function() {
     return function(scope, element, attrs) {

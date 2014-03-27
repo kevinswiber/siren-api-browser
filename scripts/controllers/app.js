@@ -1,10 +1,23 @@
-var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
-  $scope.init = function() {
-    var params = $state.params;
-    var rootUrl = params.url;
+'use strict';
 
-    follow(rootUrl);
-  };
+/* Controllers */
+
+var sirenAppController = angular.module('sirenAppController', []);
+
+sirenAppController.controller('AppCtrl', [
+  '$scope'
+  , '$sce'
+  , '$state'
+  , '$http'
+  , '$location'
+  , 'navigator'
+  , function($scope, $sce, $state, $http, $location, navigator) {
+    $scope.init = function() {
+      var params = $state.params;
+      var rootUrl = params.url;
+
+      follow(rootUrl);
+    };
 
   $scope.execute = function(action, stream) {
     //this can't be true for entities being viewed from the app root
@@ -118,40 +131,13 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
     $scope.main.class = JSON.stringify(data.class);
     $scope.main.actions = data.actions;
     $scope.main.stateClass = 'label-info';
-	  
+  
     var oldState = $scope.main.state;
-	
+  	
     if (data.properties && data.properties.state) {
       $scope.main.state = data.properties.state;
     }
-  /*
-	if(!$scope.main.streams){  
-		console.log("initialize data streams");
-		$scope.main.streams = {};
-		
-		$scope.main.streams = {
-			_state: {
-					name: 'state',
-					data: [],
-					xFunction: function(){ return function(d){ return d[0]; } },
-					yFunction: function(){ return function(d){ return d[1]; } },
-          xTickFunction: function(d3) { return d3.time.format('%H:%M:%S'); }
-				}
-		}
-		
-		angular.forEach($scope.main.properties.raw.streams, function(stream){
-			stream = stream.replace("/", "_");
-			
-			$scope.main.streams[stream] = {
-				name: stream,
-				data: [],
-				xFunction: function(){ return function(d){ return d[0]; } },
-				yFunction: function(){ return function(d){ return d[1]; } },
-        xTickFunction: function(d3) { return d3.time.format('%H:%M:%S'); }
-			}
-		});
-	}
-	  */
+  
     if (oldState !== undefined && oldState !== $scope.main.state) {
 	  	var index = $scope.main.streams["_state"].data.length -1;
 		var current = $scope.main.streams["_state"].data[index]
@@ -196,7 +182,8 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
         });
       }, 1500);
     }
-	  
+    
+    // Rebuild as a service? 
     var getStreamsFor = function(entity, href) {
       $http.get(href).success(function(response) {
         //console.log(response.actions);
@@ -222,7 +209,7 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
         }
       });
     };
-
+    
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {
         entity.streams = {};
@@ -295,4 +282,8 @@ var AppCtrl = function($scope, $sce, $state, $http, $location, navigator) {
       }
     }
   };
-};
+
+} //.controller anonymous function
+
+]); //closure for .controller
+
