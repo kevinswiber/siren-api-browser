@@ -10,6 +10,7 @@ var siren = angular
     , 'sirenAppController'
     , 'sirenEntityController'
     , 'sirenMainController'
+    , 'sirenServices'
   ]);
 
   siren.config([

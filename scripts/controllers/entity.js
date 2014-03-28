@@ -11,7 +11,8 @@ sirenEntityController.controller('EntityCtrl', [
   , '$http'
   , '$location'
   , 'navigator'
-  , function($scope, $sce, $state, $http, $location, navigator) {
+  , 'getStreams'
+  , function($scope, $sce, $state, $http, $location, navigator, getStreams) {
 	
   $scope.init = function() {
     var params = $state.params;

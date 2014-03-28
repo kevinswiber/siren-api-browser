@@ -11,7 +11,8 @@ sirenAppController.controller('AppCtrl', [
   , '$http'
   , '$location'
   , 'navigator'
-  , function($scope, $sce, $state, $http, $location, navigator) {
+  , 'getStreams'
+  , function($scope, $sce, $state, $http, $location, navigator, getStreams) {
     $scope.init = function() {
       var params = $state.params;
       var rootUrl = params.url;
@@ -19,7 +20,8 @@ sirenAppController.controller('AppCtrl', [
       follow(rootUrl);
     };
 
-  $scope.execute = function(action, stream) {
+  $scope.execute = function(stream) {
+    var action = stream.action;
     //this can't be true for entities being viewed from the app root
     if (action.class && action.class.indexOf('event-subscription') !== -1) {
       var ws = new WebSocket(action.href);
@@ -184,6 +186,9 @@ sirenAppController.controller('AppCtrl', [
     }
     
     // Rebuild as a service? 
+    
+  /*  
+    
     var getStreamsFor = function(entity, href) {
       $http.get(href).success(function(response) {
         //console.log(response.actions);
@@ -209,6 +214,7 @@ sirenAppController.controller('AppCtrl', [
         }
       });
     };
+  */
     
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {
@@ -240,7 +246,17 @@ sirenAppController.controller('AppCtrl', [
             angular.forEach(link.rel, function(rel) {
               if(rel == "self") {
                 entity.selfLink = { rel: rel, href: link.href };
-                getStreamsFor(entity, link.href);
+                var streams = getStreams.atURL(link.href);
+                streams.then(function(stream){
+                  angular.forEach(stream.streams, function(s){
+                    $scope.execute(s);
+                  });
+
+                  entity.streams = stream.streams;
+                  entity.totalStreams = stream.totalStreams;
+                  
+                });
+                
               }
 
               links.push({ rel: rel, href: link.href });
