@@ -22,7 +22,8 @@ sirenAppController.controller('AppCtrl', [
 
   $scope.execute = function(stream) {
     var action = stream.action;
-    //this can't be true for entities being viewed from the app root
+    
+    // Subscribe to any events that need it via websockets
     if (action.class && action.class.indexOf('event-subscription') !== -1) {
       var ws = new WebSocket(action.href);
 		
@@ -62,24 +63,28 @@ sirenAppController.controller('AppCtrl', [
     }
 
     navigator.execute(action).then(function(result) {
+      // Instead of throwing all kinds of errors
       if (result.noop) {
         return;
       }
 		
-      var data = result.data;
-      var config = result.config;
-
-      $scope.main.class = null;
-      $scope.main.actions = [];
-      $scope.main.entities = [];
-      $scope.main.links = [];
+      
       $scope.formattedDiff = "";
-      $scope.main.breadcrumbs = [];
+      
+      $scope.main = {
+        class: null,
+        actions: [],
+        entities: [],
+        links: [],
+        breadcrumbs: []
+      }
+      
 
-      $scope.url = config.url;
-      $state.params.url = config.url;
+      console.log("main scope from navigator.exec: ", $scope.main);
+      
+      $scope.url, $state.params.url = result.config.url;
 
-      showData(data);
+      showData(result.data);
     });
   };
 
@@ -100,12 +105,13 @@ sirenAppController.controller('AppCtrl', [
     console.log(url);
     console.log($state.params);
     navigator.fetch(url, $state.params).then(function(data) {
-      console.log(data);
+      console.log($scope.main, data);
       showData(data);
     });
   };
 
   var showData = function(data) {
+    //parse it if you got it!
     if (typeof data === 'string') {
       data = JSON.parse(data);
     }
@@ -122,7 +128,6 @@ sirenAppController.controller('AppCtrl', [
 	  });
 	  
 	  //console.log(data.abc_properties);
-	  
     $scope.main.properties.old = $scope.main.properties.raw;
     $scope.main.properties.text = "<pre>" + JSON.stringify(data.abc_properties, null, 2).replace(/\"([^(\")"]+)\":/g,"$1:") + "</pre>"; //regex to remove quotes (") from stringify
     $scope.main.properties.raw = data.properties;
@@ -139,82 +144,10 @@ sirenAppController.controller('AppCtrl', [
     if (data.properties && data.properties.state) {
       $scope.main.state = data.properties.state;
     }
-  
-    if (oldState !== undefined && oldState !== $scope.main.state) {
-	  	var index = $scope.main.streams["_state"].data.length -1;
-		var current = $scope.main.streams["_state"].data[index]
-		var update;
-		
-		if(current !== undefined){ current = current[1]; }
-		
-		if(current == 20){ 
-			update = 0; 
-		}else{
-			update = 20;
-		}
-		
-		$scope.main.streams["_state"].data.push([new Date(), update]);
-		/*
-		$scope.main.streams["_state"].data.push([Date.now(), update]);
-		
-		if($scope.main.streams["_state"].data.length > 75){
-			$scope.main.streams["_state"].data.shift();
-		}
-		*/
-      $scope.main.stateClass = 'label-warning';
-      setTimeout(function() {
-        $scope.$apply(function() {
-          $scope.main.stateClass = 'label-info';
-        });
-      }, 800);
-    
-	  $scope.main.properties.diff.raw = jsondiffpatch.diff(
-      $scope.main.properties.old, $scope.main.properties.raw);
 
-      $scope.main.properties.diff.html = jsondiffpatch.formatters.html.format(
-      $scope.main.properties.diff.raw, $scope.main.properties.raw);
-
-      $scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.diff.html);
-
-      clearTimeout($scope.main.properties.clearHighlight);
-
-      $scope.main.properties.clearHighlight = setTimeout(function(){
-        $scope.$apply(function(){
-          $scope.formattedDiff = $sce.trustAsHtml($scope.main.properties.text);
-        });
-      }, 1500);
-    }
+//can we do realtime state on homepage? 
     
     // Rebuild as a service? 
-    
-  /*  
-    
-    var getStreamsFor = function(entity, href) {
-      $http.get(href).success(function(response) {
-        //console.log(response.actions);
-        //console.log(response.actions.length);
-        if (response.actions && response.actions.length) {
-          angular.forEach(response.actions, function(action) {
-            console.log('class:',action.class);
-            if (action.class && action.class.indexOf('event-subscription') !== -1) {
-              var stream = {
-                name: action.name.replace(/\//g, '_'),
-                data: [],
-                xFunction: function(){ return function(d){ return d[0]; } },
-                yFunction: function(){ return function(d){ return d[1]; } },
-                xTickFunction: function(d3) { return d3.time.format('%H:%M:%S'); }
-              };
-
-              entity.streams[stream.name] = stream;
-              entity.totalStreams++;
-              //console.log('$scope.execute');
-              $scope.execute(action, stream);
-            }
-          });
-        }
-      });
-    };
-  */
     
     if (data.entities) {
       angular.forEach(data.entities, function(entity) {
@@ -240,12 +173,13 @@ sirenAppController.controller('AppCtrl', [
         }
 
 
-        if (entity.links) {
           var links = [];
           angular.forEach(entity.links, function(link) {
             angular.forEach(link.rel, function(rel) {
+              //Find the self link in the hypermedia response
               if(rel == "self") {
                 entity.selfLink = { rel: rel, href: link.href };
+                //Get any streams
                 var streams = getStreams.atURL(link.href);
                 streams.then(function(stream){
                   angular.forEach(stream.streams, function(s){
@@ -263,11 +197,12 @@ sirenAppController.controller('AppCtrl', [
             });
           });
 
+          //Save the discovered links 
           entity.links = links;
           entity.manyLinks = entity.links.length > 1;
-        }
-
-        $scope.main.entities.push(entity);
+          
+          //Add the entity to the controller scope
+          $scope.main.entities.push(entity);
       });
     }
 

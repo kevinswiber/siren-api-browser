@@ -20,6 +20,8 @@ sirenEntityController.controller('EntityCtrl', [
 
     follow(rootUrl);
     $scope.stateLogs = [];
+    //TODO: have to figure out how to autodiscover this URL. 
+    console.log("params: ", params);
     $scope.logger("ws://localhost:3000/events");
   };
 
@@ -141,7 +143,8 @@ sirenEntityController.controller('EntityCtrl', [
 	  
 	  //console.log(data.abc_properties);
 	  
-	  
+	     console.log("Properties at the top of showdata: ",$scope.main.properties);
+ 
     $scope.main.properties.old = $scope.main.properties.raw;
     $scope.main.properties.text = "<pre>" + JSON.stringify(data.abc_properties, null, 2).replace(/\"([^(\")"]+)\":/g,"$1:") + "</pre>"; //regex to remove quotes (") from stringify
     $scope.main.properties.raw = data.properties;
