@@ -11,7 +11,6 @@ sirenMainController.controller('MainCtrl', [
   , 'appState'
   , function($scope, $state, navigator, appState) {
       $scope.init = function() {
-        console.log("appState.url: ", appState.url);
         $scope.params = { url: appState.url || '' };
       };
 

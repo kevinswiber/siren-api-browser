@@ -127,7 +127,6 @@ sirenAppController.controller('AppCtrl', [
 	  	data.abc_properties[key] = data.properties[key];
 	  });
 	  
-	  //console.log(data.abc_properties);
     $scope.main.properties.old = $scope.main.properties.raw;
     $scope.main.properties.text = "<pre>" + JSON.stringify(data.abc_properties, null, 2).replace(/\"([^(\")"]+)\":/g,"$1:") + "</pre>"; //regex to remove quotes (") from stringify
     $scope.main.properties.raw = data.properties;
