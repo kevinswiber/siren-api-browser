@@ -49,8 +49,21 @@ var siren = angular
         element[0].select();
       });
     };
-  })
-  .directive('srnAction', ['$compile', 'navigator', function($compile, navigator) {
+  }).directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+            
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]).directive('srnAction', ['$compile', 'navigator', function($compile, navigator) {
     function link(scope, element, attrs) {
       if (!scope.action) {
         return;
@@ -75,8 +88,11 @@ var siren = angular
           .attr('type', field.type || 'text')
           .attr('ng-model', 'action.fields[' + i + '].value')
           .val(field.value);
-
-
+	
+	if(field.type === 'file'){
+	  input.attr('file-model','action.fields[' + i + '].file');
+	}
+	
         $compile(input)(scope);
 
         controls.append(input);
