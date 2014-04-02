@@ -30,6 +30,7 @@ sirenEntityController.controller('EntityCtrl', [
   };
 	
   $scope.execute = function(action) {
+
     //this can't be true for entities being viewed from the app root
     if (action.class && action.class.indexOf('event-subscription') !== -1) {
       var ws = new WebSocket(action.href);
@@ -44,8 +45,7 @@ sirenEntityController.controller('EntityCtrl', [
           target: d.destination.replace(/\//g, '_'),
           data: d.data
         }  
-        //console.log($scope);  
-          
+
         $scope.main.streams[update.target].data.push([new Date(), update.data]);	  
 
         if($scope.main.streams[update.target].data.length > 75){
@@ -66,7 +66,17 @@ sirenEntityController.controller('EntityCtrl', [
       return;
     }
 
-    navigator.execute(action).then(function(result) {
+    var fd = new FormData();
+    angular.forEach(action.fields,function(val){
+      fd.append(val.name,(val.file || val.value) );
+    });
+
+    $http.post(action.href, fd, {
+      headers: {'Content-Type': undefined },
+      transformRequest: angular.identity
+    }).then(onFinished);
+
+    function onFinished(result) {
       if (result.noop) {
         return;
       }
@@ -86,7 +96,8 @@ sirenEntityController.controller('EntityCtrl', [
       $state.params.url = config.url;
 
       showData(data);
-    });
+    }
+
   };
 	
   $scope.logger = function(url){
