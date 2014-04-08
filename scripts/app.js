@@ -2,7 +2,6 @@ var siren = angular
   .module('elroy', [
     'siren'
     , 'ui.state'
-    , 'ui.bootstrap'
     , 'ngAnimate'
     , 'nvd3ChartDirectives'
     , 'luegg.directives'
