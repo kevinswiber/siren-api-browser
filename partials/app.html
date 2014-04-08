@@ -83,8 +83,8 @@
             <div id="{{entity.heading}}" class="panel-collapse collapse in">
               <div class="panel-body">
                 
-<h4><span class="text-muted">state: </span><span class="label label-info">{{entity.raw.state}}</span></h4>
-
+<h4><span class="label label-info">{{entity.raw.state}}</span></h4>
+<z-dna-strip entity="main.entities[$index]"></z-dna-strip>
                 <div class="streams app_streams panel panel-default" ng-show="entity.totalStreams">
                   <div class="panel-heading">
                     <h4 class="panel-title">

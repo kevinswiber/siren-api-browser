@@ -13,12 +13,13 @@ sirenAppController.controller('AppCtrl', [
   , 'navigator'
   , 'getStreams'
   , function($scope, $sce, $state, $http, $location, navigator, getStreams) {
-    $scope.init = function() {
-      var params = $state.params;
-      var rootUrl = params.url;
+  $scope.init = function() {
+    var params = $state.params;
+    var rootUrl = params.url;
 
-      follow(rootUrl);
-    };
+    follow(rootUrl);
+    $scope.logger('ws://localhost:3000/events');
+  };
 
   $scope.execute = function(stream) {
     var action = stream.action;
@@ -86,6 +87,57 @@ sirenAppController.controller('AppCtrl', [
 
       showData(result.data);
     });
+  };
+
+  function textToColor(text) {
+    var code = text.split('').map(function(c) {
+      return c.charCodeAt(0);
+    }).reduce(function(previous, current) {
+      return previous + current;
+    }, 0);
+
+    return code % 360;
+  }
+
+  function drawCanvas(context, hues, cb) {
+    var x = 0;
+    var y = 0;
+    var width = context.canvas.width / hues.length;
+    var height = context.canvas.height;
+
+    hues.forEach(function(hue) {
+      context.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+      context.fillRect(x, y, width, height);
+      x = x + width;
+    });
+
+    if (cb) cb();
+  }
+
+  $scope.logger = function(url){
+    
+    var ws = new WebSocket(url);
+    
+    //when there's a stream message	
+    ws.onmessage = function(event) {
+      //Add data to model w/ timestamp here
+      var d = JSON.parse(event.data);
+      console.log(d);
+      if (d.destination === '_logs') {
+        // visualize state transition
+        angular.forEach($scope.main.entities, function(e) {
+          if (e.raw.name === d.data.properties.name) {
+            e.raw.state = d.data.properties.state;
+          }
+        });
+      }
+    }
+
+    var command = { cmd: "subscribe", name: "_logs" };
+    
+    ws.onopen = function(event) {
+      ws.send(JSON.stringify(command));
+    };
   };
 
   var follow = function(rootUrl) {

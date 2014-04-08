@@ -63,7 +63,65 @@ var siren = angular
             });
         }
     };
-}]).directive('srnAction', ['$compile', 'navigator', function($compile, navigator) {
+}])
+.directive('zDnaStrip', ['$compile', function($compile) {
+  function textToColor(text) {
+    var code = text.split('').map(function(c) {
+      return c.charCodeAt(0);
+    }).reduce(function(previous, current) {
+      return previous + current;
+    }, 0);
+
+    return code % 360;
+  }
+
+  function drawCanvas(context, hues, cb) {
+    var x = 0;
+    var y = 0;
+    var width = context.canvas.width / hues.length;
+    var height = context.canvas.height;
+
+    hues.forEach(function(hue) {
+      context.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+      context.fillRect(x, y, width, height);
+      x = x + width;
+    });
+
+    if (cb) cb();
+  }
+
+  function link(scope, element, attrs) {
+    var canvas = element[0].children[0];
+    var context = canvas.getContext('2d');
+    var hues = [];
+    function getColor() {
+      return textToColor(scope.entity.raw.state);
+    };
+
+    var last = getColor();
+    hues.push(last);
+
+    var index = 1;
+    var interval = setInterval(function() {
+      var last = getColor();
+      hues.push(last);
+      if (hues.length > 36) {
+        hues = hues.slice(hues.length - 36);
+      }
+      drawCanvas(context, hues);
+    }, 50);
+  }
+
+  return {
+    restrict: 'E',
+    scope: {
+      entity: '='
+    },
+    templateUrl: 'partials/dna-strip.html',
+    link: link
+  };
+}])
+.directive('srnAction', ['$compile', 'navigator', function($compile, navigator) {
     function link(scope, element, attrs) {
       if (!scope.action) {
         return;
@@ -119,4 +177,4 @@ var siren = angular
       },
       link: link
     };
-  }]);
+  }])
