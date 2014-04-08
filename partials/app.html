@@ -3,16 +3,17 @@
   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
      <div class="container">
        <div class="navbar-header">
-         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+         <!--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
            <span class="sr-only">Toggle navigation</span>
            <span class="icon-bar"></span>
            <span class="icon-bar"></span>
            <span class="icon-bar"></span>
-         </button>
+         </button>-->
          <a class="navbar-brand" href="#"><i class="fa fa-bolt"></i> Elroy Browser</a>
          
        </div>
        
+       <!--
        <div class="collapse navbar-collapse" id="navbar-collapse-1">
           <ul class="nav navbar-nav">
             
@@ -23,7 +24,7 @@
             </li>
             
           </ul>
-       </div><!-- /.navbar-collapse -->
+        </div>--><!-- /.navbar-collapse -->
        
        
       </div><!-- /.container (for navbar -->
@@ -35,7 +36,7 @@
   <div class="row">
     <div class="col-md-12">
       <h1><span class="text-muted">app:</span> {{main.properties.raw.name | uppercase}}</h1>
-      <span ng-show="main.class">{{main.class}}</span>
+      <!--<span ng-show="main.class">{{main.class}}</span>
       <div class="btn-group" id="links" ng-show="main.links.length">
                 
         <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" id="navbar_links_button">
@@ -49,7 +50,7 @@
           <li role="presentation" class="divider"></li>
           <li><a href="#raw">Raw Response</a></li>
         </ul>
-      </div>
+      </div>-->
     </div>
   </div >
   <div class="row">
@@ -84,13 +85,13 @@
               <div class="panel-body">
                 
 <h4><span class="label label-info">{{entity.raw.state}}</span></h4>
-<z-dna-strip entity="main.entities[$index]"></z-dna-strip>
+<z-dna-strip entity="entity"></z-dna-strip>
                 <div class="streams app_streams panel panel-default" ng-show="entity.totalStreams">
-                  <div class="panel-heading">
+                  <!--<div class="panel-heading">
                     <h4 class="panel-title">
                       <i class="fa fa-bar-chart-o"></i> Streams
                     </h4>
-                  </div>
+                  </div>-->
                   <div class="panel-body">
                     <div class="stream row" ng-repeat="stream in entity.streams">
                       <div class="col-sm-5" ><p class="text-success">{{ stream.name }}</p></div>
@@ -111,23 +112,6 @@
                     </div>
                   </div>
                 </div>	
-
-                <div class="panel-group" id="properties" ng-show="entity.properties.length">
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#properties" href="#{{entity.selfLink.href | abc123}}">
-                          <i class="fa fa-list-ul"></i> Properties
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="{{entity.selfLink.href | abc123}}" class="panel-collapse collapse">
-                      <div class="panel-body">
-                        <pre>{{entity.properties}}</pre>
-                      </div>
-                    </div>
-                  </div>
-                </div>  
 
                 <div ng-show="entity.href">
                   <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
