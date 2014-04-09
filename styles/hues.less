@@ -1,0 +1,7 @@
+//gernerate a class for each color of the rainbow :)
+@iterations: 359; //Such rainbow. Very color. Wow. 
+.loopingClass (@index) when (@index > -1){
+  .h_@{index} { color: hsl(@index, 100%, 50%); }
+  .loopingClass(@index - 1); //must be recursive
+}
+.loopingClass (@iterations);
