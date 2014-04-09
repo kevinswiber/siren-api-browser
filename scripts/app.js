@@ -209,9 +209,18 @@ var siren = angular
       console.log('length:', scope.main.entities.length);
 
       var colors = [];
-      angular.forEach(scope.main.entities, function(entity) {
+      angular.forEach(scope.main.entities, function(entity, i) {
         var last = getColor(entity);
-        colors.push([last]);
+        scope.$watch(entity.raw.streams, function() {
+          if (entity.raw.streams.length === 0) {
+            return;
+          }
+
+          console.log('name:', entity.raw.name);
+          console.log('streams:', entity.raw.streams);
+        });
+        colors[i] = [];
+        colors[i].push([last]);
       });
 
       var interval = setInterval(function() {
@@ -279,9 +288,9 @@ var siren = angular
         container.append(controls);
       };
 
-      if (!visible) {
+      /*if (!visible) {
         container.append($('<em>').text('No fields available.'));
-      }
+      }*/
 
       element.replaceWith(container);
     }
