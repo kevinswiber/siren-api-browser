@@ -1,8 +1,10 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:400,500,600,700);
-
 @import 'hues.css';
 
 @text: hsl(0, 0%, 30%);
+@zborder: #ccc;
+
+@ao: #E86C1F;
+@ag: #5E5F61;
 
 body {
   color: @text;
@@ -23,9 +25,28 @@ p, pre {
   margin-top: .5em; margin-bottom: .5em;
 }
 
+#zetta-start {
+  text-align: center;
+  h1 {
+    font-size: 4em; font-weight: 400;
+    color: @ao;
+    span {
+      color: @ag;
+    }
+  }
+}
+
+.appTitle {
+  padding: 0 1em;
+}
+
 .characteristic {
+  &.show {
+    max-width: 777px;
+    margin: 0 auto;
+  }
   .content { padding: 1em; }
-  &.self .name { border-bottom: 1px dashed #ccc; }
+  &.self .name { border-bottom: 1px dashed @zborder; }
   .name {
     padding: .5em 0;
     font-weight: 200;
@@ -36,7 +57,7 @@ p, pre {
       text-decoration: none;
       color: @text
     }
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid @zborder;
     
   }
   
@@ -51,5 +72,68 @@ p, pre {
   }
   .pure-button {
     padding: .2em .6em;
+  }
+}
+#properties .json {
+  pre{
+    line-height: 1.428571429;
+  }
+}
+.jsondiffpatch-delta {
+
+	font-family: "Source Code Pro";
+    font-size: 16px;
+	line-height: 1.428571429;
+	color: #333;
+    margin: 0; padding: 0;
+    letter-spacing: normal;
+    word-spacing: normal;
+    ul {
+      margin-left: 4px;
+      .jsondiffpatch-value {
+        padding-left: 2px;
+      }
+    }
+}
+
+#states .bottom {border-top: 1px solid @zborder;}
+
+.state_log {
+  max-height: 200px;
+  margin-top: 1em;
+  overflow-x: auto;
+  ul, li {
+    list-style-type: none;
+    margin: 0; padding: 0;
+  }
+  li {
+    font-family: "courier new", "andale mono", monospace;
+    margin-bottom: .5em;
+    color: #666;
+    span{
+      font-size: .6em;
+    }
+    strong {
+      display: inline-block;
+      min-width: 100px;
+    }
+  }
+  &.latest {
+    color: #2765a3;
+  }
+}
+
+#footer {
+  font-size: 2em;
+  text-align: center;
+  .content{padding: 1em 0;}
+  border-top: 1px solid @zborder; 
+  color: @ao;
+  .gray {
+    color: @ag;
+    padding-right: 1em;
+  }
+  a {
+    padding: 0 1em;
   }
 }
