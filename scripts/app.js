@@ -288,9 +288,9 @@ var siren = angular
         container.append(controls);
       };
 
-      if (!visible) {
+      /*if (!visible) {
         container.append($('<em>').text('No fields available.'));
-      }
+      }*/
 
       element.replaceWith(container);
     }
