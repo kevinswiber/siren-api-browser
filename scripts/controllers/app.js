@@ -179,6 +179,7 @@ sirenAppController.controller('AppCtrl', [
       angular.forEach(data.entities, function(entity) {
         entity.streams = {};
         entity.totalStreams = 0;
+        entity.streamsArray = [];
         entity.raw = entity.properties;
         entity.properties = JSON.stringify(entity.properties, null, 2);
         var heading = [];
@@ -212,9 +213,13 @@ sirenAppController.controller('AppCtrl', [
                     $scope.execute(s);
                   });
 
-                  entity.streams = stream.streams;
+                  //entity.streams = stream.streams;
+
+                  Object.keys(stream.streams).forEach(function(key) {
+                    entity.streams[key] = stream.streams[key];
+                  });
+                  //console.log('entity.streams:', entity.streams);
                   entity.totalStreams = stream.totalStreams;
-                  
                 });
                 
               }
