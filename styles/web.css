@@ -1,109 +1,48 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:400,500,600,700);
 body {
-  padding-top: 60px;
-  font-family: 'Source Sans Pro',"Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #4d4d4d;
 }
-
-#control-panel {
-  margin-top: 30px;
+.nocolor {
+  color: #4d4d4d !important;
 }
-
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-
-#elroy-start label {
-	display: block;
-	width: 100%
-	clear: both;
+html,
+button,
+input,
+select,
+textarea,
+.pure-g [class*="pure-u"],
+.pure-g-r [class*="pure-u"] {
+  /* Set your content font stack here: */
+  font-family: "Source Sans Pro", Georgia, Times, "Times New Roman", serif;
 }
-
-#response {
-	margin-bottom: 6em;
+pre,
+code,
+.mono {
+  font-family: "Source Code Pro", monospace;
 }
-
-.state {
-  transition: background 0.8s ease;
-  -webkit-transition: background 0.8s ease;
-}
-.links .btn-primary {margin: 0 2em;}
-
-#properties.panel-group {
-  margin-top: 1em;
-}
-.action_source_modal {
-  float: right;
-
-}
-
-
-.panel-title.entity-title {
-  min-height: 20px ;
-}
-.panel-title a.title{
-  text-transform: uppercase;
-  margin-top: 0px;
-
-}
-ul.dropdown-menu-form {
-    padding: .5em 1em;
-	min-width: 300px;
-    overflow-y: scroll;
-}
-
-.stream:not(:first-child) {
-  border-top: 1px solid #ccc;
-  padding-top: 1em;
-}
-.stream {
-  min-height: 60px;
-}
-.jsondiffpatch-delta {
-	display: block;
-	padding: 9.5px;
-	margin: 0 0 10px;
-	font-size: 13px;
-	line-height: 1.428571429;
-	color: #333;
-	word-break: break-all;
-	word-wrap: break-word;
-	background-color: #f5f5f5;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-}
-
-.jsondiffpatch-delta pre{
-	background-color: transparent;
-	border: none;
-}
-
-#entities {
-  
-}
-
-.state_log {
-  max-height: 200px;
-  overflow-x: auto;
-
-}
-.state_log ul, .state_log li {
-  list-style-type: none;
-  margin: 0; padding: 0;
-}
-.state_log li {
-  font-family: "courier new", "andale mono", monospace;
+p,
+pre {
+  margin-top: .5em;
   margin-bottom: .5em;
-  color: #666;
 }
-.state_log li span{
-  font-size: .8em;
+.characteristic .content {
+  padding: 1em;
 }
-.state_log li strong {
-  display: inline-block;
-  min-width: 100px;
+.characteristic .name {
+  border-bottom: 1px solid;
+  padding: .5em 0;
+  font-weight: 200;
+  text-overflow: ellipsis;
 }
-.state_log li.latest {
-  color: #2765a3;
-  
+.characteristic h1 {
+  margin: 0;
+  padding: 0;
 }
-
-
-
-
+.characteristic h1 .units {
+  font-weight: 300;
+  font-size: .7em;
+  padding-left: .3em;
+}
+.characteristic .pure-button {
+  padding: .2em .6em;
+}
