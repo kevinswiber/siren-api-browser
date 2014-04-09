@@ -1,13 +1,11 @@
 @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:400,500,600,700);
-  
+
+@import 'hues.css';
+
 @text: hsl(0, 0%, 30%);
 
 body {
   color: @text;
-}
-
-.nocolor {
-  color: @text !important;
 }
 
 html, button, input, select, textarea,
@@ -26,16 +24,22 @@ p, pre {
 }
 
 .characteristic {
-  .content {padding: 1em;}
+  .content { padding: 1em; }
+  &.self .name { border-bottom: 1px dashed #ccc; }
   .name {
-    border-bottom: 1px solid;
     padding: .5em 0;
     font-weight: 200;
+    overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     a {
       text-decoration: none;
+      color: @text
     }
+    border-bottom: 1px solid #ccc;
+    
   }
+  
   h1{
     margin: 0;
     padding: 0;
@@ -49,5 +53,3 @@ p, pre {
     padding: .2em .6em;
   }
 }
-
-
