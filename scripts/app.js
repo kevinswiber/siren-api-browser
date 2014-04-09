@@ -160,12 +160,14 @@ var siren = angular
     return ((code * Math.floor(text.length/3)) % 100) + '%';
   }
 
+  var UNIT_SIZE = 10;
+
   function drawCanvas(context, colors, cb) {
     var unitWidth = context.canvas.width / 36;
     var x = context.canvas.width - unitWidth;
     var y = 0;
     var width = unitWidth;
-    var height = 20;//context.canvas.height;
+    var height = UNIT_SIZE;//context.canvas.height;
 
     colors.forEach(function(row) {
       row.forEach(function(color) {
@@ -196,7 +198,7 @@ var siren = angular
         return;
       }
 
-      var unitSize = 4;
+      var unitSize = UNIT_SIZE;
       canvas.width = screen.width;//unitSize * 36;
       canvas.height = scope.main.entities.length * unitSize;
       context.fillStyle = 'rgb(222, 222, 222)';
