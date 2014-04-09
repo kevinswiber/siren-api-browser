@@ -42,6 +42,7 @@
                   -->
                 </div>
                 
+                <!-- 
                 <div class="actions">
                   <button class="pure-button pure-button-primary">off</button>
                   <button class="pure-button">toggle</button>
@@ -50,6 +51,8 @@
                       <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
                   </div>
                 </div>
+                -->
+                
               </div><!-- /.content -->
             </div>
             
@@ -64,10 +67,8 @@
                 <h1>{{stream.data.slice(-1)[0][1]}}<span class="units"></span></h1>
                 
                 <div class="vis">
-                  <!-- <z-dna-strip entity="entity"></z-dna-strip> -->
-                  <code><pre>[ sparkline here ]</pre></code>
-                  
-                  
+                  <z-dna-strip entity="entity"></z-dna-strip>
+
                   <nvd3-sparkline-chart
                     data="stream.data"
                     id="{{ stream.name }}"
@@ -83,6 +84,7 @@
                 
                 </div>
                 
+                <!-- 
                 <div class="actions">
                   <button class="pure-button pure-button-primary">off</button>
                   <button class="pure-button">toggle</button>
@@ -91,6 +93,8 @@
                       <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
                   </div>
                 </div>
+                -->
+                
               </div><!-- /.content -->
             </div><!-- characteristic repeater -->
           </div>
