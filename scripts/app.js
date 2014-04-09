@@ -76,23 +76,28 @@ var siren = angular
   }
 
   function drawCanvas(context, hues, cb) {
-    var x = 0;
+    var unitWidth = context.canvas.width / 36;
+    var x = context.canvas.width - unitWidth;
     var y = 0;
-    var width = context.canvas.width / hues.length;
+    var width = unitWidth;
     var height = context.canvas.height;
 
     hues.forEach(function(hue) {
       context.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
       context.fillRect(x, y, width, height);
-      x = x + width;
+      x = x - unitWidth;
     });
 
     if (cb) cb();
   }
 
   function link(scope, element, attrs) {
-    var canvas = element[0].children[0];
+    var canvas = element.children()[0];
     var context = canvas.getContext('2d');
+
+    context.fillStyle = 'rgb(222, 222, 222)';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
     var hues = [];
     function getColor() {
       return textToColor(scope.entity.raw.state);
@@ -104,9 +109,9 @@ var siren = angular
     var index = 1;
     var interval = setInterval(function() {
       var last = getColor();
-      hues.push(last);
+      hues.unshift(last);
       if (hues.length > 36) {
-        hues = hues.slice(hues.length - 36);
+        hues = hues.slice(0, 35);
       }
       drawCanvas(context, hues);
     }, 50);
