@@ -211,20 +211,28 @@ var siren = angular
       var colors = [];
       angular.forEach(scope.main.entities, function(entity, i) {
         var last = getColor(entity);
-        scope.$watch(entity.raw.streams, function() {
-          if (entity.raw.streams.length === 0) {
-            return;
-          }
+        scope.$watchCollection('main', function() {
+          //if (entity.streams.length === 0) {
+            //return;
+          //}
 
           console.log('name:', entity.raw.name);
-          console.log('streams:', entity.raw.streams);
-        });
+          console.log('streams:', entity.streams);
+        }, true);
         colors[i] = [];
         colors[i].push([last]);
       });
 
       var interval = setInterval(function() {
         angular.forEach(scope.main.entities, function(entity, i) {
+          /*scope.$watchCollection(entity.streams, function() {
+            //if (entity.streams.length === 0) {
+              //return;
+            //}
+
+            //console.log('name:', entity.raw.name);
+            //console.log('streams:', entity.streams);
+          });*/
           var last = getColor(scope.main.entities[i]);
           colors[i].unshift(last);
           if (colors[i].length > 200) {
