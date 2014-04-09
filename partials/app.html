@@ -14,20 +14,15 @@
        <!--
        <div class="collapse navbar-collapse" id="navbar-collapse-1">
           <ul class="nav navbar-nav">
-            
-            
             <li ng-repeat="link in main.breadcrumbs">
               <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
                class="entity-link">{{ link.text }} / </a>
             </li>
-            
           </ul>
         </div>--><!-- /.navbar-collapse -->
       </div><!-- /.container (for navbar -->
     </div><!-- /.navbar -->
-  
 
-  
   <!-- App Title -->
   <div class="appTitle">
     <div class="">
@@ -40,55 +35,88 @@
   <div id="devices" ng-show="main.entities.length" >
 
     <div ng-repeat="entity in main.entities" class="">
-      <div class="characteristic" id="{{entity.heading}}">
-        <div class="content">
-          <p class="name" ng-class="'h_' + x * 60"><i class="fa fa-asterisk"></i>
-            <a class="nocolor" ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{entity.heading}}</a>
-          </p>
-          <span class="label label-info">{{entity.raw.state}}</span>
-          <h1>28<span class="units">m/s</span></h1>
-          <z-dna-strip entity="entity"></z-dna-strip>
-          <div class="streams app_streams" ng-show="entity.totalStreams">
+          <div class="pure-g-r" id="{{entity.heading}}">
+            <!-- Self link for state & actions -->
+            <div class="characteristic pure-u-1-4 self">
+              <div class="content">
+                <p class="name" ng-class="'h_120"><i class="fa fa-home"></i>
+                  <a class="nocolor" ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{entity.heading}}</a>
+                </p>
+                
+                <h1>{{entity.raw.state}}<span class="units"></span></h1>
+                
+                <div class="vis">
+                  <z-dna-strip entity="entity"></z-dna-strip>
+                  <code><pre>[ sparkline here ]</pre></code>
+                  <!-- 
+                  <nvd3-sparkline-chart
+                    data="stream.data"
+                    id="{{ stream.name }}"
+                    x="stream.xFunction()"
+                    y="stream.yFunction()",
+                    xTickFormat="stream.xTickFunction"
+                    rightalignValue="true"
+                    width="200"
+                    height="60"
+                                        >
+                  <svg></svg>
+                  </nvd3-sparkline-chart>
+                  -->
+                </div>
+                
+                <div class="actions">
+                  <button class="pure-button pure-button-primary">off</button>
+                  <button class="pure-button">toggle</button>
 
-                <div class="pure-g-r">
-                  <div class="stream row pure-u-1-4" ng-repeat="stream in entity.streams">
-                    <div class="" ><p class="text-success">{{ stream.name }}</p></div>
-                    <div class="">
-                      <nvd3-sparkline-chart
-                        data="stream.data"
-                        id="{{ stream.name }}"
-                        x="stream.xFunction()"
-                        y="stream.yFunction()",
-                        xTickFormat="stream.xTickFunction"
-                        rightalignValue="true"
-                        width="200"
-                        height="60"
-                                            >
-                      <svg></svg>
-                      </nvd3-sparkline-chart>
-                    </div>
+                  <div ng-show="entity.href">
+                      <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
                   </div>
                 </div>
-          </div> <!-- /.streams -->
-          
-          
-          
-          
-          <div class="actions">
-            <button class="pure-button pure-button-primary">off</button>
-            <button class="pure-button">toggle</button>
-            
-            <div ng-show="entity.href">
-                <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
+              </div><!-- /.content -->
             </div>
+            
+            <!-- all other characteristic data for device -->
+            <div class="characteristic pure-u-1-4 {{ stream.name }}" ng-repeat="stream in entity.streams">
+              <div class="content">
+                <p class="name" ng-class="'h_120"><i class="fa fa-asterisk"></i>
+                  <a class="nocolor" ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{ stream.name }}</a>
+                </p>
+                
+                <h1>[Data here]<span class="units"></span></h1>
+                
+                <div class="vis">
+                  <!-- <z-dna-strip entity="entity"></z-dna-strip> -->
+                  <code><pre>[ sparkline here ]</pre></code>
+                  <!-- 
+                  <nvd3-sparkline-chart
+                    data="stream.data"
+                    id="{{ stream.name }}"
+                    x="stream.xFunction()"
+                    y="stream.yFunction()",
+                    xTickFormat="stream.xTickFunction"
+                    rightalignValue="true"
+                    width="200"
+                    height="60"
+                                        >
+                  <svg></svg>
+                  </nvd3-sparkline-chart>
+                  -->
+                </div>
+                
+                <div class="actions">
+                  <button class="pure-button pure-button-primary">off</button>
+                  <button class="pure-button">toggle</button>
+
+                  <div ng-show="entity.href">
+                      <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
+                  </div>
+                </div>
+              </div><!-- /.content -->
+            </div><!-- characteristic repeater -->
           </div>
-        </div>
-      </div>  
-      
-      
-      
-      
-      
+  
+    </div>
+  </div>  
       <!-- 
         <div class="panel-heading">
             <h4 class="panel-title entity-title">
@@ -111,9 +139,5 @@
             </h4>
           </div>
 -->
-    </div>
 </div>
 
-  
-
-</div>
