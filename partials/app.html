@@ -59,7 +59,7 @@
             <!-- all other characteristic data for device -->
             <div class="characteristic pure-u-1-4 {{ stream.name }}" ng-repeat="stream in entity.streams">
               <div class="content">
-                <p class="name"><i class="fa fa-asterisk" ng-class="'h_' + stream.data.slice(-1)[0][1]"></i>
+                <p class="name"><i class="fa fa-asterisk h_{{ stream.data.slice(-1)[0][2] }}" ng-class=" "></i>
                   <a ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{ stream.name }} plus a whole lot more text</a>
 
                 </p>

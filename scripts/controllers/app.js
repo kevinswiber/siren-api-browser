@@ -42,7 +42,8 @@ sirenAppController.controller('AppCtrl', [
         //console.log($scope);  
           
         //console.log('pushing data:', update);
-        stream.data.push([new Date(), update.data]);	  
+	var color = (Math.abs(update.data.toFixed(0) % 360));
+        stream.data.push([new Date(), update.data,color]);	  
 
         if(stream.data.length > 75){
           stream.data.shift();
