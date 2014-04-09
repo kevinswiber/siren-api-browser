@@ -83,7 +83,7 @@ var siren = angular
     var height = context.canvas.height;
 
     hues.forEach(function(hue) {
-      context.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+      context.fillStyle = 'hsl(' + hue + ', 50%, 50%)';
       context.fillRect(x, y, width, height);
       x = x - unitWidth;
     });
@@ -146,7 +146,7 @@ var siren = angular
 
     hues.forEach(function(row) {
       row.forEach(function(hue) {
-        context.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+        context.fillStyle = 'hsl(' + hue + ', 50%, 50%)';
         context.fillRect(x, y, width, height);
         x = x - unitWidth;
       });
