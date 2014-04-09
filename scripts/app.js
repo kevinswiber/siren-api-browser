@@ -110,7 +110,6 @@ var siren = angular
 
     var colors = [];
     function getColor() {
-      console.log(scope.entity.raw.name);
       return {
         hue: textToColor(scope.entity.raw.state),
         saturation: textToSaturation(scope.entity.raw.name)
@@ -166,11 +165,10 @@ var siren = angular
     var x = context.canvas.width - unitWidth;
     var y = 0;
     var width = unitWidth;
-    var height = 4;//context.canvas.height;
+    var height = 20;//context.canvas.height;
 
     colors.forEach(function(row) {
       row.forEach(function(color) {
-        console.log(color);
         context.fillStyle = 'hsl(' + color.hue + ', ' + color.saturation + ', 50%)';
         context.fillRect(x, y, width, height);
         x = x - unitWidth;
@@ -208,23 +206,22 @@ var siren = angular
       console.log('height:', canvas.height);
       console.log('length:', scope.main.entities.length);
 
-      var hues = [];
+      var colors = [];
       angular.forEach(scope.main.entities, function(entity) {
         var last = getColor(scope.main.entities[0]);
-        hues.push([last]);
+        colors.push([last]);
       });
 
-      var index = 1;
       var interval = setInterval(function() {
         angular.forEach(scope.main.entities, function(entity, i) {
           var last = getColor(scope.main.entities[i]);
-          hues[i].unshift(last);
-          if (hues.length > 200) {
-            hues[i] = hues[i].slice(0, 199);
+          colors[i].unshift(last);
+          if (colors[i].length > 200) {
+            colors[i] = colors[i].slice(0, 199);
           }
         });
 
-        drawCanvas(context, hues);
+        drawCanvas(context, colors);
       }, 50);
     });
   }
