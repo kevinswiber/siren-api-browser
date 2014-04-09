@@ -75,15 +75,25 @@ var siren = angular
     return code % 360;
   }
 
-  function drawCanvas(context, hues, cb) {
+  function textToSaturation(text) {
+    var code = text.split('').map(function(c) {
+      return c.charCodeAt(0);
+    }).reduce(function(previous, current) {
+      return previous + current;
+    }, 0);
+
+    return ((code * Math.floor(text.length/3)) % 100) + '%';
+  }
+
+  function drawCanvas(context, colors, cb) {
     var unitWidth = context.canvas.width / 36;
     var x = context.canvas.width - unitWidth;
     var y = 0;
     var width = unitWidth;
     var height = context.canvas.height;
 
-    hues.forEach(function(hue) {
-      context.fillStyle = 'hsl(' + hue + ', 50%, 50%)';
+    colors.forEach(function(color) {
+      context.fillStyle = 'hsl(' + color.hue + ', ' + color.saturation + ', 50%)';
       context.fillRect(x, y, width, height);
       x = x - unitWidth;
     });
@@ -98,22 +108,25 @@ var siren = angular
     context.fillStyle = 'rgb(222, 222, 222)';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    var hues = [];
+    var colors = [];
     function getColor() {
-      return textToColor(scope.entity.raw.state);
+      return {
+        hue: textToColor(scope.entity.raw.state),
+        saturation: textToSaturation(scope.entity.raw.name)
+      };
     };
 
     var last = getColor();
-    hues.push(last);
+    colors.push(last);
 
     var index = 1;
     var interval = setInterval(function() {
       var last = getColor();
-      hues.unshift(last);
-      if (hues.length > 36) {
-        hues = hues.slice(0, 35);
+      colors.unshift(last);
+      if (colors.length > 36) {
+        colors = colors.slice(0, 35);
       }
-      drawCanvas(context, hues);
+      drawCanvas(context, colors);
     }, 50);
   }
 
@@ -137,16 +150,28 @@ var siren = angular
     return code % 360;
   }
 
-  function drawCanvas(context, hues, cb) {
+  function textToSaturation(text) {
+    var code = text.split('').map(function(c) {
+      return c.charCodeAt(0);
+    }).reduce(function(previous, current) {
+      return previous + current;
+    }, 0);
+
+    return ((code * Math.floor(text.length/3)) % 100) + '%';
+  }
+
+  var UNIT_SIZE = 10;
+
+  function drawCanvas(context, colors, cb) {
     var unitWidth = context.canvas.width / 36;
     var x = context.canvas.width - unitWidth;
     var y = 0;
     var width = unitWidth;
-    var height = 4;//context.canvas.height;
+    var height = UNIT_SIZE;//context.canvas.height;
 
-    hues.forEach(function(row) {
-      row.forEach(function(hue) {
-        context.fillStyle = 'hsl(' + hue + ', 50%, 50%)';
+    colors.forEach(function(row) {
+      row.forEach(function(color) {
+        context.fillStyle = 'hsl(' + color.hue + ', ' + color.saturation + ', 50%)';
         context.fillRect(x, y, width, height);
         x = x - unitWidth;
       });
@@ -161,12 +186,19 @@ var siren = angular
     var canvas = element.children()[0];
     var context = canvas.getContext('2d');
 
+    function getColor(entity) {
+      return {
+        hue: textToColor(entity.raw.state),
+        saturation: textToSaturation(entity.raw.name)
+      };
+    };
+
     scope.$watchCollection('main.entities', function() {
       if (scope.main.entities.length === 0) {
         return;
       }
 
-      var unitSize = 4;
+      var unitSize = UNIT_SIZE;
       canvas.width = screen.width;//unitSize * 36;
       canvas.height = scope.main.entities.length * unitSize;
       context.fillStyle = 'rgb(222, 222, 222)';
@@ -176,23 +208,22 @@ var siren = angular
       console.log('height:', canvas.height);
       console.log('length:', scope.main.entities.length);
 
-      var hues = [];
+      var colors = [];
       angular.forEach(scope.main.entities, function(entity) {
-        var last = textToColor(scope.main.entities[0].raw.state);
-        hues.push([last]);
+        var last = getColor(entity);
+        colors.push([last]);
       });
 
-      var index = 1;
       var interval = setInterval(function() {
         angular.forEach(scope.main.entities, function(entity, i) {
-          var last = textToColor(scope.main.entities[i].raw.state);
-          hues[i].unshift(last);
-          if (hues.length > 36) {
-            hues[i] = hues[i].slice(0, 35);
+          var last = getColor(scope.main.entities[i]);
+          colors[i].unshift(last);
+          if (colors[i].length > 200) {
+            colors[i] = colors[i].slice(0, 199);
           }
         });
 
-        drawCanvas(context, hues);
+        drawCanvas(context, colors);
       }, 50);
     });
   }
