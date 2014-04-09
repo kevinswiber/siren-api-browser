@@ -2,17 +2,18 @@
   <z-wampum-belt main="main"></z-wampum-belt>
   <!-- Characteristic Title -->
   <div class="characteristic show">
-    <div class="content">
-      <div class="characteristicTitle">
-        <div class="">
+    <div class="content pure-g">
+      <div class="characteristicTitle pure-u-1">
+          <p class="name" ng-class="">
+            <i class="fa fa-home h_277"></i> {{main.properties.raw.name}}
+          </p>
+          
           <h1>
-            <span class="text-muted">device:</span> {{main.properties.raw.name}}
             <span ng-class="main.stateClass", class="state label">{{main.state}}</span>
           </h1>
-        </div>
       </div>
 
-      <div class="vis">
+      <div class="vis pure-u-1">
         <!-- <z-dna-strip entity="entity"></z-dna-strip> -->
         <code><pre>[ sparkline here ]</pre></code>
         <!-- 
@@ -31,38 +32,49 @@
         -->
       </div>
 
-      <div class="actions pure-g" ng-show="main.actions.length">
+      <div class="actions pure-u-1" ng-show="main.actions.length">
+        <div class="pure-g">
+          <div ng-repeat="action in main.actions" class="pure-u-1-3">
+            <span ng-show="action.title">{{action.title}}</span>
+            <span ng-show="!action.title">{{action.name}}</span>
+            <form class="form-horizontal">
+                <srn-action value="action"></srn-action>
 
-        <div ng-repeat="action in main.actions" class="pure-u-1-3">
-          <span ng-show="action.title">{{action.title}}</span>
-          <span ng-show="!action.title">{{action.name}}</span>
-          <form class="form-horizontal">
-              <srn-action value="action"></srn-action>
-
-              <div class="control-group">
-                <div class="controls">
-                  <button class="btn btn-default" ng-click="execute(action)">Submit</button>
+                <div class="control-group">
+                  <div class="controls">
+                    <button class="pure-button pure-button-primary" ng-click="execute(action)">Submit</button>
+                  </div>
                 </div>
-              </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-
-
-        <div id="properties" >
-          <h3>Properties</h3>
-          <div ng-bind-html="formattedDiff"></div>
-
+      
+      <div id="properties" class="pure-u-1-2">
+        <h3>Properties</h3>
+        <div ng-bind-html="formattedDiff" class="json"></div>
+      </div>
+      
+      <div id="states" class="pure-u-1-2">
+            <h3>State History</h3>
+            <span ng-show="!stateLogs.length">State transitions for: </span>
+            <span ng-show="stateLogs.length">Latest {{stateLogs.length | pluralize:'transition'}} for: </span>
+            {{main.properties.raw.name}}
+            <!-- scrollable logs here -->
+            <div class="state_log" scroll-glue >
+              <ul>
+                <li ng-repeat="log in stateLogs" ng-class="{latest: $index==stateLogs.length-1}">
+                  <strong>{{ log.transition }}</strong> <span>{{log.time.localTime}} ({{log.time.elapsed}} ms later)</span>
+                </li>
+              </ul>
+            </div>
+            <div ng-show="stateLogs.length" class="bottom"></div>
         </div>
-
-
-
-
-
-
-
+      
+      
+      
+      
         <div id="entities" ng-show="main.entities.length">
-
           <h3>Entities
 
             <div class="btn-group" id="links">
@@ -110,30 +122,6 @@
           </accordion>
         </div>
 
-
-
-        <div id="states">
-            <h3>State History</h3>
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                  <span ng-show="!stateLogs.length" class="text-muted">State transitions for: </span>
-                  <span ng-show="stateLogs.length" class="text-muted">Latest {{stateLogs.length | pluralize:'transition'}} for: </span>
-                  {{main.properties.raw.name}}
-                </div>
-                <div class="panel-body">
-                  <!-- scrollable logs here -->
-                  <div class="well state_log" scroll-glue >
-                    <ul>
-                      <li ng-repeat="log in stateLogs" ng-class="{latest: $index==stateLogs.length-1}">
-                        <strong>{{ log.transition }}</strong> <span>{{log.time.localTime}} ({{log.time.elapsed}} ms later)</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-            </div>
-        </div>
-
         <div id="streams" ng-show="main.totalStreams">
             <h3>Streams</h3>
 
@@ -154,28 +142,12 @@
         </div>
     </div>
   </div><!-- /.characteristic -->
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-       <div class="container">
-         <div class="navbar-header">
-           <!--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-             <span class="sr-only">Toggle navigation</span>
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-             <span class="icon-bar"></span>
-           </button>-->
-           <a class="navbar-brand" href="#"><i class="fa fa-bolt"></i>Geocities for scientists<sup>TM</sup></a>
-
-         </div>      
-         <!--
-         <div class="collapse navbar-collapse" id="navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li ng-repeat="link in main.breadcrumbs">
-                <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-                 class="entity-link">{{ link.text }} / </a>
-              </li>
-            </ul>
-          </div>--><!-- /.navbar-collapse -->
-        </div><!-- /.container (for navbar -->
-    </div><!-- /.navbar -->
+    <div id="footer" class="pure-u-1">
+       <div class="content">
+         zetta<span class="gray">.js</span> 
+          <a href=""><i class="fa fa-twitter"></i></a>
+          <a href=""><i class="fa fa-github"></i></a>
+        </div>
+      </div><!-- /#footer -->
 
 </div>
