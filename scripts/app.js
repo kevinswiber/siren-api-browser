@@ -210,7 +210,7 @@ var siren = angular
 
       var colors = [];
       angular.forEach(scope.main.entities, function(entity) {
-        var last = getColor(scope.main.entities[0]);
+        var last = getColor(entity);
         colors.push([last]);
       });
 
