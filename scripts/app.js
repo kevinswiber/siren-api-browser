@@ -126,6 +126,86 @@ var siren = angular
     link: link
   };
 }])
+.directive('zWampumBelt', ['$compile', function($compile) {
+  function textToColor(text) {
+    var code = text.split('').map(function(c) {
+      return c.charCodeAt(0);
+    }).reduce(function(previous, current) {
+      return previous + current;
+    }, 0);
+
+    return code % 360;
+  }
+
+  function drawCanvas(context, hues, cb) {
+    var unitWidth = context.canvas.width / 36;
+    var x = context.canvas.width - unitWidth;
+    var y = 0;
+    var width = unitWidth;
+    var height = 4;//context.canvas.height;
+
+    hues.forEach(function(row) {
+      row.forEach(function(hue) {
+        context.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+        context.fillRect(x, y, width, height);
+        x = x - unitWidth;
+      });
+      y = y + height;
+      x = context.canvas.width - unitWidth;
+    });
+
+    if (cb) cb();
+  }
+
+  function link(scope, element, attrs) {
+    var canvas = element.children()[0];
+    var context = canvas.getContext('2d');
+
+    scope.$watchCollection('main.entities', function() {
+      if (scope.main.entities.length === 0) {
+        return;
+      }
+
+      var unitSize = 4;
+      canvas.width = screen.width;//unitSize * 36;
+      canvas.height = scope.main.entities.length * unitSize;
+      context.fillStyle = 'rgb(222, 222, 222)';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+
+      console.log('width:', canvas.width);
+      console.log('height:', canvas.height);
+      console.log('length:', scope.main.entities.length);
+
+      var hues = [];
+      angular.forEach(scope.main.entities, function(entity) {
+        var last = textToColor(scope.main.entities[0].raw.state);
+        hues.push([last]);
+      });
+
+      var index = 1;
+      var interval = setInterval(function() {
+        angular.forEach(scope.main.entities, function(entity, i) {
+          var last = textToColor(scope.main.entities[i].raw.state);
+          hues[i].unshift(last);
+          if (hues.length > 36) {
+            hues[i] = hues[i].slice(0, 35);
+          }
+        });
+
+        drawCanvas(context, hues);
+      }, 50);
+    });
+  }
+
+  return {
+    restrict: 'E',
+    scope: {
+      main: '='
+    },
+    template: '<canvas class="wampum" id="wampum"></canvas>',
+    link: link
+  };
+}])
 .directive('srnAction', ['$compile', 'navigator', function($compile, navigator) {
     function link(scope, element, attrs) {
       if (!scope.action) {
