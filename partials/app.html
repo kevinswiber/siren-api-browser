@@ -1,24 +1,16 @@
 <div id="response" ng-cloak ng-init="init()">
   <z-wampum-belt main="main"></z-wampum-belt>
   
-  <!-- App Title -->
-  <div class="appTitle">
-    <div class="">
-      <h1>
-        <span class="text-muted">app:</span> {{main.properties.raw.name | uppercase}}
-      </h1>
-    </div>
-  </div>
 
-  <div id="devices" ng-show="main.entities.length" >
 
-    <div ng-repeat="entity in main.entities" class="">
-          <div class="pure-g-r" id="{{entity.heading}}">
+  <div id="devices" ng-show="main.entities.length" class="pure-g-r">
+
             <!-- Self link for state & actions -->
-            <div class="characteristic pure-u-1-4 self">
+            <div class="characteristic pure-u-1-4 self" id="{{entity.heading}}" ng-repeat-start="entity in main.entities">
               <div class="content">
                 <p class="name" ng-class=""><i class="fa fa-home h_277"></i>
-                  <a ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{entity.heading}}</a>
+                  
+                  <a ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{$index}}: {{entity.heading}}</a>
                 </p>
                 
                 <h1>{{entity.raw.state}}<span class="units"></span></h1>
@@ -56,10 +48,9 @@
             </div>
             
             <!-- all other characteristic data for device -->
-            <div class="characteristic pure-u-1-4 {{ stream.name }}" ng-repeat="stream in entity.streams">
+            <div class="characteristic pure-u-1-4 {{ stream.name }}" ng-repeat="stream in entity.streams" ng-repeat-end="entity in main.entities">
               <div class="content">
-                <p class="name"><i class="fa fa-asterisk h_{{ stream.data.slice(-1)[0][2] }}" ng-class=" "></i>
-                  <a ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{ stream.name }} plus a whole lot more text</a>
+                <p class="name"><i class="fa fa-asterisk h_{{ stream.data.slice(-1)[0][2] }}" ng-class=" "></i>{{$parent.$index}}.{{$index +1}}: {{ stream.name }}
 
                 </p>
                 
@@ -98,7 +89,6 @@
                 
               </div><!-- /.content -->
             </div><!-- characteristic repeater -->
-          </div>
   
     </div>
   </div>  
@@ -124,12 +114,19 @@
             </h4>
           </div>
 -->
-  
+    <!-- App Title -->
+  <div class="appTitle">
+    <div class="">
+      <h1>
+        <span class="text-muted">app:</span> {{main.properties.raw.name | uppercase}}
+      </h1>
+    </div>
+  </div>
      <div id="footer" class="pure-u-1">
        <div class="content">
          zetta<span class="gray">.js</span> 
-          <a href=""><i class="fa fa-twitter"></i></a>
-          <a href=""><i class="fa fa-github"></i></a>
+          <a href="https://twitter.com/zettajs"><i class="fa fa-twitter"></i></a>
+          <a href="https://github.com/zettajs"><i class="fa fa-github"></i></a>
         </div>
       </div><!-- /#footer -->
 </div>

@@ -15,8 +15,6 @@
 
       <div class="vis pure-u-1">
         <z-dna-strip entity="entity"></z-dna-strip>
-        <code><pre>[ sparkline here ]</pre></code>
-        <!-- 
         <nvd3-sparkline-chart
           data="stream.data"
           id="{{ stream.name }}"
@@ -29,7 +27,7 @@
                               >
         <svg></svg>
         </nvd3-sparkline-chart>
-        -->
+        
       </div>
 
       <div class="actions pure-u-1" ng-show="main.actions.length">
@@ -122,31 +120,13 @@
           </accordion>
         </div>
 
-        <div id="streams" ng-show="main.totalStreams">
-            <h3>Streams</h3>
-
-            <div ng-repeat="stream in main.streams" class="panel panel-default">
-                <div class="panel-heading"><span class="text-muted">Stream: </span>"{{ stream.name }}"</div>
-                <div class="panel-body">
-                  <nvd3-sparkline-chart
-                      data="stream.data"
-                      id="{{ stream.name }}"
-                      x="stream.xFunction()"
-                      y="stream.yFunction()"
-              xTickFormat="stream.xTickFunction"
-                      rightalignValue="true">
-                  <svg></svg>
-                  </nvd3-sparkline-chart>
-                </div>
-            </div>
-        </div>
     </div>
   </div><!-- /.characteristic -->
     <div id="footer" class="pure-u-1">
        <div class="content">
          zetta<span class="gray">.js</span> 
-          <a href=""><i class="fa fa-twitter"></i></a>
-          <a href=""><i class="fa fa-github"></i></a>
+          <a href="https://twitter.com/zettajs"><i class="fa fa-twitter"></i></a>
+          <a href="https://github.com/zettajs"><i class="fa fa-github"></i></a>
         </div>
       </div><!-- /#footer -->
 
