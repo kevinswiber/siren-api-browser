@@ -250,7 +250,7 @@ var siren = angular
     scope: {
       main: '='
     },
-    template: '<canvas class="wampum" id="wampum"></canvas>',
+    template: '<canvas class="wampum" id="wampum" width="100%"></canvas>',
     link: link
   };
 }])
