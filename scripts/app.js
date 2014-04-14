@@ -199,7 +199,7 @@ var siren = angular
       }
 
       var unitSize = UNIT_SIZE;
-      canvas.width = screen.width;//unitSize * 36;
+      canvas.width = window.innerWidth;//unitSize * 36;
       canvas.height = scope.main.entities.length * unitSize;
       context.fillStyle = 'rgb(222, 222, 222)';
       context.fillRect(0, 0, canvas.width, canvas.height);
@@ -222,7 +222,7 @@ var siren = angular
         colors[i] = [];
         colors[i].push([last]);
       });
-
+      
       var interval = setInterval(function() {
         angular.forEach(scope.main.entities, function(entity, i) {
           /*scope.$watchCollection(entity.streams, function() {
