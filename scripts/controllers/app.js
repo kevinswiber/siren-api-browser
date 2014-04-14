@@ -13,12 +13,13 @@ sirenAppController.controller('AppCtrl', [
   , 'navigator'
   , 'getStreams'
   , function($scope, $sce, $state, $http, $location, navigator, getStreams) {
-    $scope.init = function() {
-      var params = $state.params;
-      var rootUrl = params.url;
+  $scope.init = function() {
+    var params = $state.params;
+    var rootUrl = params.url;
 
-      follow(rootUrl);
-    };
+    follow(rootUrl);
+    $scope.logger('ws://localhost:3000/events');
+  };
 
   $scope.execute = function(stream) {
     var action = stream.action;
@@ -41,7 +42,8 @@ sirenAppController.controller('AppCtrl', [
         //console.log($scope);  
           
         //console.log('pushing data:', update);
-        stream.data.push([new Date(), update.data]);	  
+	var color = (Math.abs(update.data.toFixed(0) % 360));
+        stream.data.push([new Date(), update.data,color]);	  
 
         if(stream.data.length > 75){
           stream.data.shift();
@@ -86,6 +88,32 @@ sirenAppController.controller('AppCtrl', [
 
       showData(result.data);
     });
+  };
+
+  $scope.logger = function(url){
+    
+    var ws = new WebSocket(url);
+    
+    //when there's a stream message	
+    ws.onmessage = function(event) {
+      //Add data to model w/ timestamp here
+      var d = JSON.parse(event.data);
+      console.log(d);
+      if (d.destination === '_logs') {
+        // visualize state transition
+        angular.forEach($scope.main.entities, function(e) {
+          if (e.raw.name === d.data.properties.name) {
+            e.raw.state = d.data.properties.state;
+          }
+        });
+      }
+    }
+
+    var command = { cmd: "subscribe", name: "_logs" };
+    
+    ws.onopen = function(event) {
+      ws.send(JSON.stringify(command));
+    };
   };
 
   var follow = function(rootUrl) {
@@ -152,6 +180,7 @@ sirenAppController.controller('AppCtrl', [
       angular.forEach(data.entities, function(entity) {
         entity.streams = {};
         entity.totalStreams = 0;
+        entity.streamsArray = [];
         entity.raw = entity.properties;
         entity.properties = JSON.stringify(entity.properties, null, 2);
         var heading = [];
@@ -185,9 +214,13 @@ sirenAppController.controller('AppCtrl', [
                     $scope.execute(s);
                   });
 
-                  entity.streams = stream.streams;
+                  //entity.streams = stream.streams;
+
+                  Object.keys(stream.streams).forEach(function(key) {
+                    entity.streams[key] = stream.streams[key];
+                  });
+                  //console.log('entity.streams:', entity.streams);
                   entity.totalStreams = stream.totalStreams;
-                  
                 });
                 
               }

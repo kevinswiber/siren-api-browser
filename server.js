@@ -1,8 +1,20 @@
 var fs = require('fs');
+var path = require('path');
 var argo = require('argo');
 var mime = require('mime');
+var lessMiddleware = require('less-middleware');
+//var less = require('less');
+//need to render .less code here somewhere?
 
 argo()
+  .use(function(handle) {
+    var less = lessMiddleware(path.join(__dirname), null, { compress: true });
+
+    handle('request', function(env, next) {
+      env.request.path = env.request.url;
+      less(env.request, env.response, function() { next(env); });
+    });
+  })
   .use(function(handle) {
     handle('response', function(env, next) {
       if (env.response.statusCode === 404) {

@@ -1,210 +1,133 @@
-<div id="response" class="row" ng-cloak ng-init="init()">
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-     <div class="container">
-       <div class="navbar-header">
-         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-           <span class="sr-only">Toggle navigation</span>
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-         </button>
-         <a class="navbar-brand" href="#"><i class="fa fa-bolt"></i> Elroy Browser</a>
-         
-       </div>
-       
-       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li ng-repeat="link in main.breadcrumbs">
-              <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-               class="entity-link">{{ link.text }} /</a>
-            </li>
-          </ul>
-       </div>
-       
-       
+<div id="response" ng-cloak ng-init="init()">
+  <z-wampum-belt main="main"></z-wampum-belt>
+  <!-- Characteristic Title -->
+  <div class="characteristic show">
+    <div class="content pure-g">
+      <div class="characteristicTitle pure-u-1">
+          <p class="name" ng-class="">
+            <i class="fa fa-home h_277"></i> {{main.properties.raw.name}}
+          </p>
+          
+          <h1>
+            <span ng-class="main.stateClass", class="state label">{{main.state}}</span>
+          </h1>
       </div>
-    </div>
 
-  <div class="col-md-12">
+      <div class="vis pure-u-1">
+        <z-dna-strip entity="entity"></z-dna-strip>
+        <nvd3-sparkline-chart
+          data="stream.data"
+          id="{{ stream.name }}"
+          x="stream.xFunction()"
+          y="stream.yFunction()",
+          xTickFormat="stream.xTickFunction"
+          rightalignValue="true"
+          width="200"
+          height="60"
+                              >
+        <svg></svg>
+        </nvd3-sparkline-chart>
+        
+      </div>
 
-  	<h1><span class="text-muted">device:</span> {{main.properties.raw.name}} <span ng-class="main.stateClass", class="state label">{{main.state}}</span></h1>
-    <span ng-show="main.class">{{main.class}}</span>
-    
-    <div class="btn-group" id="links" ng-show="main.links.length">
-      <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" id="navbar_links_button">
-        Links <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li ng-repeat="link in main.links">
-        <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-         class="entity-link {{ link.rel }}">{{ link.rel }}</a>
-        </li>
-        <li role="presentation" class="divider"></li>
-        <li><a href="#raw">Raw Response</a></li>
-      </ul>
-    </div>
-    
-  </div>
-	
-  <div class="col-md-6">
-    <div id="properties" >
-	  <h3>Properties</h3>
-      <div ng-bind-html="formattedDiff"></div>
-    
-    </div>
-    <div id="actions" ng-show="main.actions.length">
-      <h3>Actions</h3>
-      <accordion close-others="false">
-        <accordion-group ng-repeat="action in main.actions" is-open="true">
-          <accordion-heading>
+      <div class="actions pure-u-1" ng-show="main.actions.length">
+        <div class="pure-g">
+          <div ng-repeat="action in main.actions" class="pure-u-1-3">
             <span ng-show="action.title">{{action.title}}</span>
             <span ng-show="!action.title">{{action.name}}</span>
-            
-          </accordion-heading>
-          
-            <button class="btn btn-link action_source_modal" data-toggle="modal" data-target="#{{action.href | abc123}}">
-              <i class="fa fa-code"></i> Source
-            </button>
             <form class="form-horizontal">
+                <srn-action value="action"></srn-action>
 
-              <br/>
-              <srn-action value="action"></srn-action>
-              <br/>
-
-              <div class="control-group">
-                <div class="controls">
-                  <button class="btn btn-default" ng-click="execute(action)">Submit</button>
+                <div class="control-group">
+                  <div class="controls">
+                    <button class="pure-button pure-button-primary" ng-click="execute(action)">Submit</button>
+                  </div>
                 </div>
-              </div>
             </form>
-          
-            
-            <!-- Modal -->
-            <div class="modal fade" id="{{action.href | abc123}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    
-                    <h2 class="modal-title" ng-show="action.title">{{action.title}}</h2>
-                    <h2 class="modal-title" ng-show="!action.title">{{action.name}}</h2>
-                    
-                    <h4>
-                      Action <span class="text-muted">Source</span>
-                    </h4>
-                  </div>
-                  <div class="modal-body">
-                    <pre>{{ action | prettify }}</pre>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Done</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-        
-        
-        
-        
-        
-        </accordion-group>
-      </accordion>
-    </div>
-	  
-	
-    <div id="entities" ng-show="main.entities.length">
+          </div>
+        </div>
+      </div>
       
-      <h3>Entities
-		
-		<div class="btn-group" id="links">
-          <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-            Options
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-form" role="menu">
-            <li role="presentation" >
-					<label class="checkbox">
-					  <input type="checkbox" ng-model="isOneAtATime" id="oneAtATime" />
-					  Open only one at a time
-					</label>
-			</li>
-          </ul>
-         </div>
-	</h3>
-      <accordion close-others="isOneAtATime">
-        <accordion-group ng-repeat="entity in main.entities" heading="{{entity.heading}}" is-open="$first">
-          <div>
-			  <h4>Links</h4>
-				<a class="btn btn-primary" ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}" class="entity-link {{ entity.selfLink.rel }}">{{ entity.selfLink.rel }}</a>	
-
-				  <div class="btn-group" ng-show="entity.manyLinks">
-						<button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-							More Links <span class="caret"></span>
-						</button> 
-
-						<ul class="dropdown-menu" role="menu">
-							<li ng-repeat="link in entity.links">
-								<a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-								   class="entity-link {{ link.rel }}">{{ link.rel }}</a>
-							</li>
-						</ul> 
-				  </div>
-		  </div>
-		  <div ng-show="entity.properties.length">
-            <h4>Properties</h4>
-            <pre>{{entity.properties}}</pre>
-          </div>
-          <div ng-show="entity.href">
-            <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
-          </div>
-        </accordion-group>
-      </accordion>
-    </div>
-	
-  </div>
-	
-  <div class="col-md-6">
-	
-	<div id="states">
-		<h3>State History</h3>
-		
-		<div class="panel panel-default">
-			<div class="panel-heading">
-              <span ng-show="!stateLogs.length" class="text-muted">State transitions for: </span>
-              <span ng-show="stateLogs.length" class="text-muted">Latest {{stateLogs.length | pluralize:'transition'}} for: </span>
-              {{main.properties.raw.name}}
+      <div id="properties" class="pure-u-1-2">
+        <h3>Properties</h3>
+        <div ng-bind-html="formattedDiff" class="json"></div>
+      </div>
+      
+      <div id="states" class="pure-u-1-2">
+            <h3>State History</h3>
+            <span ng-show="!stateLogs.length">State transitions for: </span>
+            <span ng-show="stateLogs.length">Latest {{stateLogs.length | pluralize:'transition'}} for: </span>
+            {{main.properties.raw.name}}
+            <!-- scrollable logs here -->
+            <div class="state_log" scroll-glue >
+              <ul>
+                <li ng-repeat="log in stateLogs" ng-class="{latest: $index==stateLogs.length-1}">
+                  <strong>{{ log.transition }}</strong> <span>{{log.time.localTime}} ({{log.time.elapsed}} ms later)</span>
+                </li>
+              </ul>
             </div>
-			<div class="panel-body">
-              <!-- scrollable logs here -->
-              <div class="well state_log" scroll-glue >
-                <ul>
-                  <li ng-repeat="log in stateLogs" ng-class="{latest: $index==stateLogs.length-1}">
-                    <strong>{{ log.transition }}</strong> <span>{{log.time.localTime}} ({{log.time.elapsed}} ms later)</span>
-                  </li>
-                </ul>
+            <div ng-show="stateLogs.length" class="bottom"></div>
+        </div>
+      
+      
+      
+      
+        <div id="entities" ng-show="main.entities.length">
+          <h3>Entities
+
+            <div class="btn-group" id="links">
+              <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                Options
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-form" role="menu">
+                <li role="presentation" >
+                        <label class="checkbox">
+                          <input type="checkbox" ng-model="isOneAtATime" id="oneAtATime" />
+                          Open only one at a time
+                        </label>
+                </li>
+              </ul>
+             </div>
+        </h3>
+          <accordion close-others="isOneAtATime">
+            <accordion-group ng-repeat="entity in main.entities" heading="{{entity.heading}}" is-open="$first">
+              <div>
+                  <h4>Links</h4>
+                    <a class="btn btn-primary" ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}" class="entity-link {{ entity.selfLink.rel }}">{{ entity.selfLink.rel }}</a>	
+
+                      <div class="btn-group" ng-show="entity.manyLinks">
+                            <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                                More Links <span class="caret"></span>
+                            </button> 
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li ng-repeat="link in entity.links">
+                                    <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
+                                       class="entity-link {{ link.rel }}">{{ link.rel }}</a>
+                                </li>
+                            </ul> 
+                      </div>
               </div>
-            </div>
-		</div>
-	</div>
-    
-    <div id="streams" ng-show="main.totalStreams">
-		<h3>Streams</h3>
-		
-		<div ng-repeat="stream in main.streams" class="panel panel-default">
-			<div class="panel-heading"><span class="text-muted">Stream: </span>"{{ stream.name }}"</div>
-			<div class="panel-body">
-              <nvd3-sparkline-chart
-                  data="stream.data"
-                  id="{{ stream.name }}"
-                  x="stream.xFunction()"
-                  y="stream.yFunction()"
-          xTickFormat="stream.xTickFunction"
-                  rightalignValue="true">
-              <svg></svg>
-              </nvd3-sparkline-chart>
-            </div>
-		</div>
-	</div>
-	  
-</div>
+              <div ng-show="entity.properties.length">
+                <h4>Properties</h4>
+                <pre>{{entity.properties}}</pre>
+              </div>
+              <div ng-show="entity.href">
+                <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
+              </div>
+            </accordion-group>
+          </accordion>
+        </div>
+
+    </div>
+  </div><!-- /.characteristic -->
+    <div id="footer" class="pure-u-1">
+       <div class="content">
+         zetta<span class="gray">.js</span> 
+          <a href="https://twitter.com/zettajs"><i class="fa fa-twitter"></i></a>
+          <a href="https://github.com/zettajs"><i class="fa fa-github"></i></a>
+        </div>
+      </div><!-- /#footer -->
+
 </div>

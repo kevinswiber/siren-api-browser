@@ -1,144 +1,133 @@
 <div id="response" ng-cloak ng-init="init()">
-  
-  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-     <div class="container">
-       <div class="navbar-header">
-         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-           <span class="sr-only">Toggle navigation</span>
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-         </button>
-         <a class="navbar-brand" href="#"><i class="fa fa-bolt"></i> Elroy Browser</a>
-         
-       </div>
-       
-       <div class="collapse navbar-collapse" id="navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            
-            
-            <li ng-repeat="link in main.breadcrumbs">
-              <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-               class="entity-link">{{ link.text }} / </a>
-            </li>
-            
-          </ul>
-       </div><!-- /.navbar-collapse -->
-       
-       
-      </div><!-- /.container (for navbar -->
-    </div><!-- /.navbar -->
+  <z-wampum-belt main="main"></z-wampum-belt>
   
 
-  
-  <!-- App Title -->
-  <div class="row">
-    <div class="col-md-12">
-      <h1><span class="text-muted">app:</span> {{main.properties.raw.name | uppercase}}</h1>
-      <span ng-show="main.class">{{main.class}}</span>
-      <div class="btn-group" id="links" ng-show="main.links.length">
-                
-        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" id="navbar_links_button">
-          Links <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li ng-repeat="link in main.links">
-          <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-           class="entity-link {{ link.rel }}">{{ link.rel }}</a>
-          </li>
-          <li role="presentation" class="divider"></li>
-          <li><a href="#raw">Raw Response</a></li>
-        </ul>
-      </div>
-    </div>
-  </div >
-  <div class="row">
-    <div class="col-md-12">
-    <!-- <div masonry id="entities" ng-show="main.entities.length" > -->
-    <div id="entities" ng-show="main.entities.length" >
-      <!-- <div ng-repeat="entity in main.entities" class="masonry-brick col-sm-6"> -->
-      <div ng-repeat="entity in main.entities" class="col-sm-6">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h4 class="panel-title entity-title">
-                
-                <a class="self-link title pull-left" ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{entity.heading}}</a>
-                
-                
-                  <div class="dropdown" ng-show="entity.manyLinks">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                      More Links <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li ng-repeat="link in entity.links">
-                        <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-                                   class="entity-link {{ link.rel }}">{{ link.rel }}</a>
-                      </li>
-                    </ul>
-                  </div>
-                
-                <a data-toggle="collapse" data-parent="#accordion" href="#{{entity.heading}}" class="pull-right small">Toggle Visibility</a>
-              </h4>
-            </div>
-            <div id="{{entity.heading}}" class="panel-collapse collapse in">
-              <div class="panel-body">
-                
-<h4><span class="text-muted">state: </span><span class="label label-info">{{entity.raw.state}}</span></h4>
 
-                <div class="streams app_streams panel panel-default" ng-show="entity.totalStreams">
-                  <div class="panel-heading">
-                    <h4 class="panel-title">
-                      <i class="fa fa-bar-chart-o"></i> Streams
-                    </h4>
-                  </div>
-                  <div class="panel-body">
-                    <div class="stream row" ng-repeat="stream in entity.streams">
-                      <div class="col-sm-5" ><p class="text-success">{{ stream.name }}</p></div>
-                      <div class="col-sm-7">
-                        <nvd3-sparkline-chart
-                          data="stream.data"
-                          id="{{ stream.name }}"
-                          x="stream.xFunction()"
-                          y="stream.yFunction()",
-                          xTickFormat="stream.xTickFunction"
-                          rightalignValue="true"
-                          width="200"
-                          height="60"
-                                              >
-                        <svg></svg>
-                        </nvd3-sparkline-chart>
-                      </div>
-                    </div>
-                  </div>
-                </div>	
+  <div id="devices" ng-show="main.entities.length" class="pure-g-r">
 
-                <div class="panel-group" id="properties" ng-show="entity.properties.length">
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#properties" href="#{{entity.selfLink.href | abc123}}">
-                          <i class="fa fa-list-ul"></i> Properties
-                        </a>
-                      </h4>
-                    </div>
-                    <div id="{{entity.selfLink.href | abc123}}" class="panel-collapse collapse">
-                      <div class="panel-body">
-                        <pre>{{entity.properties}}</pre>
-                      </div>
-                    </div>
-                  </div>
-                </div>  
-
-                <div ng-show="entity.href">
-                  <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
+            <!-- Self link for state & actions -->
+            <div class="characteristic pure-u-1-4 self" id="{{entity.heading}}" ng-repeat-start="entity in main.entities">
+              <div class="content">
+                <p class="name" ng-class=""><i class="fa fa-home h_277"></i>
+                  
+                  <a ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{$index}}: {{entity.heading}}</a>
+                </p>
+                
+                <h1>{{entity.raw.state}}<span class="units"></span></h1>
+                
+                <div class="vis">
+                  <z-dna-strip entity="entity"></z-dna-strip>
+                  <!-- 
+                  <nvd3-sparkline-chart
+                    data="stream.data"
+                    id="{{ stream.name }}"
+                    x="stream.xFunction()"
+                    y="stream.yFunction()",
+                    xTickFormat="stream.xTickFunction"
+                    rightalignValue="true"
+                    width="200"
+                    height="60"
+                                        >
+                  <svg></svg>
+                  </nvd3-sparkline-chart>
+                  -->
                 </div>
-              </div>
-            </div>
-          </div><!-- /.panel -->
-      </div>
-  </div>
-  </div>
-</div>
-  
+                
+                <!-- 
+                <div class="actions">
+                  <button class="pure-button pure-button-primary">off</button>
+                  <button class="pure-button">toggle</button>
 
+                  <div ng-show="entity.href">
+                      <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
+                  </div>
+                </div>
+                -->
+                
+              </div><!-- /.content -->
+            </div>
+            
+            <!-- all other characteristic data for device -->
+            <div class="characteristic pure-u-1-4 {{ stream.name }}" ng-repeat="stream in entity.streams" ng-repeat-end="entity in main.entities">
+              <div class="content">
+                <p class="name"><i class="fa fa-asterisk h_{{ stream.data.slice(-1)[0][2] }}" ng-class=" "></i>{{$parent.$index}}.{{$index +1}}: {{ stream.name }}
+
+                </p>
+                
+                <h1>{{ stream.data.slice(-1)[0][1].toFixed(3) }}<span class="units"></span></h1>
+                
+                <div class="vis">
+
+		  <!--
+                  <z-dna-strip entity="entity"></z-dna-strip>
+		  -->
+                  <nvd3-sparkline-chart
+                    data="stream.data"
+                    id="{{ stream.name }}"
+                    x="stream.xFunction()"
+                    y="stream.yFunction()",
+                    xTickFormat="stream.xTickFunction"
+                    rightalignValue="true"
+                    width="200"
+                    height="60"
+                                        >
+                  <svg></svg>
+                  </nvd3-sparkline-chart>
+                
+                </div>
+                
+                <!-- 
+                <div class="actions">
+                  <button class="pure-button pure-button-primary">off</button>
+                  <button class="pure-button">toggle</button>
+
+                  <div ng-show="entity.href">
+                      <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
+                  </div>
+                </div>
+                -->
+                
+              </div><!-- /.content -->
+            </div><!-- characteristic repeater -->
+  
+    </div>
+  </div>  
+      <!-- 
+        <div class="panel-heading">
+            <h4 class="panel-title entity-title">
+
+              
+
+
+                <div class="dropdown" ng-show="entity.manyLinks">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    More Links <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li ng-repeat="link in entity.links">
+                      <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
+                                 class="entity-link {{ link.rel }}">{{ link.rel }}</a>
+                    </li>
+                  </ul>
+                </div>
+
+            </h4>
+          </div>
+-->
+    <!-- App Title -->
+  <div class="appTitle">
+    <div class="">
+      <h1>
+        <span class="text-muted">app:</span> {{main.properties.raw.name | uppercase}}
+      </h1>
+    </div>
+  </div>
+     <div id="footer" class="pure-u-1">
+       <div class="content">
+         zetta<span class="gray">.js</span> 
+          <a href="https://twitter.com/zettajs"><i class="fa fa-twitter"></i></a>
+          <a href="https://github.com/zettajs"><i class="fa fa-github"></i></a>
+        </div>
+      </div><!-- /#footer -->
 </div>
+
