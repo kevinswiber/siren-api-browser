@@ -1,5 +1,5 @@
 var siren = angular
-  .module('elroy', [
+  .module('zetta', [
     'siren'
     , 'ui.state'
     , 'ngAnimate'
