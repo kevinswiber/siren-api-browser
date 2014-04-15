@@ -13,6 +13,33 @@ sirenAppController.controller('AppCtrl', [
   , 'navigator'
   , 'getStreams'
   , function($scope, $sce, $state, $http, $location, navigator, getStreams) {
+    
+  //for the leafelet maps
+  angular.extend($scope, {
+      defaults: {
+          markers: {
+              devMarker: {
+                  lat: 42,
+                  lng: -83,
+                  focus: false,
+                  draggable: false
+              }
+          },
+          maxZoom: 4,
+          center: {
+            lat: 42,
+            lng: -83,
+            zoom: 2
+          },
+        defaults: {
+            scrollWheelZoom: false
+        }
+      }
+  });  
+    
+    
+    
+    
   $scope.init = function() {
     var params = $state.params;
     var rootUrl = params.url;

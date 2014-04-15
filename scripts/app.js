@@ -10,7 +10,9 @@ var siren = angular
     , 'sirenEntityController'
     , 'sirenMainController'
     , 'sirenServices'
+    , 'leaflet-directive'
   ]);
+
 
   siren.config([
     'classRouterProvider'

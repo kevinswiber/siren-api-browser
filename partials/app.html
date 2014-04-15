@@ -37,7 +37,7 @@
 
               <div class="vis">
                 <z-dna-strip entity="entity"></z-dna-strip>
-                <div class="map">Map</div>
+                <leaflet width="250px" height="80px" center="center" markers="markers" ></leaflet>
                 <!-- 
                 <nvd3-sparkline-chart
                   data="stream.data"
@@ -71,7 +71,7 @@
           <!-- all other characteristic data for device -->
           <div class="characteristic {{ stream.name }}" ng-repeat="stream in entity.streams">
             <div class="content">
-              <div class="name"><i class="fa fa-asterisk h_{{ stream.data.slice(-1)[0][2] }}" ng-class=" "></i>{{$parent.$index}}.{{$index +1}}: {{ stream.name }}
+              <div class="name"><i class="fa fa-asterisk h_{{ stream.data.slice(-1)[0][2] }}" ng-class=" "></i> {{$parent.$index}}.{{$index +1}}: {{ stream.name }}
               </div>
               <h1>{{ stream.data.slice(-1)[0][1].toFixed(3) }}<span class="units"></span></h1>
 
