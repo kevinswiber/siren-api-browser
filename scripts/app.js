@@ -1,5 +1,5 @@
 var siren = angular
-  .module('elroy', [
+  .module('zetta', [
     'siren'
     , 'ui.state'
     , 'ngAnimate'
@@ -143,7 +143,7 @@ var siren = angular
 }])
 .directive('zWampumBelt', ['$compile', function($compile) {
   function textToColor(text) {
-    var code = text.split('').map(function(c) {
+    var code = text.toString().split('').map(function(c) {
       return c.charCodeAt(0);
     }).reduce(function(previous, current) {
       return previous + current;
@@ -172,13 +172,26 @@ var siren = angular
     var height = UNIT_SIZE;//context.canvas.height;
 
     colors.forEach(function(row) {
-      row.forEach(function(color) {
+      row.state.forEach(function(color) {
         context.fillStyle = 'hsl(' + color.hue + ', ' + color.saturation + ', 50%)';
         context.fillRect(x, y, width, height);
         x = x - unitWidth;
       });
       y = y + height;
       x = context.canvas.width - unitWidth;
+
+      if (row.streams.length) {
+        row.streams.forEach(function(strm) {
+          strm.forEach(function(color) {
+            context.fillStyle = 'hsl(' + color.hue + ', ' + color.saturation + ', 50%)';
+            //context.fillStyle = 'hsl(' + color.hue + ', 100%, 50%)';
+            context.fillRect(x, y, width, height);
+            x = x - unitWidth;
+          });
+          y = y + height;
+          x = context.canvas.width - unitWidth;
+        });
+      }
     });
 
     if (cb) cb();
@@ -194,6 +207,13 @@ var siren = angular
         saturation: textToSaturation(entity.raw.name)
       };
     };
+
+    function getStreamColor(name, value) {
+      return {
+        hue: textToColor(value),
+        saturation: textToSaturation(name)
+      };
+    }
 
     scope.$watchCollection('main.entities', function() {
       if (scope.main.entities.length === 0) {
@@ -213,16 +233,41 @@ var siren = angular
       var colors = [];
       angular.forEach(scope.main.entities, function(entity, i) {
         var last = getColor(entity);
-        scope.$watchCollection('main', function() {
-          //if (entity.streams.length === 0) {
-            //return;
-          //}
+
+        colors[i] = {};
+        colors[i].state = [];
+        colors[i].streams = [];
+        colors[i].state.push([last]);
+
+        scope.$watchCollection('main.entities[' + i + ']', function() {
+          var keys = Object.keys(entity.streams);
+
+          if (keys.length === 0) {
+            return;
+          }
 
           console.log('name:', entity.raw.name);
           console.log('streams:', entity.streams);
+
+          angular.forEach(keys, function(key) {
+            console.log(key);
+            canvas.height += unitSize;
+            console.log(canvas.height);
+            colors[i].streams.push([]);
+            var streamIndex = colors[i].streams.length - 1;
+            scope.$watchCollection('main.entities[' + i + '].streams["' + key + '"].data', function() {
+              var d = entity.streams[key].data;
+              if (d.length === 0) {
+                return;
+              }
+              var arr = d[d.length - 1];
+              var c = { hue: (Math.abs(arr[1].toFixed(0) % 360)), saturation: '100%' };
+              //var c = getStreamColor(key, arr[1]);
+              //colors[i].streams[streamIndex].unshift(getStreamColor(key, (arr[1])));
+              colors[i].streams[streamIndex].unshift(c);
+            });
+          });
         }, true);
-        colors[i] = [];
-        colors[i].push([last]);
       });
       
       var interval = setInterval(function() {
@@ -236,10 +281,15 @@ var siren = angular
             //console.log('streams:', entity.streams);
           });*/
           var last = getColor(scope.main.entities[i]);
-          colors[i].unshift(last);
+          colors[i].state.unshift(last);
           if (colors[i].length > 200) {
-            colors[i] = colors[i].slice(0, 199);
+            colors[i].state = colors[i].state.slice(0, 199);
           }
+          colors[i].streams.forEach(function(strm, j) {
+            var last = colors[i].streams[j].slice(-1);
+            colors[i].streams[j].unshift(last);
+            colors[i].streams[j] = colors[i].streams[j].slice(0, 199);
+          });
         });
 
         drawCanvas(context, colors);
