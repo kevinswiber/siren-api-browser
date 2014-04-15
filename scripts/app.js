@@ -284,6 +284,8 @@ var siren = angular
             colors[i].state = colors[i].state.slice(0, 199);
           }
           colors[i].streams.forEach(function(strm, j) {
+            var last = colors[i].streams[j].slice(-1);
+            colors[i].streams[j].unshift(last);
             colors[i].streams[j] = colors[i].streams[j].slice(0, 199);
           });
         });
