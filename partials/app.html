@@ -23,7 +23,7 @@
   <div id="devices_container">
   <div id="devices" ng-show="main.entities.length" class="">
     <div class="row">
-    <div class="device" ng-repeat="entity in main.entities">
+    <div class="device" ng-repeat="entity in main.entities | reverse">
         <!-- Self link for state & actions -->    
         <div class="characteristic self" id="{{entity.heading}}">
             <div class="content">
@@ -37,7 +37,7 @@
 
               <div class="vis">
                 <z-dna-strip entity="entity"></z-dna-strip>
-                <leaflet width="250px" height="80px" center="center" markers="markers" ></leaflet>
+                <leaflet width="250px" height="80px" center="center" markers="markers" id="map_{{entity.heading}}"></leaflet>
                 <!-- 
                 <nvd3-sparkline-chart
                   data="stream.data"

@@ -50,3 +50,9 @@ sirenFilters.filter('pluralize', function() {
       }
     };
   });
+
+sirenFilters.filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
+});

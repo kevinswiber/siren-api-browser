@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-var sirenAppController = angular.module('sirenAppController', []);
+var sirenAppController = angular.module('sirenAppController', ['leaflet-directive']);
 
 sirenAppController.controller('AppCtrl', [
   '$scope'
@@ -12,33 +12,31 @@ sirenAppController.controller('AppCtrl', [
   , '$location'
   , 'navigator'
   , 'getStreams'
-  , function($scope, $sce, $state, $http, $location, navigator, getStreams) {
+  , function($scope, $sce, $state, $http, $location, navigator, getStreams, leafletDirective) {
     
-  //for the leafelet maps
-  angular.extend($scope, {
-      defaults: {
-          markers: {
-              devMarker: {
-                  lat: 42,
-                  lng: -83,
-                  focus: false,
-                  draggable: false
-              }
-          },
-          maxZoom: 4,
-          center: {
-            lat: 42,
-            lng: -83,
-            zoom: 2
-          },
+   angular.extend($scope, {
+        markers: {
+            devMarker: {
+                lat: 42,
+                lng: -83,
+                focus: false,
+                draggable: false
+            }
+        },
+        maxZoom: 4,
+        center: {
+          lat: 42,
+          lng: -83,
+          zoom: 2
+        },
+        attributionControl: false,
         defaults: {
             scrollWheelZoom: false
         }
-      }
-  });  
-    
-    
-    
+      
+  });   
+  
+    console.log("defaults: ", $scope.defaults);
     
   $scope.init = function() {
     var params = $state.params;
@@ -292,7 +290,10 @@ sirenAppController.controller('AppCtrl', [
       }
     }
   };
-
+  
+   
+    
+    
 } //.controller anonymous function
 
 ]); //closure for .controller
