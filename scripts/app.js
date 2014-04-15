@@ -181,14 +181,14 @@ var siren = angular
       if (row.streams.length) {
         row.streams.forEach(function(strm) {
           strm.forEach(function(color) {
-            //context.fillStyle = 'hsl(' + color.hue + ', ' + color.saturation + ', 50%)';
-            context.fillStyle = 'hsl(' + color.hue + ', 100%, 50%)';
+            context.fillStyle = 'hsl(' + color.hue + ', ' + color.saturation + ', 50%)';
+            //context.fillStyle = 'hsl(' + color.hue + ', 100%, 50%)';
             context.fillRect(x, y, width, height);
             x = x - unitWidth;
           });
+          y = y + height;
+          x = context.canvas.width - unitWidth;
         });
-        y = y + height;
-        x = context.canvas.width - unitWidth;
       }
     });
 
@@ -248,7 +248,9 @@ var siren = angular
           console.log('streams:', entity.streams);
 
           angular.forEach(keys, function(key) {
+            console.log(key);
             canvas.height += unitSize;
+            console.log(canvas.height);
             colors[i].streams.push([]);
             var streamIndex = colors[i].streams.length - 1;
             scope.$watchCollection('main.entities[' + i + '].streams["' + key + '"].data', function() {
@@ -257,9 +259,10 @@ var siren = angular
                 return;
               }
               var arr = d[d.length - 1];
-              var c = (Math.abs(arr[1].toFixed(0) % 360));
+              var c = { hue: (Math.abs(arr[1].toFixed(0) % 360)), saturation: '100%' };
+              //var c = getStreamColor(key, arr[1]);
               //colors[i].streams[streamIndex].unshift(getStreamColor(key, (arr[1])));
-              colors[i].streams[streamIndex].unshift({ hue: c });
+              colors[i].streams[streamIndex].unshift(c);
             });
           });
         }, true);
