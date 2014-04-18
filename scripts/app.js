@@ -262,8 +262,6 @@ var siren = angular
               }
               var arr = d[d.length - 1];
               var c = { hue: (Math.abs(arr[1].toFixed(0) % 360)), saturation: '100%' };
-              //var c = getStreamColor(key, arr[1]);
-              //colors[i].streams[streamIndex].unshift(getStreamColor(key, (arr[1])));
               colors[i].streams[streamIndex].unshift(c);
             });
           });
@@ -272,22 +270,17 @@ var siren = angular
       
       var interval = setInterval(function() {
         angular.forEach(scope.main.entities, function(entity, i) {
-          /*scope.$watchCollection(entity.streams, function() {
-            //if (entity.streams.length === 0) {
-              //return;
-            //}
-
-            //console.log('name:', entity.raw.name);
-            //console.log('streams:', entity.streams);
-          });*/
           var last = getColor(scope.main.entities[i]);
           colors[i].state.unshift(last);
           if (colors[i].length > 200) {
             colors[i].state = colors[i].state.slice(0, 199);
           }
           colors[i].streams.forEach(function(strm, j) {
-            var last = colors[i].streams[j].slice(-1);
-            colors[i].streams[j].unshift(last);
+            var last = colors[i].streams[j].slice(-1)[0];
+
+            if (last) {
+              colors[i].streams[j].unshift(last);
+            }
             colors[i].streams[j] = colors[i].streams[j].slice(0, 199);
           });
         });
