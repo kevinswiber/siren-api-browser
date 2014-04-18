@@ -1,7 +1,7 @@
 @import 'hues.css';
 
 @text: hsl(0, 0%, 30%);
-@zborder: #ccc;
+@zborder: #ddd;
 
 @ao: #E86C1F;
 @ag: #5E5F61;
@@ -82,7 +82,7 @@ p, pre {
   }
 }
 .characteristic {
-  
+  width: 282px;
   &.show {
     max-width: 777px;
     margin: 0 auto;
@@ -92,15 +92,16 @@ p, pre {
     border-bottom: double @zborder; 
   }
   .name {
-    padding: .5em 0 0 0;
+    padding: .5em 0 .3em 0;
     font-family: "chaparral-pro-display", serif;
     font-weight: 400;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    
     a {
       text-decoration: none;
-      color: @text
+      color: @text;
     }
     border-bottom: 1px solid @zborder;
     

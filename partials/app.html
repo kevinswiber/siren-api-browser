@@ -23,13 +23,13 @@
   <div id="devices_container">
   <div id="devices" ng-show="main.entities.length" class="">
     <div class="row">
-    <div class="device" ng-repeat="entity in main.entities | reverse">
+    <div class="device" ng-repeat="entity in main.entities">
         <!-- Self link for state & actions -->    
         <div class="characteristic self" id="{{entity.heading}}">
             <div class="content">
               <div class="name" ng-class=""><i class="fa fa-home h_277"></i>
 
-                <a ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{$index}}: {{entity.heading}}</a>
+                <a ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{entity.heading}}</a>
                 <div class="devicecon"></div>
               </div>
 
@@ -37,7 +37,7 @@
 
               <div class="vis">
                 <z-dna-strip entity="entity"></z-dna-strip>
-                <leaflet width="250px" height="80px" center="center" markers="markers" id="map_{{entity.heading}}"></leaflet>
+                <leaflet height="80px" center="center" markers="markers" id="map_{{entity.heading}}"></leaflet>
                 <!-- 
                 <nvd3-sparkline-chart
                   data="stream.data"
@@ -71,7 +71,7 @@
           <!-- all other characteristic data for device -->
           <div class="characteristic {{ stream.name }}" ng-repeat="stream in entity.streams">
             <div class="content">
-              <div class="name"><i class="fa fa-asterisk h_{{ stream.data.slice(-1)[0][2] }}" ng-class=" "></i> {{$parent.$index}}.{{$index +1}}: {{ stream.name }}
+              <div class="name"><i class="fa fa-asterisk h_{{ stream.data.slice(-1)[0][2] }}" ng-class=" "></i>{{ stream.name }}
               </div>
               <h1>{{ stream.data.slice(-1)[0][1].toFixed(3) }}<span class="units"></span></h1>
 
@@ -87,7 +87,7 @@
                   y="stream.yFunction()",
                   xTickFormat="stream.xTickFunction"
                   rightalignValue="true"
-                  width="200"
+                  width="285"
                   height="60"
                                       >
                 <svg></svg>
