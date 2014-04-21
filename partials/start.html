@@ -1,20 +1,65 @@
-<div ng-init="init()">
-  <form class="pure-form" id="zetta-start">
-    
-	<label for="url">
-		<h1>zetta<span class="gray">.js</span></h1>
-		<h3>Enter your fog app URL</h3>  
-	</label>
+<div ng-init="init()" class="projects">
+
 	
-	<div class="form-group">
-		<div class="input-group col-md-6">
-			<input type="text" size=60 class="form-control" id="url" name="url" ng-model="params.url" placeholder="Zetta Fog App URL" autofocus/>		  
-			<button class="pure-button pure-button-primary" ng-click="fetchUrl(params)">Submit</button>
-		</div><!-- /input-group -->
+  
+<div id="header" class="pure-g">
+  <div class="pure-u-2-3 breadcrumbs">
+    <div class="content">Projects</div>
+  </div>
+  <div class="pure-u-1-3 logo">
+    <div class="content">
+      <!--
+      <ul ng-init="user_drop=false">
+        <li>
+          <span ng-click="user_drop=true" ng-show="!user_drop">Alan <i class="fa fa-caret-down"></i></span>
+          <span ng-click="user_drop=false" ng-show="user_drop">Alan <i class="fa fa-caret-down"></i></span>
+          <ul ng-show="user_drop">
+            <li>Logout</li>
+          </ul>
+        </li>
+      </ul>
+-->
+      <a href="index.html"><img src="images/zetta-logo_sm.png"/></a>
     </div>
-	  
-  </form>
-	
-	
+  </div>
+
+</div>
+  
+  
+<div class="pure-g-r" id="projects-list">
+  <div class="pure-u-1-3">
+    <div class="content">
+      <h1>Detroit Driverless Taxi Service</h1>
+      <div class="volume">
+        <strong>15</strong> fog hubs connected
+      </div>
+    </div>
+  </div>
+  
+  <div class="pure-u-1-3">
+    <div class="content">
+      <h1 ng-init="params.url='http://localhost:3000/hello'">
+        <a href="#" ng-click="fetchUrl(params)">Robots demo in the Zetta Office</a>
+      </h1>
+      <div class="volume">
+        <strong>1</strong> fog hub connected
+      </div>
+    </div>
+  </div>
+  
+  <div class="pure-u-1-3">
+    <div class="content">
+      <h1>Home Automation - Test Project</h1>
+      <div class="volume">
+        <strong>3</strong> fog hubs connected
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+  
+  <ng-include src="'partials/footer.html'"></ng-include>
+  
 </div>
 <div id="entity" siren-view />

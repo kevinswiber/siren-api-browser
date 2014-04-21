@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" ng-app="zetta">
+  <head>
+    <title>Zetta Browser</title>
+    <meta charset="utf-8" />
+    <meta name="fragment" content="!" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+<!--    Pure CSS    -->
+    <link rel="stylesheet" href="styles/vendor/pure-min.css">
+	  
+<!--    Multiple weights of Source Sans Pro   -->
+    <link href="styles/vendor/fonts/source_sans_pro200+300+400+700.css" rel="stylesheet">
+    <link href="styles/vendor/fonts/source_code_pro400+500+600+700.css" rel="stylesheet">
+
+<!-- Typkit fonts -->
+    
+    <script type="text/javascript" src="//use.typekit.net/rcx5hyq.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    
+<!--     Icons, yo!   -->
+    <link rel="stylesheet" href="styles/vendor/font-awesome-4.0.3/css/font-awesome.min.css">
+
+
+<!--    Our Stylesheet    -->
+    <link href="styles/web.css" rel="stylesheet" />
+    
+    <script src="scripts/vendor/angular.js"></script>
+    <script type="text/javascript">
+      var zetta = angular.module('zetta', []);
+      zetta.controller('ZettaCtrl', ['$scope', function($scope){}]);
+    </script>
+  </head>
+  <body>
+
+    
+  <div id="app_container">
+        
+    <div class="app_start">
+
+	
+      <form class="pure-form" id="zetta-start">
+
+
+          <div class="pure-u-1">
+            <img src="images/zetta-logo_hero.png" alt="zetta.js" />
+          </div>
+          <div class="pure-g-r">
+            <fieldset class="pure-group pure-u-1">
+                <input type="text" class="pure-input-1" placeholder="&#61447; Email or Username">
+                <input type="password" class="pure-input-1" placeholder="&#61572; Password">
+            </fieldset>
+
+            <div class="pure-u-3-4"><a href="#">forgot?</a></div>
+            <div class="pure-u-1-4 sign-in">
+              <a class="pure-button pure-button-primary " href="/index.html">Sign in</a>
+            </div>
+
+
+        </div>
+      </form>
+
+      <ng-include src="'partials/footer.html'"></ng-include>
+
+    </div>
+  </div>
+  </body>
+</html>

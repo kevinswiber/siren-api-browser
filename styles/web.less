@@ -6,6 +6,14 @@
 @ao: #E86C1F;
 @ag: #5E5F61;
 
+@link: #386EB4;
+
+@sans: 'chaparral-pro-display', georgia, serif;
+
+body, html, #app_container{
+  height: 100%;
+}
+
 body {
   color: @text;
 }
@@ -14,7 +22,7 @@ html, button, input, select, textarea,
 .pure-g [class *= "pure-u"],
 .pure-g-r [class *= "pure-u"] {
     /* Set your content font stack here: */
-    font-family: "Source Sans Pro", Georgia, Times, "Times New Roman", serif;
+    font-family: "Source Sans Pro", Helvetica, arial, sans-serif;
 }
 
 /* h1, h2, h3, h4, h5, h6 {
@@ -31,14 +39,42 @@ pre, code, .mono {
 p, pre {
   margin-top: .5em; margin-bottom: .5em;
 }
-
+.app_start {
+  background: #fafafa url('img/lab-background.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  
+  height: 100%;
+  #footer{ 
+    margin: 5em auto 0 auto; 
+  }
+}
 #zetta-start {
-  text-align: center;
+  text-align: left;
+  width: 420px; 
+  margin: 0 auto;
+  padding: 2em 0;
   h1 {
     font-size: 4em; font-weight: 400;
     color: @ao;
     span {
       color: @ag;
+    }
+  }
+  input {
+    font-family: 'FontAwesome', 'Source Sans Pro', helvetica, arial, sans-serif;;
+  }
+  .pure-g {
+    width: 94%;
+    margin: 1em auto;
+  }
+  .sign-in {
+    text-align: right;
+    a {
+      border: 1px solid #fff;
+      box-shadow: 0px 0px 10px #fff;
     }
   }
 }
@@ -56,18 +92,20 @@ p, pre {
       font-weight: 300;
     }
   }
-  .brand {
-    font-size: 1.4em;
-    text-align: right;
-    .content {
-      padding: .25em 1em .5em 0;
-      color: @ao;
-      .gray { 
-        color: @ag; 
-      }
-    }
+}
+
+#projects-list {
+  .centered;
+  h1 {
+    font-family: @sans;
+    font-weight: 300;
+  }
+  .content {
+    padding: 1em 2em;
   }
 }
+
+
 #devices_container {
   width: 100%;
   overflow-x: scroll;
@@ -93,7 +131,7 @@ p, pre {
   }
   .name {
     padding: .5em 0 .3em 0;
-    font-family: "chaparral-pro-display", serif;
+    font-family: @sans;
     font-weight: 400;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -190,17 +228,45 @@ p, pre {
   }
 }
 
+#header {
+  .centered;
+  position: relative;
+  border-bottom: 1px solid @zborder; 
+  
+  .logo {
+    ul, li {margin: 0; padding: 0; list-style-type: none;}
+    text-align: right;
+    ul {display: inline-block;}
+  }
+  
+  .breadcrumbs .content{
+    font-family: @sans;
+    font-size: 1.8em;
+    color: #aaa;
+    padding-top: .5em;
+  }
+}
+
 #footer {
+  .centered;
+  position: relative;
+  bottom: 0;
+  
   font-size: 1.4em;
-  text-align: center;
-  .content{padding: 1em 0;}
+  .content{padding: 1em;}
   border-top: 1px solid @zborder; 
-  color: @ao;
-  .gray {
-    color: @ag;
-    padding-right: 1em;
+  
+  .logo {text-align: right;}
+  
+  ul{margin: 0; padding: .2em 0 0 0; list-style-type: none;}
+  li {
+    display: inline;
+    margin: 0 .5em;
   }
-  a {
-    padding: 0 1em;
-  }
+}
+
+.centered {
+  width: 80%;
+  min-width: 768px;
+  margin: 2em auto;
 }

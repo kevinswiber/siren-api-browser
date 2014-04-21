@@ -32,7 +32,7 @@ argo()
       }
 
       var filename = __dirname +
-        (env.request.url === '/' ? '/index.html' : env.request.url)
+        (env.request.url === '/' ? '/start.html' : env.request.url)
 
       fs.stat(filename, function(err, stat) {
         if (err) {
