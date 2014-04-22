@@ -141,6 +141,18 @@ var siren = angular
     link: link
   };
 }])
+.directive('sparkline', ['$compile', function($compile){
+
+  function link(scope, element, attrs) {}
+  return {
+    restrict: 'E',
+    scope: {
+      main: '='
+    },
+    template: '<p>SVG Sparkline Here</p>',
+    link: link
+  };
+}])
 .directive('zWampumBelt', ['$compile', function($compile) {
   function textToColor(text) {
     var code = text.toString().split('').map(function(c) {

@@ -17,22 +17,32 @@ sirenAppController.controller('AppCtrl', [
    angular.extend($scope, {
         markers: {
             devMarker: {
-                lat: 42,
-                lng: -83,
-                focus: false,
-                draggable: false
+              lat: 42,
+              lng: -83,
+              focus: false,
+              draggable: false
+            },
+            apigeeBangalore: {
+              lat:  12.9,
+              lng:  77.5,
+              focus: false,
+              draggable: false
             }
         },
-        maxZoom: 4,
+        
         center: {
-          lat: 42,
-          lng: -83,
+          lat: 34,
+          lng: 0,
           zoom: 2
         },
         attributionControl: false,
         defaults: {
-            scrollWheelZoom: false
+            scrollWheelZoom: false,
+            tileLayer: 'http://api.tiles.mapbox.com/v3/alanguirand.i04decfa/{z}/{x}/{y}.jpg',
+            minZoom: 2,
+            maxZoom: 2,
         }
+        
       
   });   
   
@@ -209,7 +219,10 @@ sirenAppController.controller('AppCtrl', [
         entity.raw = entity.properties;
         entity.properties = JSON.stringify(entity.properties, null, 2);
         var heading = [];
-		
+		//console.log("entity: ", entity.raw.location);
+        entity.location = entity.raw.location;
+        
+        
         if (entity.raw.name && entity.raw.name.length > 0) {
           entity.heading = entity.raw.name;
         } else {

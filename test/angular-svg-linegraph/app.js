@@ -2,7 +2,7 @@ angular.element(document).ready(function() {
   var app = angular.module('angularSVG', []);
   
 	app.controller('MainCtrl', function($scope) {
-		$scope.graph = {'width': 600, 'height': 100};
+		$scope.graph = {'width': 200, 'height': 30};
         
         var p = [];
         for(i=0; i<40; i++){

@@ -8,8 +8,8 @@
     <script src="app.js"></script>
   </head>
   <body ng-controller="MainCtrl">
-    <svg ng-attr-height="{{graph.height}}" ng-attr-width="{{graph.width}}">
-    	<path class="line" ng-attr-d="{{line(points)}}"></path>
+    <svg ng-attr-height="200" ng-attr-width="30">
+    	<path class="sparkline" ng-attr-d="{{line(points)}}"></path>
     </svg>
   </body>
 </html>
