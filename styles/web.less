@@ -79,23 +79,9 @@ p, pre {
   }
 }
 
-.header {
-  .breadcrumbs {
-    ul {
-      margin: 0; 
-      padding: .8em 0 0 1em;
-      list-style-type: none;
-    }
-    li {
-      color: hsl(0, 0%, 50%);
-      display: inline;
-      font-weight: 300;
-    }
-  }
-}
-
 #projects-list {
   .centered;
+  
   h1 {
     font-family: @sans;
     font-weight: 300;
@@ -103,12 +89,16 @@ p, pre {
   .content {
     padding: 1em 2em;
   }
+  .volume {
+    background-color: #F2F2F2;
+    padding: 1em;
+    border-bottom: 1px solid #bcbcbc;
+  }
 }
 
 
 #devices_container {
-  width: 100%;
-  overflow-x: scroll;
+  .centered;
 }
 #devices {
   display: table;
@@ -122,12 +112,11 @@ p, pre {
 .characteristic {
   width: 282px;
   &.show {
-    max-width: 777px;
-    margin: 0 auto;
+    .centered;
   }
-  .content { padding: 1em; }
+  .content { padding: 1em 1em 1em 0; }
   &.self .name { 
-    border-bottom: double @zborder; 
+    border-bottom: none;
   }
   .name {
     padding: .5em 0 .3em 0;
@@ -243,7 +232,18 @@ p, pre {
     font-family: @sans;
     font-size: 1.8em;
     color: #aaa;
-    padding-top: .5em;
+    padding: .2em 0;
+    
+    ul {
+      margin: 0; 
+      padding: 0em;
+      list-style-type: none;
+    }
+    li {
+      color: hsl(0, 0%, 50%);
+      display: inline;
+    }
+    
   }
 }
 
@@ -267,6 +267,6 @@ p, pre {
 
 .centered {
   width: 80%;
-  min-width: 768px;
+  min-width: 1028px;
   margin: 2em auto;
 }
