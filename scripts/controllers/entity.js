@@ -66,7 +66,28 @@ sirenEntityController.controller('EntityCtrl', [
       return;
     }
 
-    var fd = new FormData();
+    navigator.execute(action).then(function(result) {
+      if (result.noop) {
+        return;
+      }
+		
+      var data = result.data;
+      var config = result.config;
+
+      $scope.main.class = null;
+      $scope.main.actions = [];
+      $scope.main.entities = [];
+      $scope.main.links = [];
+      
+      $scope.formattedDiff = "";
+      $scope.main.breadcrumbs = [];
+
+      $scope.url = config.url;
+      $state.params.url = config.url;
+
+      showData(data);
+    });
+    /*var fd = new FormData();
     angular.forEach(action.fields,function(val){
       fd.append(val.name,(val.file || val.value) );
     });
@@ -96,7 +117,7 @@ sirenEntityController.controller('EntityCtrl', [
       $state.params.url = config.url;
 
       showData(data);
-    }
+    }*/
 
   };
 	
