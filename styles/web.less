@@ -111,7 +111,15 @@ p, pre {
   
 }
 .characteristic {
-  
+  .characteristicTitle {
+    padding: 1em 0;
+    .state { 
+      color: #000;
+    }
+    z-dna-strip {
+      margin: 0 1em;
+    }
+  }
   &.show {
     .centered;
   }
@@ -184,9 +192,35 @@ p, pre {
     .leaflet-control-zoom, .leaflet-control-attribution { display: none; }  
   }
 }
-#properties .json {
-  pre{
-    line-height: 1.428571429;
+
+.device-show {
+  .content {padding: 0 2em 0 0;}
+  h3 {
+    border-bottom: 1px solid #eee;
+    margin-bottom: .2em;
+    padding-bottom: .1em;
+  }
+  
+  #actions { 
+    h5 {
+      font-size: 1em;
+      font-weight: 400;
+      margin: 1em 0 .25em 0;
+    }
+    form {
+      padding: .5em 0;
+    }
+  }
+  
+}
+
+#properties {
+  .json {
+    font-size: .8em;
+    max-height: 240px; overflow-y: auto;
+    pre{
+      line-height: 1.428571429;
+    }
   }
 }
 .jsondiffpatch-delta {
@@ -206,30 +240,33 @@ p, pre {
     }
 }
 
-#states .bottom {border-top: 1px solid @zborder;}
+#states {
+  
+  .bottom {border-top: 1px solid @zborder;}
 
-.state_log {
-  max-height: 200px;
-  margin-top: 1em;
-  overflow-x: auto;
-  ul, li {
-    list-style-type: none;
-    margin: 0; padding: 0;
-  }
-  li {
-    font-family: "courier new", "andale mono", monospace;
-    margin-bottom: .5em;
-    color: #666;
-    span{
-      font-size: .6em;
+  .state_log {
+    max-height: 200px;
+    margin-top: 1em;
+    overflow-x: auto;
+    ul, li {
+      list-style-type: none;
+      margin: 0; padding: 0;
     }
-    strong {
-      display: inline-block;
-      min-width: 100px;
+    li {
+      font-family: "courier new", "andale mono", monospace;
+      margin-bottom: .5em;
+      color: #666;
+      span{
+        font-size: .6em;
+      }
+      strong {
+        display: inline-block;
+        min-width: 100px;
+      }
     }
-  }
-  &.latest {
-    color: #2765a3;
+    &.latest {
+      color: #2765a3;
+    }
   }
 }
 
@@ -286,4 +323,14 @@ p, pre {
   width: 80%;
   min-width: 1028px;
   margin: 2em auto;
+}
+.sparkline {
+  path{
+    fill: none;
+    stroke: #ddd;
+    stroke-width: 1px;
+  }
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 2px;
+  margin: .3em 0;
 }

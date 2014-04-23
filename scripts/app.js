@@ -3,7 +3,6 @@ var siren = angular
     'siren'
     , 'ui.state'
     , 'ngAnimate'
-    , 'nvd3ChartDirectives'
     , 'luegg.directives'
     , 'sirenFilters'
     , 'sirenAppController'
@@ -143,13 +142,68 @@ var siren = angular
 }])
 .directive('sparkline', ['$compile', function($compile){
 
-  function link(scope, element, attrs) {}
+  function link(scope, element, attrs) {
+      
+        
+     scope.$watchCollection('stream', function() {
+      //console.log("link stream: ", scope.stream);
+          stream = scope.stream.map(function(item){
+            return {'x': parseInt(item[0].getTime()), 'y': item[1]};
+          }); 
+      
+          var x = d3.time.scale().range([0, scope.width]);
+          var y = d3.scale.linear().range([scope.height, 0]);
+      
+          x.domain(d3.extent(stream, function(d) {return d.x}));
+          y.domain(d3.extent(stream, function(d) {return d.y}));
+
+          scope.line = d3.svg.line()
+              .x(function(d) {return x(d.x);})
+              .y(function(d) {return y(d.y);});
+       
+          element.find('path').attr({"d": scope.line(stream)});
+    }); 
+    /*
+        var p = [];
+        for(i=0; i<40; i++){
+          p.push({
+            'x': i,
+            'y': Math.floor((Math.random()*100)+1) 
+          });
+        }
+        var index = 40;
+
+        var update = setInterval(function(){
+          p.push({
+              'x': index,
+              'y': Math.floor((Math.random()*100)+1) 
+            });
+          p.shift();
+          index++;
+
+          scope.points = p;
+
+          x = d3.time.scale().range([0, scope.width]);
+          y = d3.scale.linear().range([scope.height, 0]);
+
+          x.domain(d3.extent(scope.points, function(d) {return d.x}));
+          y.domain(d3.extent(scope.points, function(d) {return d.y}));
+
+          scope.line = d3.svg.line()
+              .x(function(d) {return x(d.x);})
+              .y(function(d) {return y(d.y);});
+          
+        }, 100);
+        */
+  }
   return {
     restrict: 'E',
     scope: {
-      main: '='
+      stream: '=',
+      width: '=',
+      height: '='
     },
-    template: '<p>SVG Sparkline Here</p>',
+    templateUrl: 'partials/sparkline.html',
     link: link
   };
 }])

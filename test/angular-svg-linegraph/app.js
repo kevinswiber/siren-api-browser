@@ -12,6 +12,7 @@ angular.element(document).ready(function() {
           });
         }
         var index = 40;
+
         var update = setInterval(function(){
           p.push({
               'x': index,
@@ -20,8 +21,12 @@ angular.element(document).ready(function() {
           p.shift();
           index++;
 
+
+
           $scope.points = p;
         
+          console.log($scope.points);
+
           x = d3.time.scale().range([0, $scope.graph.width]);
           y = d3.scale.linear().range([$scope.graph.height, 0]);
 
