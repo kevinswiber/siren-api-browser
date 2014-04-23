@@ -10,6 +10,7 @@ var siren = angular
     , 'sirenMainController'
     , 'sirenServices'
     , 'leaflet-directive'
+    , 'akoenig.deckgrid'
   ]);
 
 

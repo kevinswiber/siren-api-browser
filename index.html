@@ -32,7 +32,18 @@
 
 <!--    Our Stylesheet    -->
     <link href="styles/web.css" rel="stylesheet" />
-    
+    <style type="text/css">
+      .deckgrid[deckgrid]::before {
+          content: '5 .column.size-1-5';
+          font-size: 0;
+          visibility:hidden;
+      }
+
+      .deckgrid .column {
+          float:left;
+        width: 20%;
+      }
+    </style>
 <!--    Load angular as soon as possible    -->
     <script src="scripts/vendor/angular.js"></script>
     
@@ -48,7 +59,7 @@
     <script src="scripts/vendor/angular-animate.js"></script>
     <script src="scripts/vendor/angular-ui-router.min.js"></script>
 	<script src="scripts/vendor/angular-sanitize.min.js"></script>
-
+    <script src="bower_components/angular-deckgrid/angular-deckgrid.js"></script>
 <!--    Maps    -->
     <script src="scripts/vendor/leaflet.js"></script>
     <script src="scripts/vendor/angular-leaflet-directive.js"></script>

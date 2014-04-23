@@ -24,8 +24,17 @@
   <leaflet defaults="defaults" height="160px" center="center" markers="markers" id="map_{{entity.heading}}"></leaflet>
   </div>
   
+  
+  
+  
   <div id="devices_container">
   <div id="devices" ng-show="main.entities.length" class="pure-g">
+    <div deckgrid source="main.entities" class="deckgrid pure-u-1">
+    <div class="a-card">
+        <h1>{{card.heading}}</h1>
+    </div>
+  </div>
+    
     <div class="device pure-u-1-5" ng-repeat="entity in main.entities">
         <!-- Self link for state & actions -->    
         <div class="characteristic self" id="{{entity.heading}}">
