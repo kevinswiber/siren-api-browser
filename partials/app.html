@@ -7,7 +7,7 @@
       <ul>
         <li><a href="/index.html">Projects</a></li>
         <li ng-repeat="link in main.breadcrumbs">
-                /  <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}" class="entity-link">{{ link.text }}</a>
+                /  <a ng-href="#/app?url={{ link.href | encodeURIComponent }}" class="entity-link" ng-show="$index==0">{{ link.text }}</a><a ng-href="#/entity?url={{ link.href | encodeURIComponent }}" class="entity-link" ng-show="$index>0">{{ link.text }}</a>
         </li>
       </ul>
       </div>
@@ -29,53 +29,9 @@
   
   <div id="devices_container">
   <div id="devices" ng-show="main.entities.length" class="pure-g">
-    <div deckgrid source="main.entities" class="deckgrid pure-u-1">
-    <div class="a-card">
-        <h1>{{card.heading}}</h1>
-    </div>
-  </div>
+       
+    <div deckgrid source="main.entities" cardTemplate="partials/device-in-list.html" class="deckgrid pure-u-1"></div>
     
-    <div class="device pure-u-1-5" ng-repeat="entity in main.entities">
-        <!-- Self link for state & actions -->    
-        <div class="characteristic self" id="{{entity.heading}}">
-            <div class="content">
-              <div class="name" ng-class="">
-                <i class="fa fa-cog h_277"></i>
-                <a ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{entity.heading}}</a>
-              </div>
-              <div class="text_location" ng-show="entity.location.placename">
-                <i class="fa fa-map-marker"></i> {{entity.location.placename}}
-              </div>
-              <div class="vis">
-                <z-dna-strip entity="entity"></z-dna-strip>
-              </div>
-              <h1>{{entity.raw.state}}<span class="units"></span> </h1>
-
-            </div><!-- /.content -->
-          </div>
-            
-          <!-- all other characteristic data for device -->
-          <div class="characteristic stream {{ stream.name }}" ng-repeat="stream in entity.streams">
-            <div class="content">
-              
-              <div class="name"><i class="fa fa-circle h_{{ stream.data.slice(-1)[0][2] }}" ></i>&nbsp;{{ stream.name | nosub}} 
-                
-              </div>
-              
-              <div class="vis">
-  
-                <sparkline width="200" height="30" stream="stream.data" id="{{ stream.name }}"></sparkline>
-                <!-- 
-                  data="stream.data"
-                  id="{{ stream.name }}"
-                -->
-              </div>
-              
-              <h1>{{ stream.data.slice(-1)[0][1].toFixed(2) }}<span class="units"></span></h1>
-
-            </div><!-- /.content -->
-          </div><!-- characteristic repeater -->
-      </div><!-- device repeater -->
     </div>
   </div><!-- devices container -->
   
