@@ -14,9 +14,13 @@
             beta = event.beta;
             gamma = event.gamma;
             
-            $('#x').html(parseInt(alpha));
-            $('#y').html(parseInt(beta));
-            $('#z').html(parseInt(gamma));
+            var a = parseInt(alpha);
+            var b = parseInt(beta)
+            var g = parseInt(gamma);
+            
+            $('#x').removeClass().addClass("h_" + Math.abs(a)).html(a);
+            $('#y').removeClass().addClass("h_" + Math.abs(b)).html(b);
+            $('#z').removeClass().addClass("h_" + Math.abs(g)).html(g);
             
             
           }, false);
@@ -60,38 +64,46 @@
     <style>
       body {
         text-align: center;
+        color: #888;
       }
       
       h1 {
+        font-size: 1.8em;
         background-color: #eee;
+        width: 40%;
+        margin: .7em auto .3em auto;
+        padding: .4em 0;
         
-        margin: .7em auto 0em auto;
-        padding: .8em 0;
+        color: #fff;
+        text-shadow: 0 0 5px #000;
+        
+        border-radius: 10px;
       }
-      h1:first {
-        margin-top: 0;
+      
+      h3 {
+        color: #000;
+        margin-bottom: 0;
       }
     </style>
   </head>
   <body>
     <div class="pure-g-r">
-      
       <div class="pure-u-1-3">
-        <div class="pure-g content">
-          <div class="pure-u-1-2">alpha</div>
-          <h1 id="x" class="pure-u-1-2">0.00</h1> 
-        </div>
+        <h1 id="x">0.00</h1> 
+        alpha
       </div>
       <div class="pure-u-1-3">
         <h1 id="y">0.00</h1>
-         beta
+        beta
       </div>
       <div class="pure-u-1-3">
         <h1 id="z">0.00</h1>
         gamma 
       </div>
-      <div class="pure-u-1" id="gross">
-        
+      
+      <div class="pure-u-1" >
+        <h3 id="gross">0.00</h3> 
+        acceleration
       </div>
   </body>
 </html>
