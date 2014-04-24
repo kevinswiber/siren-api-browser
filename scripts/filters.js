@@ -56,3 +56,9 @@ sirenFilters.filter('reverse', function() {
     return items.slice().reverse();
   };
 });
+
+sirenFilters.filter('nosub', function() {
+  return function(items) {
+    return items.replace('-subscribe', '');
+  };
+});

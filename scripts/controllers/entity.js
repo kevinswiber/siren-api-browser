@@ -14,6 +14,34 @@ sirenEntityController.controller('EntityCtrl', [
   , 'getStreams'
   , function($scope, $sce, $state, $http, $location, navigator, getStreams) {
 	
+    //leaflet, I'm beside myself. This default marker gets overriden by the actual data from the state machine
+       angular.extend($scope, {
+        markers: {
+            thisMarker: {
+              lat: 22,
+              lng: 43,
+              focus: false,
+              draggable: false
+            }
+        },
+        center: {
+          lat: 42,
+          lng: -83,
+          zoom: 2
+        },
+        attributionControl: false,
+        defaults: {
+            scrollWheelZoom: false,
+            tileLayer: 'http://api.tiles.mapbox.com/v3/alanguirand.i04decfa/{z}/{x}/{y}.jpg',
+            minZoom: 2,
+            maxZoom: 2,
+        }
+
+      }); 
+    
+    
+    
+    
   $scope.init = function() {
     var params = $state.params;
     var rootUrl = params.url;
@@ -193,7 +221,15 @@ sirenEntityController.controller('EntityCtrl', [
     if (data.properties && data.properties.state) {
       $scope.main.state = data.properties.state;
     }
-  
+    
+    angular.extend($scope.markers.thisMarker, {
+      lat: parseFloat($scope.main.properties.raw.location.lat),
+      lng: parseFloat($scope.main.properties.raw.location.lon)
+    });
+    
+    console.log($scope.markers.thisMarker); 
+
+    
 	if(!$scope.main.streams){  
 		console.log("initialize data streams");
 		$scope.main.streams = {};
@@ -256,7 +292,6 @@ sirenEntityController.controller('EntityCtrl', [
         });
       }, 1500);
     }
-	  
 	  
 	
 	  

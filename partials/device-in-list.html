@@ -1,0 +1,44 @@
+    <div class="device" ng-init="entity=card">
+        <!-- Self link for state & actions -->    
+        <div class="characteristic self" id="{{entity.heading}}">
+            <div class="content">
+              <div class="name" ng-class="">
+                <i class="fa fa-cog h_277"></i>
+                <!-- 
+                <a ng-href="#/entity?url={{ entity.selfLink.href | encodeURIComponent }}">{{entity.heading}}</a>
+                -->
+                <a href="mock-device-show.html">{{entity.heading}}</a>
+              </div>
+              <div class="text_location" ng-show="entity.location.placename">
+                <i class="fa fa-map-marker"></i> {{entity.location.placename}}
+              </div>
+              <div class="vis">
+                <z-dna-strip entity="entity"></z-dna-strip>
+              </div>
+              <h1>{{entity.raw.state}}<span class="units"></span> </h1>
+
+            </div><!-- /.content -->
+          </div>
+            
+          <!-- all other characteristic data for device -->
+          <div class="characteristic stream {{ stream.name }}" ng-repeat="stream in entity.streams">
+            <div class="content">
+              
+              <div class="name"><i class="fa fa-circle h_{{ stream.data.slice(-1)[0][2] }}" ></i>&nbsp;{{ stream.name | nosub}} 
+                
+              </div>
+              
+              <div class="vis">
+  
+                <sparkline width="200" height="30" stream="stream.data" id="{{ stream.name }}"></sparkline>
+                <!-- 
+                  data="stream.data"
+                  id="{{ stream.name }}"
+                -->
+              </div>
+              
+              <h1>{{ stream.data.slice(-1)[0][1].toFixed(2) }}<span class="units"></span></h1>
+
+            </div><!-- /.content -->
+          </div><!-- characteristic repeater -->
+      </div>
