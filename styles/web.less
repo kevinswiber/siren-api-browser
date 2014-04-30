@@ -1,6 +1,6 @@
 @import 'hues.css';
 
-@text: hsl(0, 0%, 30%);
+@text: hsl(0, 0%, 55%);
 @zborder: #ddd;
 
 @ao: #E86C1F;
@@ -95,32 +95,53 @@ p, pre {
     border-bottom: 1px solid #bcbcbc;
   }
 }
+.device-list {
+  #project_map {
+    .centered;
+    margin-top: 0;
+    border-bottom: 1px solid @zborder; 
+  }
 
+}
 
 #devices_container {
   .centered;
 }
 #devices {
-  display: table;
-  .row {
-    display: table-row;
-    .device {
-      display: table-cell;
-    }
-  }
+  
 }
 .characteristic {
-  width: 282px;
+  .characteristicTitle {
+    padding: 1em 0;
+    .state { 
+      color: #000;
+    }
+    z-dna-strip {
+      margin: 0 1em;
+    }
+  }
   &.show {
     .centered;
   }
-  .content { padding: 1em 1em 1em 0; }
+  .content { padding: 0 1em; }
   &.self .name { 
     border-bottom: none;
+  }
+  &.stream .fa-circle {
+    font-size: .1em;
+    padding-bottom: .2em;
+  }
+  .text_location {
+    color: hsl(0, 0%, 70%);
+    cont-weight: 400;
+    padding-left: .35em;
+    i {margin-right: .25em;}
+    font-size: .8em;
   }
   .name {
     padding: .5em 0 .3em 0;
     font-family: @sans;
+    font-size: 1.2em;
     font-weight: 400;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -130,7 +151,6 @@ p, pre {
       text-decoration: none;
       color: @text;
     }
-    border-bottom: 1px solid @zborder;
     
     .devicecon {
       display: block; 
@@ -146,8 +166,12 @@ p, pre {
   }
   
   h1{
+    font-size: 1.4em;
+    color: #000;
     margin: 0;
     padding: 0;
+    width: 200px;
+    text-align: right;
     .units {
       font-weight: 300; 
       font-size: .7em;
@@ -168,9 +192,35 @@ p, pre {
     .leaflet-control-zoom, .leaflet-control-attribution { display: none; }  
   }
 }
-#properties .json {
-  pre{
-    line-height: 1.428571429;
+
+.device-show {
+  .content {padding: 0 2em 0 0;}
+  h3 {
+    border-bottom: 1px solid #eee;
+    margin-bottom: .2em;
+    padding-bottom: .1em;
+  }
+  
+  #actions { 
+    h5 {
+      font-size: 1em;
+      font-weight: 400;
+      margin: 1em 0 .25em 0;
+    }
+    form {
+      padding: .5em 0;
+    }
+  }
+  
+}
+
+#properties {
+  .json {
+    font-size: .8em;
+    max-height: 240px; overflow-y: auto;
+    pre{
+      line-height: 1.428571429;
+    }
   }
 }
 .jsondiffpatch-delta {
@@ -190,35 +240,44 @@ p, pre {
     }
 }
 
-#states .bottom {border-top: 1px solid @zborder;}
+#states {
+  
+  .bottom {border-top: 1px solid @zborder;}
 
-.state_log {
-  max-height: 200px;
-  margin-top: 1em;
-  overflow-x: auto;
-  ul, li {
-    list-style-type: none;
-    margin: 0; padding: 0;
-  }
-  li {
-    font-family: "courier new", "andale mono", monospace;
-    margin-bottom: .5em;
-    color: #666;
-    span{
-      font-size: .6em;
+  .state_log {
+    max-height: 200px;
+    margin-top: 1em;
+    overflow-x: auto;
+    ul, li {
+      list-style-type: none;
+      margin: 0; padding: 0;
     }
-    strong {
-      display: inline-block;
-      min-width: 100px;
+    li {
+      font-family: "courier new", "andale mono", monospace;
+      margin-bottom: .5em;
+      color: #666;
+      span{
+        font-size: .6em;
+      }
+      strong {
+        display: inline-block;
+        min-width: 100px;
+      }
+    }
+    &.latest {
+      color: #2765a3;
     }
   }
-  &.latest {
-    color: #2765a3;
-  }
+}
+
+#api {
+  .breadcrumbs {border-bottom: 1px solid @zborder; }
+  margin-top: 2em;
 }
 
 #header {
   .centered;
+  margin-bottom: 0;
   position: relative;
   border-bottom: 1px solid @zborder; 
   
@@ -228,7 +287,10 @@ p, pre {
     ul {display: inline-block;}
   }
   
-  .breadcrumbs .content{
+  
+}
+
+.breadcrumbs .content{
     font-family: @sans;
     font-size: 1.8em;
     color: #aaa;
@@ -245,7 +307,6 @@ p, pre {
     }
     
   }
-}
 
 #footer {
   .centered;
@@ -269,4 +330,19 @@ p, pre {
   width: 80%;
   min-width: 1028px;
   margin: 2em auto;
+}
+.sparkline {
+  path{
+    fill: none;
+    stroke: #888;
+    stroke-width: 1px;
+  }
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 2px;
+  margin: .3em 0;
+}
+
+pre[class*="language-"] {
+  font-size: .8em;
+  max-height: 300px;
 }
