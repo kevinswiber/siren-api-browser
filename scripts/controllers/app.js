@@ -21,18 +21,12 @@ sirenAppController.controller('AppCtrl', [
               lng: -83,
               focus: false,
               draggable: false
-            },
-            apigeeBangalore: {
-              lat:  12.9,
-              lng:  77.5,
-              focus: false,
-              draggable: false
             }
         },
         
         center: {
-          lat: 34,
-          lng: 0,
+          lat: 42,
+          lng: -83,
           zoom: 2
         },
         attributionControl: false,

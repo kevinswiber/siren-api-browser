@@ -110,6 +110,10 @@ p, pre {
 #devices {
   
 }
+.device {
+  margin:0 auto 3em auto;
+}
+
 .characteristic {
   .characteristicTitle {
     padding: 1em 0;
@@ -127,21 +131,28 @@ p, pre {
   &.self .name { 
     border-bottom: none;
   }
-  &.stream .fa-circle {
-    font-size: .1em;
-    padding-bottom: .2em;
+  &.stream {
+    .fa-circle {
+      font-size: .1em;
+      padding-bottom: .2em;
+    }
+    .state {
+      width: 200px;
+      text-align: right;
+    }
   }
   .text_location {
     color: hsl(0, 0%, 70%);
     cont-weight: 400;
-    padding-left: .35em;
+    padding: .3em .35em 0 .5em;
     i {margin-right: .25em;}
     font-size: .8em;
+    float: left;
   }
   .name {
     padding: .5em 0 .3em 0;
     font-family: @sans;
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: 400;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -165,19 +176,19 @@ p, pre {
     }
   }
   
-  h1{
-    font-size: 1.4em;
+  .state{
+    font-size: 1.2em;
     color: #000;
     margin: 0;
     padding: 0;
-    width: 200px;
-    text-align: right;
+    float: left;
     .units {
       font-weight: 300; 
       font-size: .7em;
       padding-left: .3em;
       }
   }
+  
   .pure-button {
     padding: .2em .6em;
   }
@@ -190,6 +201,7 @@ p, pre {
   }
   .vis{
     .leaflet-control-zoom, .leaflet-control-attribution { display: none; }  
+    clear: both;
   }
 }
 
@@ -293,9 +305,9 @@ p, pre {
 .breadcrumbs .content{
     font-family: @sans;
     font-size: 1.8em;
-    color: #aaa;
+    a {color: #888;}
     padding: .2em 0;
-    
+    a {text-decoration: none;}
     ul {
       margin: 0; 
       padding: 0em;
@@ -337,7 +349,6 @@ p, pre {
     stroke: #888;
     stroke-width: 1px;
   }
-  border-bottom: 1px solid #ddd;
   padding-bottom: 2px;
   margin: .3em 0;
 }
@@ -345,4 +356,35 @@ p, pre {
 pre[class*="language-"] {
   font-size: .8em;
   max-height: 300px;
+}
+
+/* Overview page columns */
+.deckgrid[deckgrid]::before {
+    content: '4 .column.size-1-4';
+    font-size: 0;
+    visibility:hidden;
+}
+
+.deckgrid .column {
+  float:left;
+  width: 25%;
+}
+.name_value {
+  width: 200px;
+  .name {
+    .truncate {
+      max-width: 130px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      
+    }
+  }
+  .value {
+    padding-left: .5em;
+    text-align: right;
+    color: #000;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
 }
