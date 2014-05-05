@@ -118,8 +118,30 @@ var siren = angular
       };
     };
 
+    function getTransitionColor(transition) {
+      return {
+        hue: textToColor(transition),
+        saturation: '50%'
+      };
+    }
+
     var last = getColor();
     colors.push(last);
+
+    var lastTransitionTimer;
+    scope.$watch('entity.lastTransition', function() {
+      if (scope.entity.lastTransition === null) {
+        return;
+      }
+
+      console.log('lastTransition fired:', scope.entity.lastTransition);
+      colors.unshift(getTransitionColor(scope.entity.lastTransition));
+
+      clearTimeout(lastTransitionTimer);
+      lastTransitionTimer = setTimeout(function() {
+        scope.entity.lastTransition = null;
+      }, 1000);
+    });
 
     var index = 1;
     var interval = setInterval(function() {
@@ -251,6 +273,13 @@ var siren = angular
       };
     }
 
+    function getTransitionColor(transition) {
+      return {
+        hue: textToColor(transition),
+        saturation: '50%'
+      };
+    }
+
     scope.$watchCollection('main.entities', function() {
       if (scope.main.entities.length === 0) {
         return;
@@ -275,15 +304,23 @@ var siren = angular
         colors[i].streams = [];
         colors[i].state.push([last]);
 
-        scope.$watchCollection('main.entities[' + i + ']', function() {
+        var identifier = 'main.entities[' + i + ']';
+        var lastTransitionIdentifier = identifier + '.lastTransition';
+        scope.$watchCollection(identifier, function() {
+          scope.$watch(lastTransitionIdentifier, function() {
+            if (scope.main.entities[i].lastTransition === null ||
+                scope.main.entities[i].lastTransition === undefined) {
+              return;
+            }
+
+            colors[i].state.unshift(getTransitionColor(scope.main.entities[i].lastTransition));
+          });
+
           var keys = Object.keys(entity.streams);
 
           if (keys.length === 0) {
             return;
           }
-
-          console.log('name:', entity.raw.name);
-          console.log('streams:', entity.streams);
 
           angular.forEach(keys, function(key) {
             console.log(key);
@@ -291,6 +328,7 @@ var siren = angular
             console.log(canvas.height);
             colors[i].streams.push([]);
             var streamIndex = colors[i].streams.length - 1;
+
             scope.$watchCollection('main.entities[' + i + '].streams["' + key + '"].data', function() {
               var d = entity.streams[key].data;
               if (d.length === 0) {

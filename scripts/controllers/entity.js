@@ -50,7 +50,11 @@ sirenEntityController.controller('EntityCtrl', [
     $scope.stateLogs = [];
     //TODO: have to figure out how to autodiscover this URL. 
     console.log("params: ", params);
-    $scope.logger("ws://localhost:3000/events");
+    var parser = document.createElement('a');
+    parser.href = rootUrl;
+
+    var loggerUrl = 'ws://' + parser.host + '/events';
+    $scope.logger(loggerUrl);
   };
 
   $scope.go = function(url) {
@@ -222,10 +226,12 @@ sirenEntityController.controller('EntityCtrl', [
       $scope.main.state = data.properties.state;
     }
     
-    angular.extend($scope.markers.thisMarker, {
-      lat: parseFloat($scope.main.properties.raw.location.lat),
-      lng: parseFloat($scope.main.properties.raw.location.lon)
-    });
+    if ($scope.main.properties.raw.location) {
+      angular.extend($scope.markers.thisMarker, {
+        lat: parseFloat($scope.main.properties.raw.location.lat),
+        lng: parseFloat($scope.main.properties.raw.location.lon)
+      });
+    }
     
     console.log($scope.markers.thisMarker); 
 

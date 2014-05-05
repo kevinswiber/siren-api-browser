@@ -40,14 +40,18 @@ sirenAppController.controller('AppCtrl', [
       
   });   
   
-    console.log("defaults: ", $scope.defaults);
-    
   $scope.init = function() {
     var params = $state.params;
     var rootUrl = params.url;
 
     follow(rootUrl);
-    $scope.logger('ws://localhost:3000/events');
+
+    var parser = document.createElement('a');
+    parser.href = rootUrl;
+
+    var loggerUrl = 'ws://' + parser.host + '/events';
+
+    $scope.logger(loggerUrl);
   };
 
   $scope.execute = function(stream) {
@@ -57,20 +61,16 @@ sirenAppController.controller('AppCtrl', [
     if (action.class && action.class.indexOf('event-subscription') !== -1) {
       var ws = new WebSocket(action.href);
 		
-      console.log('new web socket');
       //when there's a stream message	
       ws.onmessage = function(event) {
         //Add data to model w/ timestamp here
         var d = JSON.parse(event.data);
-        //console.log(d);
 
         var update = {
           target: d.destination.replace(/\//g, '_'),
           data: d.data
         }  
-        //console.log($scope);  
           
-        //console.log('pushing data:', update);
 	var color = (Math.abs(update.data.toFixed(0) % 360));
         stream.data.push([new Date(), update.data, color]);	  
 
@@ -111,8 +111,6 @@ sirenAppController.controller('AppCtrl', [
       }
       
 
-      console.log("main scope from navigator.exec: ", $scope.main);
-      
       $scope.url, $state.params.url = result.config.url;
 
       showData(result.data);
@@ -127,12 +125,13 @@ sirenAppController.controller('AppCtrl', [
     ws.onmessage = function(event) {
       //Add data to model w/ timestamp here
       var d = JSON.parse(event.data);
-      console.log(d);
       if (d.destination === '_logs') {
         // visualize state transition
-        angular.forEach($scope.main.entities, function(e) {
+        angular.forEach($scope.main.entities, function(e, i) {
           if (e.raw.name === d.data.properties.name) {
             e.raw.state = d.data.properties.state;
+            e.lastTransition = d.data.transition;
+            $scope.main.entities[i].lastTransition = d.data.transition;
           }
         });
       }
@@ -159,10 +158,7 @@ sirenAppController.controller('AppCtrl', [
 
     $state.params.url = url;
 
-    console.log(url);
-    console.log($state.params);
     navigator.fetch(url, $state.params).then(function(data) {
-      console.log($scope.main, data);
       showData(data);
     });
   };
@@ -184,6 +180,7 @@ sirenAppController.controller('AppCtrl', [
 	  	data.abc_properties[key] = data.properties[key];
 	  });
 	  
+    $scope.main.lastTransition = null;
     $scope.main.properties.old = $scope.main.properties.raw;
     $scope.main.properties.text = "<pre>" + JSON.stringify(data.abc_properties, null, 2).replace(/\"([^(\")"]+)\":/g,"$1:") + "</pre>"; //regex to remove quotes (") from stringify
     $scope.main.properties.raw = data.properties;
@@ -213,8 +210,8 @@ sirenAppController.controller('AppCtrl', [
         entity.raw = entity.properties;
         entity.properties = JSON.stringify(entity.properties, null, 2);
         var heading = [];
-		//console.log("entity: ", entity.raw.location);
         entity.location = entity.raw.location;
+        entity.lastTransition = null;
         
         
         if (entity.raw.name && entity.raw.name.length > 0) {
@@ -251,7 +248,6 @@ sirenAppController.controller('AppCtrl', [
                   Object.keys(stream.streams).forEach(function(key) {
                     entity.streams[key] = stream.streams[key];
                   });
-                  //console.log('entity.streams:', entity.streams);
                   entity.totalStreams = stream.totalStreams;
                 });
                 
