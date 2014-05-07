@@ -347,15 +347,23 @@ var siren = angular
           colors[i].state.unshift(block);
         });
 
+        var watchedStream = [];
+
         scope.$watchCollection(identifier, function() {
 
           var keys = Object.keys(entity.streams);
 
+          console.log(keys);
           if (keys.length === 0) {
             return;
           }
 
           angular.forEach(keys, function(key) {
+            if (watchedStream.indexOf(key) !== -1) {
+              return;
+            }
+
+            watchedStream.push(key);
             console.log(key);
             canvas.height += unitSize;
             console.log(canvas.height);
