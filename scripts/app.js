@@ -353,7 +353,6 @@ var siren = angular
 
           var keys = Object.keys(entity.streams);
 
-          console.log(keys);
           if (keys.length === 0) {
             return;
           }
