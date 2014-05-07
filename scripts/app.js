@@ -224,17 +224,39 @@ var siren = angular
 
   function drawCanvas(context, colors, cb) {
     var unitWidth = context.canvas.width / 36;
+    var transitionWidth = 20;
     var x = context.canvas.width - unitWidth;
     var y = 0;
     var width = unitWidth;
     var height = UNIT_SIZE;//context.canvas.height;
 
     colors.forEach(function(row) {
-      row.state.forEach(function(color) {
-        context.fillStyle = 'hsl(' + color.hue + ', ' + color.saturation + ', 50%)';
-        context.fillRect(x, y, width, height);
+      row.state.forEach(function(block) {
+        var w;
+
+        switch(block.type) {
+          case 'transition': 
+            w = transitionWidth;
+            break;
+          case 'state':
+            w = width;
+            break;
+        }
+
+        if (block.type === 'transition' && y === 70) {
+          console.log('block type transition');
+          console.log('w:', w);
+          console.log('x:', x);
+          console.log('y:', y);
+          console.log('h:', height);
+          console.log(block.color);
+        }
+
+        context.fillStyle = 'hsl(' + block.color.hue + ', ' + block.color.saturation + ', 50%)';
+        context.fillRect(x, y, w, height);
         x = x - unitWidth;
       });
+
       y = y + height;
       x = context.canvas.width - unitWidth;
 
@@ -298,23 +320,34 @@ var siren = angular
       var colors = [];
       angular.forEach(scope.main.entities, function(entity, i) {
         var last = getColor(entity);
+        var block = {
+          type: 'state',
+          color: last
+        };
 
         colors[i] = {};
         colors[i].state = [];
         colors[i].streams = [];
-        colors[i].state.push([last]);
+        colors[i].state.push(block);
 
         var identifier = 'main.entities[' + i + ']';
         var lastTransitionIdentifier = identifier + '.lastTransition';
-        scope.$watchCollection(identifier, function() {
-          scope.$watch(lastTransitionIdentifier, function() {
-            if (scope.main.entities[i].lastTransition === null ||
-                scope.main.entities[i].lastTransition === undefined) {
-              return;
-            }
+        scope.$watch(lastTransitionIdentifier, function() {
+          if (scope.main.entities[i].lastTransition === null ||
+              scope.main.entities[i].lastTransition === undefined) {
+            return;
+          }
 
-            colors[i].state.unshift(getTransitionColor(scope.main.entities[i].lastTransition));
-          });
+          var block = {
+            type: 'transition',
+            color: getTransitionColor(scope.main.entities[i].lastTransition)
+          };
+
+          console.log('adding transition:', scope.main.entities[i].lastTransition);
+          colors[i].state.unshift(block);
+        });
+
+        scope.$watchCollection(identifier, function() {
 
           var keys = Object.keys(entity.streams);
 
@@ -345,17 +378,20 @@ var siren = angular
       var interval = setInterval(function() {
         angular.forEach(scope.main.entities, function(entity, i) {
           var last = getColor(scope.main.entities[i]);
-          colors[i].state.unshift(last);
-          if (colors[i].length > 200) {
-            colors[i].state = colors[i].state.slice(0, 199);
-          }
+          var block = {
+            type: 'state',
+            color: last
+          };
+          colors[i].state.unshift(block);
+          colors[i].state = colors[i].state.slice(0, 49);
           colors[i].streams.forEach(function(strm, j) {
-            var last = colors[i].streams[j].slice(-1)[0];
+            var streamColors = colors[i].streams[j];
+            var last = streamColors[0];
 
             if (last) {
               colors[i].streams[j].unshift(last);
             }
-            colors[i].streams[j] = colors[i].streams[j].slice(0, 199);
+            colors[i].streams[j] = colors[i].streams[j].slice(0, 49);
           });
         });
 
