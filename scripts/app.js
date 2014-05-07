@@ -134,7 +134,6 @@ var siren = angular
         return;
       }
 
-      console.log('lastTransition fired:', scope.entity.lastTransition);
       colors.unshift(getTransitionColor(scope.entity.lastTransition));
 
       clearTimeout(lastTransitionTimer);
@@ -224,7 +223,7 @@ var siren = angular
 
   function drawCanvas(context, colors, cb) {
     var unitWidth = context.canvas.width / 36;
-    var transitionWidth = 20;
+    var transitionWidth = 10;
     var x = context.canvas.width - unitWidth;
     var y = 0;
     var width = unitWidth;
@@ -241,15 +240,6 @@ var siren = angular
           case 'state':
             w = width;
             break;
-        }
-
-        if (block.type === 'transition' && y === 70) {
-          console.log('block type transition');
-          console.log('w:', w);
-          console.log('x:', x);
-          console.log('y:', y);
-          console.log('h:', height);
-          console.log(block.color);
         }
 
         context.fillStyle = 'hsl(' + block.color.hue + ', ' + block.color.saturation + ', 50%)';
@@ -343,7 +333,6 @@ var siren = angular
             color: getTransitionColor(scope.main.entities[i].lastTransition)
           };
 
-          console.log('adding transition:', scope.main.entities[i].lastTransition);
           colors[i].state.unshift(block);
         });
 

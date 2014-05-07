@@ -130,8 +130,6 @@ sirenAppController.controller('AppCtrl', [
         angular.forEach($scope.main.entities, function(e, i) {
           if (e.raw.name === d.data.properties.name) {
             e.raw.state = d.data.properties.state;
-            //e.lastTransition = d.data.transition;
-            console.log('setting last transition equal to:', d.data.transition);
             $scope.main.entities[i].lastTransition = d.data.transition;
           }
         });
