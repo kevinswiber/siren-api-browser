@@ -95,7 +95,7 @@ var siren = angular
     var height = context.canvas.height;
 
     colors.forEach(function(color) {
-      context.fillStyle = 'hsl(' + color.hue + ', ' + color.saturation + ', 50%)';
+      context.fillStyle = 'hsl(' + color.hue + ', ' + color.saturation + ', ' + color.lightness + ')';
       context.fillRect(x, y, width, height);
       x = x - unitWidth;
     });
@@ -114,14 +114,16 @@ var siren = angular
     function getColor() {
       return {
         hue: textToColor(scope.entity.raw.state),
-        saturation: textToSaturation(scope.entity.raw.name)
+        saturation: textToSaturation(scope.entity.raw.name),
+        lightness: '50%'
       };
     };
 
     function getTransitionColor(transition) {
       return {
         hue: textToColor(transition),
-        saturation: '50%'
+        saturation: '50%',
+        lightness: '80%'
       };
     }
 
@@ -134,7 +136,7 @@ var siren = angular
         return;
       }
 
-      colors.unshift(getTransitionColor(scope.entity.lastTransition));
+      colors.unshift(getTransitionColor(scope.entity.raw.state));
 
       clearTimeout(lastTransitionTimer);
       lastTransitionTimer = setTimeout(function() {
@@ -223,7 +225,7 @@ var siren = angular
 
   function drawCanvas(context, colors, cb) {
     var unitWidth = context.canvas.width / 36;
-    var transitionWidth = 10;
+    var transitionWidth = unitWidth;
     var x = context.canvas.width - unitWidth;
     var y = 0;
     var width = unitWidth;
@@ -242,7 +244,7 @@ var siren = angular
             break;
         }
 
-        context.fillStyle = 'hsl(' + block.color.hue + ', ' + block.color.saturation + ', 50%)';
+        context.fillStyle = 'hsl(' + block.color.hue + ', ' + block.color.saturation + ', ' + block.color.lightness + ')';
         context.fillRect(x, y, w, height);
         x = x - unitWidth;
       });
@@ -274,21 +276,24 @@ var siren = angular
     function getColor(entity) {
       return {
         hue: textToColor(entity.raw.state),
-        saturation: textToSaturation(entity.raw.name)
+        saturation: textToSaturation(entity.raw.name),
+        lightness: '50%'
       };
     };
 
     function getStreamColor(name, value) {
       return {
         hue: textToColor(value),
-        saturation: textToSaturation(name)
+        saturation: textToSaturation(name),
+        lightness: '50%'
       };
     }
 
     function getTransitionColor(transition) {
       return {
         hue: textToColor(transition),
-        saturation: '50%'
+        saturation: '50%',
+        lightness: '80%'
       };
     }
 
@@ -303,11 +308,17 @@ var siren = angular
       context.fillStyle = 'rgb(222, 222, 222)';
       context.fillRect(0, 0, canvas.width, canvas.height);
 
-      console.log('width:', canvas.width);
-      console.log('height:', canvas.height);
-      console.log('length:', scope.main.entities.length);
-
       var colors = [];
+
+      window.onresize = function() {
+        console.log('resizing');
+        canvas.width = window.innerWidth;//unitSize * 36;
+        canvas.height = scope.main.entities.length * unitSize;
+        context.fillStyle = 'rgb(222, 222, 222)';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        drawCanvas(context, colors);
+      };
+
       angular.forEach(scope.main.entities, function(entity, i) {
         var last = getColor(entity);
         var block = {
@@ -330,7 +341,7 @@ var siren = angular
 
           var block = {
             type: 'transition',
-            color: getTransitionColor(scope.main.entities[i].lastTransition)
+            color: getTransitionColor(scope.main.entities[i].raw.state)
           };
 
           colors[i].state.unshift(block);
