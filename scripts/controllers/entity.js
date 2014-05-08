@@ -193,13 +193,16 @@ sirenEntityController.controller('EntityCtrl', [
     if (typeof data === 'string') {
       data = JSON.parse(data);
     }
+
+    $scope.main.data = {};
+    angular.extend($scope.main.data, data);
 	 
     //sort the data! This should be done on the api or UNDONE in jsondiff formatters.js
     //This is all for displaying the properties array in the json diff object
 	  var tosort = []
 	  angular.forEach(data.properties, function(prop, i){ tosort.push(i); });
 	  tosort.sort();
-	  
+
 	  data.abc_properties = {};
 	  angular.forEach(tosort, function(key){
 	  	data.abc_properties[key] = data.properties[key];
@@ -374,7 +377,8 @@ sirenEntityController.controller('EntityCtrl', [
     $scope.main = {
       properties: [],
       entities: [],
-      links: []
+      links: [],
+      request: ''
     };
 
     $scope.isOneAtATime = true;
@@ -382,6 +386,12 @@ sirenEntityController.controller('EntityCtrl', [
 
     $state.params.url = url;
 
+    var anchor = document.createElement('a');
+    anchor.href = url;
+
+    $scope.main.request = ['GET ' + anchor.pathname,
+      'Host: ' + anchor.hostname,
+      'Accept: application/vnd.siren+json'].join('\r\n');
     navigator.redirectOrFetch(url, $state.params).then(function(data) {
       showData(data);
     });
