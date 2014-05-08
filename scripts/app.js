@@ -138,10 +138,7 @@ var siren = angular
 
       colors.unshift(getTransitionColor(scope.entity.raw.state));
 
-      clearTimeout(lastTransitionTimer);
-      lastTransitionTimer = setTimeout(function() {
-        scope.entity.lastTransition = null;
-      }, 1000);
+      scope.entity.lastTransition = null;
     });
 
     var index = 1;
