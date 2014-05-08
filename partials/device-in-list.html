@@ -51,4 +51,16 @@
 
             </div><!-- /.content -->
           </div><!-- characteristic repeater -->
+      <div class="actions">
+        <div class="content">
+          <div class="action {{ action.name }}" ng-repeat="action in entity.actions">
+             <form>
+                <zetta-action value="action.action"></zetta-action>
+             </form>
+              
+
+          </div>
+        </div>
+      </div>
+      
       </div>

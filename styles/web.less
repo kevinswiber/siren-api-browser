@@ -111,7 +111,9 @@ p, pre {
   
 }
 .device {
-  margin:0 auto 3em auto;
+  margin:0 auto 2em auto;
+  float: left;
+  clear: both;
 }
 
 .characteristic {
@@ -388,3 +390,48 @@ pre[class*="language-"] {
     font-weight: bold;
   }
 }
+.actions{
+  .content{
+    padding: 1em;
+    
+  }
+  .action, form {float: left;}
+  
+}
+.action-button {
+			font-size: .8em;
+			margin: .1em .1em .4em .1em;
+			padding: .2em .4em;
+
+
+			&.pure-button-primary {
+				background-color: hsl(0, 0%, 83%);
+				color: #333;
+				min-height:;
+				i {
+					color: #fff;
+					display: none;
+					&.fa-caret-right {
+                      display: inline-block;
+                      color: transparent;
+                    }
+					
+					min-width: 15px;
+				}
+				&.loading {
+					.fa-caret-right {display: none;}
+					.fa-refresh {display: inline-block;}
+					background-color: hsl(56, 74%, 50%);
+					color: #000;
+				}
+				&.success {
+					.fa-caret-right {display: none;}
+					.fa-check {display: inline-block;}
+					background-color: hsl(111, 34%, 70%);
+					color: #fff;
+				}
+				&:hover {
+					color: #fff;
+				}
+			}
+		}

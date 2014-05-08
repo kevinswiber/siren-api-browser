@@ -1,0 +1,30 @@
+{
+  "name": "angular-encode-uri",
+  "version": "0.0.1",
+  "main": "dist/angular-encode-uri.js",
+  "ignore": [
+    "**/.*",
+    "src",
+    "node_modules",
+    "bower_components",
+    "test",
+    "Gruntfile.coffee"
+  ],
+  "dependencies": {
+    "angular": "*"
+  },
+  "devDependencies": {
+    "angular-mocks": "*"
+  },
+  "homepage": "https://github.com/rubenv/angular-encode-uri",
+  "_release": "0.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.1",
+    "commit": "daabba5a0a0df586f716fa083f4149ffbfdeefae"
+  },
+  "_source": "git://github.com/rubenv/angular-encode-uri.git",
+  "_target": "~0.0.1",
+  "_originalSource": "angular-encode-uri",
+  "_direct": true
+}

@@ -206,6 +206,10 @@ sirenAppController.controller('AppCtrl', [
         entity.streams = {};
         entity.totalStreams = 0;
         entity.streamsArray = [];
+        
+        entity.actions = {};
+        entity.totalActions = 0;
+        
         entity.raw = entity.properties;
         entity.properties = JSON.stringify(entity.properties, null, 2);
         var heading = [];
@@ -236,18 +240,23 @@ sirenAppController.controller('AppCtrl', [
               if(rel == "self") {
                 entity.selfLink = { rel: rel, href: link.href };
                 //Get any streams
-                var streams = getStreams.atURL(link.href);
-                streams.then(function(stream){
-                  angular.forEach(stream.streams, function(s){
+                var devices = getStreams.atURL(link.href);
+                devices.then(function(device){
+                  
+                  angular.forEach(device.streams, function(s){
                     $scope.execute(s);
                   });
 
-                  //entity.streams = stream.streams;
-
-                  Object.keys(stream.streams).forEach(function(key) {
-                    entity.streams[key] = stream.streams[key];
+                  Object.keys(device.streams).forEach(function(key) {
+                    entity.streams[key] = device.streams[key];
                   });
-                  entity.totalStreams = stream.totalStreams;
+                  entity.totalStreams = device.totalStreams;
+                  
+                  Object.keys(device.actions).forEach(function(key) {
+                    entity.actions[key] = device.actions[key];
+                  });
+                  entity.totalActions = device.totalActions;
+                                    
                 });
                 
               }

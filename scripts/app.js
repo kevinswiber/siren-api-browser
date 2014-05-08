@@ -11,6 +11,7 @@ var siren = angular
     , 'sirenServices'
     , 'leaflet-directive'
     , 'akoenig.deckgrid'
+    , 'rt.encodeuri'
   ]);
 
 
@@ -461,6 +462,73 @@ var siren = angular
       /*if (!visible) {
         container.append($('<em>').text('No fields available.'));
       }*/
+
+      element.replaceWith(container);
+    }
+
+    return {
+      restrict: 'E',
+      scope: {
+        action: '=value'
+      },
+      link: link
+    };
+  }])
+  .directive('zettaAction', ['$compile', 'navigator', function($compile, navigator) {
+    function link(scope, element, attrs) {
+      if (!scope.action) {
+        return;
+      }
+
+      var container = $('<div>');
+      var visible = false;
+
+      for(var i = 0; i < scope.action.fields.length; i++) {
+        var field = scope.action.fields[i];
+
+        var label = $('<label>')
+          .addClass('control-label')
+          .attr('for', scope.action.name + field.name)
+          .text(field.title || field.name);
+
+        var controls = $('<div>').addClass('controls');
+
+        var input = $('<input>')
+          .attr('name', field.name)
+          .attr('id', scope.action.name + field.name)
+          .attr('type', field.type || 'text')
+          .attr('ng-model', 'action.fields[' + i + '].value')
+          .val(field.value);
+	
+	if(field.type === 'file'){
+	  input.attr('file-model','action.fields[' + i + '].file');
+	}
+	
+        $compile(input)(scope);
+
+        controls.append(input);
+
+        if (field.type !== 'hidden') {
+          visible = true;
+          container.append(label);
+        }
+
+        container.append(controls);
+      };
+
+      if (!visible) {
+        //just do a button
+      
+        var btn = $('<button>')
+          .attr('ng-click', 'execute(action.action)')
+          .addClass('pure-button pure-button-primary action-button')
+          .html(' <i class="fa fa-caret-right"></i><i class="fa fa-refresh fa-spin"></i><i class="fa fa-check"></i>')
+          .prepend(scope.action.name)
+          .attr('type', 'submit');
+          
+        
+        container.append(btn);
+      }
 
       element.replaceWith(container);
     }

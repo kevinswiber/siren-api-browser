@@ -16,7 +16,9 @@ sirenServices.factory('getStreams', ['$q', '$http',
             //default response
             var e = {
               streams: {},
-              totalStreams: 0
+              actions: {},
+              totalStreams: 0,
+              totalActions: 0
             };
           
             if (response.actions) {
@@ -34,6 +36,16 @@ sirenServices.factory('getStreams', ['$q', '$http',
                   };
                   e.streams[stream.name] = stream;
                   e.totalStreams++;
+                } else {
+//                if it has another action type, add it to e                  
+                  var act = { 
+                    name: action.name.replace(/\//g, '_'),
+                    action: action
+                  }
+                  angular.extend(act, action);
+                  e.actions[act.name] = act;
+                  e.totalActions++;
+                  
                 }
               });
             }
