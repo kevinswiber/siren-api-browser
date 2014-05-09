@@ -32,7 +32,9 @@ sirenServices.factory('getStreams', ['$q', '$http',
                     data: [],
                     xFunction: function(){ return function(d){ return d[0]; } },
                     yFunction: function(){ return function(d){ return d[1]; } },
-                    xTickFunction: function(d3) { return d3.time.format('%H:%M:%S'); }
+                    xTickFunction: function(d3) { return d3.time.format('%H:%M:%S'); },
+                    min: null,
+                    max: null
                   };
                   e.streams[stream.name] = stream;
                   e.totalStreams++;
