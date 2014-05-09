@@ -6,7 +6,7 @@
     <ul>
       <li><a href="/index.html">Projects</a></li>
       <li ng-repeat="link in main.breadcrumbs">
-              /  <a ng-href="#/app?url={{ link.href | encodeURIComponent }}" class="entity-link" ng-show="$index==0">{{ link.text }}</a><a ng-href="#/entity?url={{ link.href | encodeURIComponent }}" class="entity-link" ng-show="$index>0">{{ link.text }}</a>
+              /  <a ng-href="#/app?url={{ link.href | encodeURIComponent }}" class="entity-link" ng-show="$index==0">{{ link.text  | nodash | capitalize}}</a><a ng-href="#/entity?url={{ link.href | encodeURIComponent }}" class="entity-link" ng-show="$index>0">{{ link.text }}</a>
       </li>
     </ul>
     </div>
