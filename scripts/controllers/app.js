@@ -54,6 +54,16 @@ sirenAppController.controller('AppCtrl', [
     $scope.logger(loggerUrl);
   };
 
+  $scope.executeInlineAction = function(action, cb) {
+    navigator.execute(action).then(function(result) {
+      // Instead of throwing all kinds of errors
+      if (result.noop) {
+        return;
+      }
+      cb();
+    });
+  };
+
   $scope.execute = function(stream) {
     var action = stream.action;
     
@@ -254,6 +264,9 @@ sirenAppController.controller('AppCtrl', [
                   
                   Object.keys(device.actions).forEach(function(key) {
                     entity.actions[key] = device.actions[key];
+                    entity.actions[key].execute = function(cb) {
+                      $scope.executeInlineAction(entity.actions[key], cb);
+                    };
                   });
                   entity.totalActions = device.totalActions;
                                     

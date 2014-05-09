@@ -168,7 +168,6 @@ var siren = angular
       
         
      scope.$watchCollection('stream', function() {
-      //console.log("link stream: ", scope.stream);
           stream = scope.stream.map(function(item){
             return {'x': parseInt(item[0].getTime()), 'y': item[1]};
           }); 
@@ -309,7 +308,6 @@ var siren = angular
       var colors = [];
 
       window.onresize = function() {
-        console.log('resizing');
         canvas.width = window.innerWidth;//unitSize * 36;
         canvas.height = scope.main.entities.length * unitSize;
         context.fillStyle = 'rgb(222, 222, 222)';
@@ -361,9 +359,7 @@ var siren = angular
             }
 
             watchedStream.push(key);
-            console.log(key);
             canvas.height += unitSize;
-            console.log(canvas.height);
             colors[i].streams.push([]);
             var streamIndex = colors[i].streams.length - 1;
 
@@ -517,12 +513,23 @@ var siren = angular
         //just do a button
       
         var btn = $('<button>')
-          .attr('ng-click', 'execute(action.action)')
           .addClass('pure-button pure-button-primary action-button')
           .html(' <i class="fa fa-caret-right"></i><i class="fa fa-refresh fa-spin"></i><i class="fa fa-check"></i>')
           .prepend(scope.action.name)
           .attr('type', 'submit');
           
+        btn.click(function(e) {
+          btn.addClass('loading');
+          scope.action.execute(function() {
+            btn.removeClass('loading');
+            btn.addClass('success');
+            setTimeout(function() {
+              btn.removeClass('success');
+            }, 2000);
+          });
+        });
+
+        $compile(btn)(scope);
         
         container.append(btn);
       }
