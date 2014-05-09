@@ -489,17 +489,21 @@ var siren = angular
           .text(field.title || field.name);
 
         var controls = $('<div>').addClass('controls');
-
+        var fieldtype = field.type || 'text';
+        
         var input = $('<input>')
           .attr('name', field.name)
           .attr('id', scope.action.name + field.name)
-          .attr('type', field.type || 'text')
+          .attr('type', fieldtype)
           .attr('ng-model', 'action.fields[' + i + '].value')
           .val(field.value);
-	
-	if(field.type === 'file'){
-	  input.attr('file-model','action.fields[' + i + '].file');
-	}
+	     
+        if(fieldtype == 'text'){input.attr('placeholder', field.title || field.name); }
+        
+        
+        if(field.type === 'file'){
+          input.attr('file-model','action.fields[' + i + '].file');
+        }
 	
         $compile(input)(scope);
 
@@ -507,14 +511,14 @@ var siren = angular
 
         if (field.type !== 'hidden') {
           visible = true;
-          container.append(label);
+          if (fieldtype !== 'text') { container.append(label) };
         }
 
         container.append(controls);
       };
 
       if (!visible) {
-        //just do a button
+        //this is a submit button!
       
         var btn = $('<button>')
           .attr('ng-click', 'execute(action.action)')
@@ -525,6 +529,8 @@ var siren = angular
           
         
         container.append(btn);
+      }else {
+        //add a submit button
       }
 
       element.replaceWith(container);
