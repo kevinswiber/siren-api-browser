@@ -62,3 +62,20 @@ sirenFilters.filter('nosub', function() {
     return items.replace('-subscribe', '');
   };
 });
+
+sirenFilters.filter('mapurl', function() {
+  return function(project) {
+        var tilesUrl = {        
+          false: "alanguirand.i6m2j6kf",
+          true: "alanguirand.i04decfa"
+        }
+        var marker = {        
+          false: "pin-l+aaa",
+          true: "pin-l-star+f00"
+        }
+     
+    var url = "http://api.tiles.mapbox.com/v3/"+tilesUrl[project.online]+"/"+marker[project.online]+"("+project.location.lon+","+project.location.lat+",13)/"+project.location.lon+","+project.location.lat+",13/300x180.png";
+    //console.log(url);
+    return url;
+  };
+});

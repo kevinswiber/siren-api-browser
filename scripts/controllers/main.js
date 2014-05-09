@@ -22,54 +22,54 @@ sirenMainController.controller('MainCtrl', [
       };
       $scope.projects = [
           {
-            name: "Mini-factory",
-            appUrl: "http://zetta-cloud.herokuapp.com/hello",
+            name: "Mini Factory Detroit",
+            appUrl: "http://zetta-cloud.herokuapp.com/minifactory-detroit",
             location: {
               lat: 42.331389, 
               lon: -83.045833,
               name: "Detroit, MI"
             },
-            state: "online"
+            online: true
           },
           {
-            name: "Mini-factory",
-            appUrl: "http://zetta-cloud.herokuapp.com/hello",
+            name: "Mini Factory SF",
+            appUrl: "http://zetta-cloud.herokuapp.com/minifactory-san-francisco",
             location: {
               lat: 37.783333, 
               lon: -122.416667,
               name: "San Francisco, CA"
             },
-            state: "online"
+            online: true
           },
           {
-            name: "Mini-factory",
+            name: "Mini Factory Bangalore",
             appUrl: "",
             location: {
               lat: 12.966667, 
               lon: 77.566667,
               name: "Bangalore, India"
             },
-            state: "offline"
+            online: false
           },
           {
-            name: "Mini-factory",
+            name: "Mini Factory San Jose",
             appUrl: "",
             location: {
               lat: 37.333333, 
               lon: -121.9,
               name: "San Jose, CA"
             },
-            state: "offline"
+            online: false
           },
           {
-            name: "Mini-factory",
+            name: "Mini Factory London",
             appUrl: "",
             location: {
               lat: 51.507222,
               lon: -0.1275,
               name: "London, England"
             },
-            state: "offline"
+            online: false
           },
           {
             name: "Home Automation",
@@ -79,7 +79,7 @@ sirenMainController.controller('MainCtrl', [
               lon: 103.833333,
               name: "Singapore"
             },
-            state: "offline"
+            online: false
           }
           
       

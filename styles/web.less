@@ -5,6 +5,7 @@
 
 @ao: #E86C1F;
 @ag: #5E5F61;
+@agreen: #25CE00;
 
 @link: #386EB4;
 
@@ -85,6 +86,18 @@ p, pre {
   h1 {
     font-family: @sans;
     font-weight: 300;
+    i {
+      font-size: .6em;
+      color: @agreen;
+    }
+    a {
+      text-decoration: none;
+      color: @text;
+    }
+    .offline {
+      color: #bbb;
+      i {color: #bbb;}
+    }
   }
   .content {
     padding: 1em 2em;
@@ -94,6 +107,7 @@ p, pre {
     padding: 1em;
     border-bottom: 1px solid #bcbcbc;
   }
+
 }
 .device-list {
   #project_map {
