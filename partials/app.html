@@ -1,5 +1,5 @@
 <div id="response" ng-cloak ng-init="init()" class="device-list">
-  <z-wampum-belt main="main"></z-wampum-belt>
+  
 
   <div id="header" class="pure-g">
     <div class="pure-u-2-3 breadcrumbs">
@@ -7,7 +7,7 @@
       <ul>
         <li><a href="/index.html">Projects</a></li>
         <li ng-repeat="link in main.breadcrumbs">
-                /  <a ng-href="#/app?url={{ link.href | encodeURIComponent }}" class="entity-link" ng-show="$index==0">{{ link.text }}</a><a ng-href="#/entity?url={{ link.href | encodeURIComponent }}" class="entity-link" ng-show="$index>0">{{ link.text }}</a>
+                /  <a ng-href="#/app?url={{ link.href | encodeURIComponent }}" class="entity-link" ng-show="$index==0">{{ link.text | nodash | capitalize}}</a><a ng-href="#/entity?url={{ link.href | encodeURIComponent }}" class="entity-link" ng-show="$index>0">{{ link.text }}</a>
         </li>
       </ul>
       </div>
@@ -20,10 +20,8 @@
     </div>
   </div>
   
-  <div id="project_map">
-  <leaflet defaults="defaults" height="160px" center="center" markers="markers" id="map_{{entity.heading}}"></leaflet>
-  </div>
   
+  <z-wampum-belt main="main"></z-wampum-belt>
   
   
   
@@ -35,9 +33,13 @@
     </div>
   </div><!-- devices container -->
   
+  <div id="project_map">
+  <leaflet defaults="defaults" height="100px" center="center" markers="markers" id="map_{{entity.heading}}"></leaflet>
+  </div>
+  
   </div>  
 
   <ng-include src="'partials/footer.html'"></ng-include>
-
+  
 </div>
 

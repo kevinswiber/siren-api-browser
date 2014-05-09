@@ -63,6 +63,18 @@ sirenFilters.filter('nosub', function() {
   };
 });
 
+sirenFilters.filter('nodash', function() {
+    return function(input) {
+      return input.replace(/-/g, ' ');
+    }
+  });
+
+sirenFilters.filter('capitalize', function() {
+    return function(input, all) {
+      return (!!input) ? input.replace(/([^\W_]+[^\s-]*) */g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}) : '';
+    }
+  });
+
 sirenFilters.filter('mapurl', function() {
   return function(project) {
         var tilesUrl = {        
@@ -79,3 +91,21 @@ sirenFilters.filter('mapurl', function() {
     return url;
   };
 });
+
+sirenFilters.filter('icon', function() {
+    return function(klass) {
+      //map classes to font awesome icons
+      var def = "fa-cog";
+      var mapping = {
+        arm: "fa-wrench",
+        humidity: "fa-tint",
+        barometer: "fa-flask",
+        temperature: "fa-cloud",
+        huehub: "fa-lightbulb-o",
+        system: "fa-gears",
+        sound: "fa-volume-up",
+        button: "fa-play"
+      }
+      return mapping[klass] || def;
+    }
+  });
