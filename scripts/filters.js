@@ -101,7 +101,8 @@ sirenFilters.filter('icon', function() {
         humidity: "fa-tint",
         barometer: "fa-flask",
         temperature: "fa-cloud",
-        huehub: "fa-lightbulb-o",
+        huehub: "fa-cog",
+        huebulb: "fa-lightbulb-o",
         system: "fa-gears",
         sound: "fa-volume-up",
         button: "fa-play"

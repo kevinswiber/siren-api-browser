@@ -513,13 +513,12 @@ var siren = angular
         container.append(controls);
       };
 
-      if (!visible) {
-        //this is a submit button!
+      
+      //this is a submit button!
       
         var btn = $('<button>')
-          .addClass('pure-button pure-button-primary action-button')
+          .addClass('pure-button pure-button-primary')
           .html(' <i class="fa fa-caret-right"></i><i class="fa fa-refresh fa-spin"></i><i class="fa fa-check"></i>')
-          .prepend(scope.action.name)
           .attr('type', 'submit');
           
         btn.click(function(e) {
@@ -529,17 +528,27 @@ var siren = angular
             btn.addClass('success');
             setTimeout(function() {
               btn.removeClass('success');
-            }, 2000);
+            }, 1000);
           });
         });
 
-        $compile(btn)(scope);
         
-        container.append(btn);
+      
+      
+      
+      if (!visible) {
+        btn
+          .prepend(scope.action.name)
+          .addClass('action-button');
       }else {
-        //add a submit button
+        btn
+          .prepend('submit')
       }
 
+      $compile(btn)(scope);
+        
+      container.append(btn);
+      
       element.replaceWith(container);
     }
 

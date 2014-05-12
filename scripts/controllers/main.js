@@ -35,8 +35,8 @@ sirenMainController.controller('MainCtrl', [
             name: "Mini Factory SF",
             appUrl: "http://zetta-cloud.herokuapp.com/minifactory-san-francisco",
             location: {
-              lat: 37.783333, 
-              lon: -122.416667,
+              lat:  37.807405, 
+              lon: -122.430196,
               name: "San Francisco, CA"
             },
             online: true
