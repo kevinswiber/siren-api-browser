@@ -198,14 +198,36 @@ var siren = angular
   };
 }])
 .directive('zWampumBelt', ['$compile', function($compile) {
-  function textToColor(text) {
-    var code = text.toString().split('').map(function(c) {
-      return c.charCodeAt(0);
-    }).reduce(function(previous, current) {
-      return previous + current;
-    }, 0);
+  function textToColor(text, min, max) {
+    if (!min) {
+      min = 0;
+    }
 
-    return code % 360;
+    if (!max) {
+      max = 360;
+    }
+
+    var tryFloat = parseFloat(text);
+    if (typeof text === 'string' && isNaN(tryFloat)) {
+      var code = text.toString().split('').map(function(c) {
+        return c.charCodeAt(0);
+      }).reduce(function(previous, current) {
+        return previous + current;
+      }, 0);
+
+      return (code % max) - min;
+    } else {
+      if (tryFloat === max) {
+        return 359;
+      }
+
+      if (val > 360) {
+        val = val % 360;
+      }
+
+      var val = (tryFloat - min)/ (max - min);
+      return Math.floor(val * 360);
+    }
   }
 
   function textToSaturation(text) {
@@ -278,10 +300,11 @@ var siren = angular
       };
     };
 
-    function getStreamColor(name, value) {
+    function getStreamColor(value, min, max) {
+      var val = textToColor(value, min, max);
       return {
-        hue: textToColor(value),
-        saturation: textToSaturation(name),
+        hue: val,
+        saturation: '100%',
         lightness: '50%'
       };
     }
@@ -369,7 +392,8 @@ var siren = angular
                 return;
               }
               var arr = d[d.length - 1];
-              var c = { hue: (Math.abs(arr[1].toFixed(0) % 360)), saturation: '100%' };
+              //var c = { hue: (Math.abs(arr[1].toFixed(0) % 360)), saturation: '100%' };
+              var c = getStreamColor(arr[1], entity.streams[key].min, entity.streams[key].max);
               colors[i].streams[streamIndex].unshift(c);
             });
           });

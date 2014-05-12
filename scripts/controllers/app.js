@@ -64,6 +64,36 @@ sirenAppController.controller('AppCtrl', [
     });
   };
 
+  function textToColor(text, min, max) {
+    if (!min) {
+      min = 0;
+    }
+
+    if (!max) {
+      max = 360;
+    }
+
+    var tryFloat = parseFloat(text);
+    if (typeof text === 'string' && isNaN(tryFloat)) {
+      var code = text.toString().split('').map(function(c) {
+        return c.charCodeAt(0);
+      }).reduce(function(previous, current) {
+        return previous + current;
+      }, 0);
+
+      return (code % max) - min;
+    } else {
+      if (tryFloat === max) {
+        return 359;
+      }
+      var val = (tryFloat - min)/ (max - min);
+      if (val > 360) {
+        val = val % 360;
+      }
+      return Math.floor(val * 360);
+    }
+  }
+
   $scope.execute = function(stream) {
     var action = stream.action;
     
@@ -81,8 +111,27 @@ sirenAppController.controller('AppCtrl', [
           data: d.data
         }  
           
-	var color = (Math.abs(update.data.toFixed(0) % 360));
+        //var color = (Math.abs(update.data.toFixed(0) % 360));
+        var color = textToColor(update.data, stream.min, stream.max);
+        //console.log('color:', color % 360);
+        var color;
         stream.data.push([new Date(), update.data, color]);	  
+
+        if (stream.min === null) {
+          stream.min = d.data;
+        }
+
+        if (stream.max === null) {
+          stream.max = d.data;
+        }
+
+        if (d.data < stream.min) {
+          stream.min = d.data;
+        }
+
+        if (d.data > stream.max) {
+          stream.max = d.data;
+        }
 
         if(stream.data.length > 40){
           stream.data.shift();
