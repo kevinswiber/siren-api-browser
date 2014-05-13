@@ -161,6 +161,11 @@ sirenEntityController.controller('EntityCtrl', [
     ws.onmessage = function(event) {
       //Add data to model w/ timestamp here
       var d = JSON.parse(event.data);
+
+      if (d.data.properties.name !== $scope.main.properties.raw.name) {
+        return;
+      }
+
       var dt = new Date(d.data.time);
       var etime = 0;
       if($scope.stateLogs.length){
@@ -179,10 +184,9 @@ sirenEntityController.controller('EntityCtrl', [
             elapsed: etime
           }
         });
-      });
 
-      console.log("LOGS BRO: ", $scope.stateLogs);
-      if($scope.stateLogs.length > 500){ $scope.stateLogs.pop() } //keep things civil
+        if($scope.stateLogs.length > 500){ $scope.stateLogs.pop() } //keep things civil
+      });
     }
 
     var command = { cmd: "subscribe", name: "_logs" };
