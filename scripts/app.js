@@ -499,43 +499,83 @@ var siren = angular
 
       var container = $('<div>');
       var visible = false;
+      
+      function Label(obj){
+        var defaults = {
+          'class' : "control-label",
+          'for'   : "zettaAction",
+          'text'  : "Action"
+        }
+        var params = $.extend({}, obj);
+        return $('<label>')
+          .addClass(params.class)
+          .attr('for',params.for)
+          .text(params.text);
+      }//Label
+      
+      function Input(obj){
+        var defaults = {
+          'name'        : "action",
+          'id'          : "zettaAction",
+          'type'        : "text",
+          'ng-model'    : "",
+          'value'       : ""
+        }
+        var params = $.extend({}, obj);
+        var output = $('<input>')
+          .attr('name', params.name)
+          .attr('id', params.id)
+          .attr('type', params.type)
+          .attr('ng-model', params['ng-model'])
+          .val(params.value);
+        
+        if(params.plaeholder !== 'undefined'){
+          output.attr('placeholder', params.placeholder)
+        }
+        
+        if(params['file-model'] !== 'undefined'){
+          output.attr('file-model', params['file-model'])
+        }
+        
+        return output;
+        
+      }//Input
+      
 
       for(var i = 0; i < scope.action.fields.length; i++) {
         var field = scope.action.fields[i];
 
-        var label = $('<label>')
-          .addClass('control-label')
-          .attr('for', scope.action.name + field.name)
-          .text(field.title || field.name);
+        var label = Label({
+            'for' : scope.action.name + field.name,
+            'text': field.title || field.name
+          });
 
         var controls = $('<div>').addClass('controls');
-        var fieldtype = field.type || 'text';
         
-        var input = $('<input>')
-          .attr('name', field.name)
-          .attr('id', scope.action.name + field.name)
-          .attr('type', fieldtype)
-          .attr('ng-model', 'action.fields[' + i + '].value')
-          .val(field.value);
-	     
-        if(fieldtype == 'text'){input.attr('placeholder', field.title || field.name); }
-        
-        
-        if(field.type === 'file'){
-          input.attr('file-model','action.fields[' + i + '].file');
+        var iput = {
+            'name'      :   field.name,
+            'id'        :   scope.action.name + field.name,
+            'type'      :   field.type || 'text',
+            'ng-model'  :   'action.fields[' + i + '].value',
+            'value'     :   field.value
         }
-	
+         
+        if(iput.type === 'text'){iput.placeholder = field.title || field.name; }
+        if(iput.type === 'file'){ iput.file-model = 'action.fields[' + i + '].file'; }
+        
+        var input = Input(iput);
+        
         $compile(input)(scope);
 
         controls.append(input);
 
-        if (field.type !== 'hidden') {
+        if (iput.type !== 'hidden') {
           visible = true;
-          if (fieldtype !== 'text') { container.append(label) };
+          if (iput.type !== 'text') { container.append(label) };
         }
 
         container.append(controls);
-      };
+      }; //for actions loop
 
       
       //this is a submit button!

@@ -60,5 +60,13 @@ sirenServices.factory('getStreams', ['$q', '$http',
                                        
 ]);
 
+sirenServices.factory('Page', function() {
+   var title = 'Zetta Browser';
+   return {
+     title: function() { return title; },
+     setTitle: function(newTitle) { title = newTitle + " - Zetta Browser"}
+   };
+});
+
 //Breadcrumbs
 //sirenServices.factory('breadcrumbs', ['$q', '$http',

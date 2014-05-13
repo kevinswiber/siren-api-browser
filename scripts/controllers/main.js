@@ -1,7 +1,6 @@
 'use strict';
 
 /* Controllers */
-
 var sirenMainController = angular.module('sirenMainController', []);
 
 sirenMainController.controller('MainCtrl', [
