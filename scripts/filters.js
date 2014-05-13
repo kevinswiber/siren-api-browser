@@ -86,7 +86,7 @@ sirenFilters.filter('mapurl', function() {
           true: "pin-l-star+f00"
         }
      
-    var url = "http://api.tiles.mapbox.com/v3/"+tilesUrl[project.online]+"/"+marker[project.online]+"("+project.location.lon+","+project.location.lat+",13)/"+project.location.lon+","+project.location.lat+",13/300x180.png";
+    var url = "http://api.tiles.mapbox.com/v3/"+tilesUrl[project.online]+"/"+marker[project.online]+"("+project.location.lon+","+project.location.lat+",13)/"+project.location.lon+","+project.location.lat+",13/600x280.png";
     //console.log(url);
     return url;
   };

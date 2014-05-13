@@ -11,6 +11,9 @@
 
 @sans: 'chaparral-pro-display', georgia, serif;
 
+//target ipad & only in portrait orientation
+@ipad: ~"all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait)";
+
 body, html, #app_container{
   height: 100%;
 }
@@ -21,7 +24,7 @@ body {
 
 html, button, input, select, textarea,
 .pure-g [class *= "pure-u"],
-.pure-g-r [class *= "pure-u"] {
+.pure-g-r [class *= "pure-u"]{
     /* Set your content font stack here: */
     font-family: "Source Sans Pro", Helvetica, arial, sans-serif;
 }
@@ -31,6 +34,12 @@ html, button, input, select, textarea,
   font-weight: 700;
   }
 */
+
+.pure-g > div {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
 
 
 pre, code, .mono {
@@ -102,6 +111,13 @@ p, pre {
   }
   .content {
     padding: 1em 2em;
+    img  {
+      width: 300px;
+      @media @ipad {
+        width: 720px;
+      }
+    }
+    
   }
   .volume {
     background-color: #F2F2F2;
@@ -126,9 +142,10 @@ p, pre {
   
 }
 .device {
-  margin:0 auto 2em auto;
+  margin:0 0 2em 0 ;
   float: left;
   clear: both;
+  width: 100%;
 }
 
 .characteristic {
@@ -320,6 +337,7 @@ p, pre {
 .breadcrumbs .content{
     font-family: @sans;
     font-size: 1.8em;
+  @media @ipad {font-size: 1.2em;}
     a {color: #888;}
     padding: .2em 0;
     a {text-decoration: none;}
@@ -357,6 +375,12 @@ p, pre {
   width: 80%;
   min-width: 1028px;
   margin: 2em auto;
+  @media @ipad {
+    width: auto;
+    min-width: 0;
+    margin: 0em;
+    padding: 1em;
+  }
 }
 .sparkline {
   path{
@@ -375,15 +399,13 @@ pre[class*="language-"] {
 
 /* Overview page columns */
 .deckgrid[deckgrid]::before {
-    content: '4 .column.size-1-4';
+    
+    content: '3 pure-u-1-3';
     font-size: 0;
     visibility:hidden;
+    
 }
 
-.deckgrid .column {
-  float:left;
-  width: 25%;
-}
 .name_value {
   width: 200px;
   .name {
