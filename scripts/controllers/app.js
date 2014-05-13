@@ -149,6 +149,11 @@ sirenAppController.controller('AppCtrl', [
         ws.send(JSON.stringify(command));
       };
 
+      ws.onclose = function(reason) {
+        console.log('closing stream socket:', reason);
+        $scope.execute(stream);
+      };
+
       return;
     }
 
@@ -199,6 +204,11 @@ sirenAppController.controller('AppCtrl', [
     
     ws.onopen = function(event) {
       ws.send(JSON.stringify(command));
+    };
+
+    ws.onclose = function(reason) {
+      console.log('closing:', reason);
+      $scope.logger(url);
     };
   };
 
