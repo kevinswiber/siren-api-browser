@@ -78,14 +78,13 @@
               <span ng-show="stateLogs.length">Latest {{stateLogs.length | pluralize:'transition'}} for: </span>
               {{main.properties.raw.name}}
               <!-- scrollable logs here -->
-              <div class="state_log" scroll-glue >
+              <div class="state_log">
                 <ul>
                   <li ng-repeat="log in stateLogs" ng-class="{latest: $index==stateLogs.length-1}">
                     <strong>{{ log.transition }}</strong> <span>{{log.time.localTime}} ({{log.time.elapsed}} ms later)</span>
                   </li>
                 </ul>
               </div>
-              <div ng-show="stateLogs.length" class="bottom"></div>
             </div>
           </div><!-- /#states -->
         

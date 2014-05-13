@@ -167,19 +167,22 @@ sirenEntityController.controller('EntityCtrl', [
         etime = d.data.unixtime -  $scope.stateLogs[$scope.stateLogs.length -1].time.unixtime;
       }
       
-      $scope.stateLogs.push({
-        transition: d.data.transition,
-        state: d.data.properties.state,
-        msg: d.data.msg,
-        time: {
-          time: d.data.time,
-          unixtime: d.data.unixtime,
-          localTime: dt.toLocaleString(),
-          elapsed: etime
-        }
+      $scope.$apply(function() {
+        $scope.stateLogs.unshift({
+          transition: d.data.transition,
+          state: d.data.properties.state,
+          msg: d.data.msg,
+          time: {
+            time: d.data.time,
+            unixtime: d.data.unixtime,
+            localTime: dt.toLocaleString(),
+            elapsed: etime
+          }
+        });
       });
-      //console.log("log: ", $scope.stateLogs);
-      if($scope.stateLogs.length > 500){ $scope.stateLogs.shift() } //keep things civil
+
+      console.log("LOGS BRO: ", $scope.stateLogs);
+      if($scope.stateLogs.length > 500){ $scope.stateLogs.pop() } //keep things civil
     }
 
     var command = { cmd: "subscribe", name: "_logs" };
