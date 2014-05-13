@@ -506,11 +506,41 @@ var siren = angular
           'for'   : "zettaAction",
           'text'  : "Action"
         }
-        var params = $.extend({}, obj);
+        var params = $.extend(defaults, obj);
         return $('<label>')
           .addClass(params.class)
           .attr('for',params.for)
           .text(params.text);
+      }//Label
+      
+      function Button(obj, scope){
+        var defaults = {
+          'dclass'  : "pure-button pure-button-primary",
+          'class'   : "",
+          'type'    : "submit",
+          'icons'   : '<i class="fa fa-caret-right"></i><i class="fa fa-refresh fa-spin"></i><i class="fa fa-check"></i>',
+          'html'    : "Update"
+        }
+        var params = $.extend(defaults, obj);
+        var btn = $('<button>')
+          .addClass(params.class)
+          .addClass(params.dclass)
+          .attr('type',params.type)
+          .html(params.html + "&nbsp;" + params.icons);
+        
+        btn.click(function(e) {
+          btn.addClass('loading');
+          scope.action.execute(function() {
+            btn.removeClass('loading');
+            btn.addClass('success');
+            setTimeout(function() {
+              btn.removeClass('success');
+            }, 1000);
+          });
+        });
+        
+        return btn;
+        
       }//Label
       
       function Input(obj){
@@ -521,7 +551,7 @@ var siren = angular
           'ng-model'    : "",
           'value'       : ""
         }
-        var params = $.extend({}, obj);
+        var params = $.extend(defaults, obj);
         var output = $('<input>')
           .attr('name', params.name)
           .attr('id', params.id)
@@ -541,6 +571,8 @@ var siren = angular
         
       }//Input
       
+      
+      console.log("fields: ", scope.action.fields);
 
       for(var i = 0; i < scope.action.fields.length; i++) {
         var field = scope.action.fields[i];
@@ -549,7 +581,8 @@ var siren = angular
             'for' : scope.action.name + field.name,
             'text': field.title || field.name
           });
-
+        
+        //don't wrap hidden field in it's own controls
         var controls = $('<div>').addClass('controls');
         
         var iput = {
@@ -577,36 +610,16 @@ var siren = angular
         container.append(controls);
       }; //for actions loop
 
-      
-      //this is a submit button!
-      
-        var btn = $('<button>')
-          .addClass('pure-button pure-button-primary')
-          .html(' <i class="fa fa-caret-right"></i><i class="fa fa-refresh fa-spin"></i><i class="fa fa-check"></i>')
-          .attr('type', 'submit');
-          
-        btn.click(function(e) {
-          btn.addClass('loading');
-          scope.action.execute(function() {
-            btn.removeClass('loading');
-            btn.addClass('success');
-            setTimeout(function() {
-              btn.removeClass('success');
-            }, 1000);
-          });
-        });
-
-        
-      
-      
-      
+  
       if (!visible) {
-        btn
-          .prepend(scope.action.name)
-          .addClass('action-button');
+        var btn = Button({
+          'class' : 'action-button',
+          'html'  : scope.action.name 
+        }, scope);
       }else {
-        btn
-          .prepend('submit')
+        var btn = Button({
+          'class' : 'submit-button',
+        }, scope);
       }
 
       $compile(btn)(scope);

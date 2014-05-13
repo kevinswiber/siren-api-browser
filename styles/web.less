@@ -110,9 +110,9 @@ p, pre {
     }
   }
   .content {
-    padding: 1em 2em;
+    padding: 1em;
     img  {
-      width: 300px;
+      width: 100%;
       @media @ipad {
         width: 720px;
       }
@@ -169,7 +169,7 @@ p, pre {
       padding-bottom: .2em;
     }
     .state {
-      width: 200px;
+      
       text-align: right;
     }
   }
@@ -206,6 +206,9 @@ p, pre {
         border: none;
       }
     }
+    
+    
+    
   }
   
   .state{
@@ -235,7 +238,10 @@ p, pre {
     .leaflet-control-zoom, .leaflet-control-attribution { display: none; }  
     clear: both;
   }
-}
+  
+  
+  
+}//characteristic
 
 .device-show {
   .content {padding: 0 2em 0 0;}
@@ -391,7 +397,7 @@ p, pre {
   padding-bottom: 2px;
   margin: .3em 0;
 }
-
+z-dna-strip {width: 100%;}
 pre[class*="language-"] {
   font-size: .8em;
   max-height: 300px;
@@ -407,7 +413,7 @@ pre[class*="language-"] {
 }
 
 .name_value {
-  width: 200px;
+  width: 100%;
   .name {
     .truncate {
       max-width: 130px;
@@ -425,42 +431,46 @@ pre[class*="language-"] {
     font-weight: bold;
   }
 }
+
+//forms on homepage
 .actions{
   .content{
     padding: 1em;
     
   }
-  .action, form {float: left;}
-  
+  .action, form {}
+  form {
+    font-size: .8em;
+  }
 }
-.action-button {
-			font-size: .8em;
-			margin: .1em .1em .4em .1em;
-			padding: .2em .4em;
 
+.action-button {
+  
+  margin: .1em .1em .4em .1em;
+  padding: .2em .4em;
+  
+  &.pure-button-primary {
+      background-color: hsl(0, 0%, 83%);
+      color: #333;
+  }
+}
+
+.action-button, .submit-button {
 
 			&.pure-button-primary {
-				background-color: hsl(0, 0%, 83%);
-				color: #333;
+				
 				min-height:;
 				i {
 					color: #fff;
 					display: none;
-					&.fa-caret-right {
-                      display: inline-block;
-                      color: transparent;
-                    }
-					
 					min-width: 15px;
 				}
 				&.loading {
-					.fa-caret-right {display: none;}
 					.fa-refresh {display: inline-block;}
 					background-color: hsl(56, 74%, 50%);
 					color: #000;
 				}
 				&.success {
-					.fa-caret-right {display: none;}
 					.fa-check {display: inline-block;}
 					background-color: hsl(111, 34%, 70%);
 					color: #fff;

@@ -20,7 +20,17 @@ sirenMainController.controller('MainCtrl', [
         navigator.transitionTo(url, { url: url });
       };
       $scope.projects = [
-          {
+        {
+            name: "Mini Factory SF",
+            appUrl: "http://zetta-cloud.herokuapp.com/mini-factory-san-francisco",
+            location: {
+              lat:  37.807405, 
+              lon: -122.430196,
+              name: "San Francisco, CA"
+            },
+            online: true
+          },  
+        {
             name: "Mini Factory Detroit",
             appUrl: "http://zetta-cloud.herokuapp.com/mini-factory-detroit",
             location: {
@@ -30,16 +40,7 @@ sirenMainController.controller('MainCtrl', [
             },
             online: true
           },
-          {
-            name: "Mini Factory SF",
-            appUrl: "http://zetta-cloud.herokuapp.com/mini-factory-san-francisco",
-            location: {
-              lat:  37.807405, 
-              lon: -122.430196,
-              name: "San Francisco, CA"
-            },
-            online: true
-          },
+          
           {
             name: "Mini Factory Bangalore",
             appUrl: "",
