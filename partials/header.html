@@ -1,0 +1,19 @@
+
+<div id="header" class="pure-g">
+  <div class="pure-u-4-5 breadcrumbs">
+    <div class="content">
+    <ul>
+      <li><a href="/index.html">Projects</a></li>
+      <li ng-repeat="link in breadcrumbs">
+              /  <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}" class="entity-link">{{ link.text }}</a>
+      </li>
+    </ul>
+    </div>
+  </div>
+    
+  <div class="pure-u-1-5 logo">
+    <div class="content">
+      <a href="index.html"><img src="images/zetta-logo_sm.png"/></a>
+    </div>
+  </div>
+</div>

@@ -12,6 +12,8 @@
   "license": "MIT",
   "dependencies": {
     "argo": "*",
-    "mime": "~1.2.9"
+    "mime": "~1.2.9",
+    "less": "~1.7.0",
+    "less-middleware": "^0.2.1-beta"
   }
 }

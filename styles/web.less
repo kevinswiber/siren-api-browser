@@ -1,0 +1,482 @@
+@import 'hues.css';
+
+@text: hsl(0, 0%, 55%);
+@zborder: #ddd;
+
+@ao: #E86C1F;
+@ag: #5E5F61;
+@agreen: #25CE00;
+
+@link: #386EB4;
+
+@sans: 'chaparral-pro-display', georgia, serif;
+
+//target ipad & only in portrait orientation
+@ipad: ~"all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait)";
+
+body, html, #app_container{
+  height: 100%;
+}
+
+body {
+  color: @text;
+}
+
+html, button, input, select, textarea,
+.pure-g [class *= "pure-u"],
+.pure-g-r [class *= "pure-u"]{
+    /* Set your content font stack here: */
+    font-family: "Source Sans Pro", Helvetica, arial, sans-serif;
+}
+
+/* h1, h2, h3, h4, h5, h6 {
+  font-family: "chaparral-pro-display", serif;
+  font-weight: 700;
+  }
+*/
+
+.pure-g > div {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+
+pre, code, .mono {
+  font-family: "Source Code Pro", monospace;
+}
+
+p, pre {
+  margin-top: .5em; margin-bottom: .5em;
+}
+.app_start {
+  background: #fafafa url('img/lab-background.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  
+  height: 100%;
+  #footer{ 
+    margin: 5em auto 0 auto; 
+  }
+}
+#zetta-start {
+  text-align: left;
+  width: 420px; 
+  margin: 0 auto;
+  padding: 2em 0;
+  h1 {
+    font-size: 4em; font-weight: 400;
+    color: @ao;
+    span {
+      color: @ag;
+    }
+  }
+  input {
+    font-family: 'FontAwesome', 'Source Sans Pro', helvetica, arial, sans-serif;;
+  }
+  .pure-g {
+    width: 94%;
+    margin: 1em auto;
+  }
+  .sign-in {
+    text-align: right;
+    a {
+      border: 1px solid #fff;
+      box-shadow: 0px 0px 10px #fff;
+    }
+  }
+}
+
+#projects-list {
+  .centered;
+  
+  h1 {
+    font-size: 2em;
+    font-family: @sans;
+    font-weight: 300;
+    i {
+      font-size: .6em;
+      color: @agreen;
+    }
+    a {
+      text-decoration: none;
+      color: @text;
+    }
+    .offline {
+      color: #bbb;
+      i {color: #bbb;}
+    }
+  }
+  .content {
+    padding: 1em;
+    img  {
+      width: 100%;
+      @media @ipad {
+        width: 720px;
+      }
+    }
+    
+  }
+  .volume {
+    background-color: #F2F2F2;
+    padding: 1em;
+    border-bottom: 1px solid #bcbcbc;
+  }
+
+}
+.device-list {
+  #project_map {
+    .centered;
+    margin-top: 0;
+    border-bottom: 1px solid @zborder; 
+  }
+
+}
+
+#devices_container {
+  .centered;
+}
+#devices {
+  
+}
+.device {
+  margin:0 0 2em 0 ;
+  float: left;
+  clear: both;
+  width: 100%;
+}
+
+.characteristic {
+  .characteristicTitle {
+    padding: 1em 0;
+    .state { 
+      color: #000;
+    }
+    z-dna-strip {
+      margin: 0 1em;
+    }
+  }
+  &.show {
+    .centered;
+  }
+  .content { padding: 0 1em; }
+  
+  &.stream, &.self {
+    .fa-circle {
+      font-size: .1em;
+      padding-bottom: .2em;
+    }
+    .state {
+      
+      text-align: right;
+    }
+  }
+  .text_location {
+    color: hsl(0, 0%, 70%);
+    cont-weight: 400;
+    padding: .3em .35em 0 .5em;
+    i {margin-right: .25em;}
+    font-size: .8em;
+    float: left;
+  }
+  .name {
+    padding: .5em 0 .3em 0;
+    font-family: @sans;
+    font-size: 1em;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    
+    a {
+      text-decoration: none;
+      color: @text;
+    }
+    
+    .devicecon {
+      display: block; 
+      float: right;
+      background-color: @ao;
+      width: 30px; height: 30px;
+      overflow: hidden;
+      img {
+        width: 100%;
+        border: none;
+      }
+    }
+    
+    
+    
+  }
+  
+  .state{
+    font-size: 1.2em;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    float: left;
+    .units {
+      font-weight: 300; 
+      font-size: .7em;
+      padding-left: .3em;
+      }
+  }
+  
+  .pure-button {
+    padding: .2em .6em;
+  }
+  
+  .map {
+    width: 100%;
+    height: 70px;
+    background-color: #eee;
+    margin-top: .5em;
+  }
+  .vis{
+    .leaflet-control-zoom, .leaflet-control-attribution { display: none; }  
+    clear: both;
+  }
+  
+  
+  
+}//characteristic
+
+.device-show {
+  .content {padding: 0 2em 0 0;}
+  h3 {
+    border-bottom: 1px solid #eee;
+    margin-bottom: .2em;
+    padding-bottom: .1em;
+  }
+  
+  #actions { 
+    h5 {
+      font-size: 1em;
+      font-weight: 400;
+      margin: 1em 0 .25em 0;
+    }
+    form {
+      padding: .5em 0;
+    }
+  }
+  
+}
+
+#properties {
+  .json {
+    font-size: .8em;
+    max-height: 240px; overflow-y: auto;
+    pre{
+      line-height: 1.428571429;
+    }
+  }
+}
+.jsondiffpatch-delta {
+
+	font-family: "Source Code Pro";
+    font-size: 16px;
+	line-height: 1.428571429;
+	color: #333;
+    margin: 0; padding: 0;
+    letter-spacing: normal;
+    word-spacing: normal;
+    ul {
+      margin-left: 4px;
+      .jsondiffpatch-value {
+        padding-left: 2px;
+      }
+    }
+}
+
+#states {
+  
+  .bottom {border-top: 1px solid @zborder;}
+
+  .state_log {
+    max-height: 200px;
+    margin-top: 1em;
+    overflow-x: auto;
+    ul, li {
+      list-style-type: none;
+      margin: 0; padding: 0;
+    }
+    li {
+      font-family: "courier new", "andale mono", monospace;
+      margin-bottom: .5em;
+      color: #666;
+      span{
+        font-size: .6em;
+      }
+      strong {
+        display: inline-block;
+        min-width: 100px;
+      }
+    }
+    &.latest {
+      color: #2765a3;
+    }
+  }
+}
+
+#api {
+  .breadcrumbs {border-bottom: 1px solid @zborder; }
+  margin-top: 2em;
+}
+
+#header {
+  .centered;
+  margin-bottom: 0;
+  position: relative;
+  border-bottom: 1px solid @zborder; 
+  
+  .logo {
+    ul, li {margin: 0; padding: 0; list-style-type: none;}
+    text-align: right;
+    ul {display: inline-block;}
+  }
+  
+  
+}
+
+.breadcrumbs .content{
+    font-family: @sans;
+    font-size: 1.8em;
+  @media @ipad {font-size: 1.2em;}
+    a {color: #888;}
+    padding: .2em 0;
+    a {text-decoration: none;}
+    ul {
+      margin: 0; 
+      padding: 0em;
+      list-style-type: none;
+    }
+    li {
+      color: hsl(0, 0%, 50%);
+      display: inline;
+    }
+    
+  }
+
+#footer {
+  .centered;
+  position: relative;
+  bottom: 0;
+  
+  font-size: 1.4em;
+  .content{padding: 1em;}
+  border-top: 1px solid @zborder; 
+  
+  .logo {text-align: right;}
+  
+  ul{margin: 0; padding: .2em 0 0 0; list-style-type: none;}
+  li {
+    display: inline;
+    margin: 0 .5em;
+  }
+}
+
+.centered {
+  width: 80%;
+  min-width: 1028px;
+  margin: 2em auto;
+  @media @ipad {
+    width: auto;
+    min-width: 0;
+    margin: 0em;
+    padding: 1em;
+  }
+}
+.sparkline {
+  path{
+    fill: none;
+    stroke: #888;
+    stroke-width: 1px;
+  }
+  padding-bottom: 2px;
+  margin: .3em 0;
+}
+z-dna-strip {width: 100%;}
+pre[class*="language-"] {
+  font-size: .8em;
+  max-height: 300px;
+}
+
+/* Overview page columns */
+.deckgrid[deckgrid]::before {
+  
+    content: '3 pure-u-1-3';
+    font-size: 0;
+    visibility:hidden;
+    
+}
+
+.name_value {
+  width: 100%;
+  .name {
+    .truncate {
+      max-width: 130px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      
+    }
+  }
+  .value {
+    padding-left: .5em;
+    text-align: right;
+    color: #000;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+}
+
+//forms on homepage
+.actions{
+  .content{
+    padding: 1em;
+    
+  }
+  .action, form {}
+  form {
+    font-size: .8em;
+  }
+}
+
+.action-button {
+  
+  margin: .1em .1em .4em .1em;
+  padding: .2em .4em;
+  
+  &.pure-button-primary {
+      background-color: hsl(0, 0%, 83%);
+      color: #333;
+  }
+}
+
+.action-button, .submit-button {
+
+			&.pure-button-primary {
+				
+				min-height:;
+				i {
+					color: #fff;
+					display: none;
+					min-width: 15px;
+				}
+				&.loading {
+					.fa-refresh {display: inline-block;}
+					background-color: hsl(56, 74%, 50%);
+					color: #000;
+				}
+				&.success {
+					.fa-check {display: inline-block;}
+					background-color: hsl(111, 34%, 70%);
+					color: #fff;
+				}
+				&:hover {
+					color: #fff;
+				}
+			}
+		}

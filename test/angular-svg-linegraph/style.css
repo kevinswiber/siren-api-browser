@@ -1,0 +1,7 @@
+/* Put your css in here */
+
+.sparkline {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 1px;
+}

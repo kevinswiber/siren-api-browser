@@ -1,10 +1,38 @@
-<div id="control-panel" ng-init="init()">
-  <form class="form-inline" role="form">
-    <div class="form-group">
-      <label class="sr-only" for="url">Siren API URL</label>
-      <input type="text" size=60 class="form-control" id="url" name="url" ng-model="params.url" placeholder="Siren API URL" autofocus/>
+<div ng-init="init()" class="projects">
+
+<div id="header" class="pure-g-r">
+  <div class="pure-u-2-3 breadcrumbs">
+    <div class="content">Projects</div>
+  </div>
+  <div class="pure-u-1-3 logo">
+    <div class="content">
+      <a href="index.html"><img src="images/zetta-logo_sm.png"/></a>
     </div>
-    <button class="btn btn-default btn-primary" ng-click="fetchUrl(params)">Go</button>
-  </form>
+  </div>
+</div>
+
+<div class="pure-g-r" id="projects-list">
+
+  <div class="pure-u-lg-1-3 pure-u-1-3 pure-g" ng-repeat="project in projects">
+    <div class="pure-u-1">
+      <div ng-init="params.project=project" class="content">
+        <h1 ng-init="params.url='{{project.appUrl}}'" class="project_name">
+          <a ng-href="#/app?url={{project.appUrl|encodeUri}}" class="online" ng-click="fetchUrl(params)" ng-show="project.online"><i class="fa fa-circle"></i> {{project.name}}</a>
+          <span class="offline" ng-show="!project.online">{{project.name}}</span>
+
+        </h1>
+        <a ng-href="#/app?url={{project.appUrl|encodeUri}}" class="online" ng-click="fetchUrl(params)" ng-show="project.online">
+          <img src="{{project | mapurl}}" ng-show="project.online"/><br/>
+        </a>
+        <img src="{{project | mapurl}}" ng-show="!project.online"/><br/>
+        {{project.location.name}}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<ng-include src="'partials/footer.html'"></ng-include>
+
 </div>
 <div id="entity" siren-view />

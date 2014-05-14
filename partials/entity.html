@@ -1,92 +1,163 @@
-<div class="row">
-  <div class="col-md-12">
-    <label for="url">Entity URI:</label>
-    <input type="text" size=60
-       id="url" readonly value="{{url}}" select-on-click />
+<div id="response" ng-cloak ng-init="init()" class="device-show">
+  
+<div id="header" class="pure-g">
+  <div class="pure-u-2-3 breadcrumbs">
+    <div class="content">
+    <ul>
+      <li><a href="/index.html">Projects</a></li>
+      <li ng-repeat="link in main.breadcrumbs">
+              /  <a ng-href="#/app?url={{ link.href | encodeURIComponent }}" class="entity-link" ng-show="$index==0">{{ link.text  | nodash | capitalize}}</a><a ng-href="#/entity?url={{ link.href | encodeURIComponent }}" class="entity-link" ng-show="$index>0">{{ link.text }}</a>
+      </li>
+    </ul>
+    </div>
+  </div>
+    
+  <div class="pure-u-1-3 logo">
+    <div class="content">
+      <a href="index.html"><img src="images/zetta-logo_sm.png"/></a>
+    </div>
   </div>
 </div>
-<div id="response" class="row" ng-cloak ng-init="init()">
-  <div class="col-md-4">
-    <div id="class" ng-show="main.class">
-      <h3>Class</h3>
-      <pre>{{main.class}}</pre>
-    </div>
-    <div id="properties" ng-show="main.properties.length">
-      <h3>Properties</h3>
-      <pre>{{main.properties}}</pre>
-    </div>
-    <div id="links" ng-show="main.links.length">
-      <h3>Links</h3>
-      <ul>
-        <li ng-repeat="link in main.links">
-        <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-         class="entity-link {{ link.rel }}">{{ link.rel }}</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div id="actions" ng-show="main.actions.length">
-      <h3>Actions</h3>
-      <accordion close-others="true">
-        <accordion-group ng-repeat="action in main.actions" is-open="$first">
-          <accordion-heading>
-            <span ng-show="action.title">{{action.title}}</span>
-            <span ng-show="!action.title">{{action.name}}</span>
-          </accordion-heading>
-          <tabset>
-            <tab heading="Form">
-              <div ng-show="action.fields.length">
-                <form class="form-horizontal">
+  
+  
+  <!-- Characteristic Title -->
+  <div class="characteristic show">
+    <div class="pure-g-r">
+      <div class="pure-u-1-2"><!-- Left Column -->
+        <div class="characteristicTitle pure-u-1">
+          <span class="name">
+            <i class="fa fa-cog h_277"></i> {{main.properties.raw.name}}
+          </span>
+          <!--<z-dna-strip entity="entity"></z-dna-strip> -->
+          <span ng-class="main.stateClass" class="state label">{{main.state}}</span>
+        </div>
+        <div id="map" class="pure-u-1">
+            <div class="content" ng-init="">
+        <leaflet defaults="defaults" height="160px" center="center" markers="markers" id="map_{{entity.heading}}"></leaflet>
+            </div>
+          </div>
+          
+          <div id="properties" class="pure-u-1">
+            <div class="content">
+              <h3><i class="fa fa-list-ul"></i>  Properties</h3>
+              <div ng-bind-html="formattedDiff" class="json"></div>
+            </div>
+          </div><!-- /#properties -->
+          
+      </div><!-- /Left Column -->
+      
+      <div class="pure-u-1-2"><!-- Right Column -->
+        <div id="sensors">
+          <h3><i class="fa fa-tachometer"></i> Sensors</h3>
+        </div>
+        
+        <div id="actions" ng-show="main.actions.length">
+          <h3><i class="fa fa-bell-o"></i> Actuators</h3>
+          <div class="pure-g">
+            <div ng-repeat="action in main.actions" class="pure-u-1-2">
+              <h5 ng-show="action.title">{{action.title}}</h5>
+              <h5 ng-show="!action.title">{{action.name}}</h5>
+              <form class="form-horizontal">
+                <srn-action value="action"></srn-action>
 
-                  <br/>
-                  <srn-action value="action"></srn-action>
-                  <br/>
-
-                  <div class="control-group">
-                    <div class="controls">
-                      <button type="submit" class="btn btn-default" ng-click="execute(action)">Submit</button>
-                    </div>
+                <div class="control-group">
+                  <div class="controls">
+                    <button class="pure-button pure-button-primary" ng-click="execute(action)">Submit</button>
                   </div>
-                </form>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div><!-- Actuators -->
+        
+         <div id="states" class="pure-u-1">
+            <div class="content">
+            
+              <h3><i class="fa fa-bolt"></i>  State History</h3>
+              <span ng-show="!stateLogs.length">State transitions for: </span>
+              <span ng-show="stateLogs.length">Latest {{stateLogs.length | pluralize:'transition'}} for: </span>
+              {{main.properties.raw.name}}
+              <!-- scrollable logs here -->
+              <div class="state_log">
+                <ul>
+                  <li ng-repeat="log in stateLogs" ng-class="{latest: $index==stateLogs.length-1}">
+                    <strong>{{ log.transition }}</strong> <span>{{log.time.localTime}} ({{log.time.elapsed}} ms later)</span>
+                  </li>
+                </ul>
               </div>
-            </tab>
-            <tab heading="Source">
-              <pre>{{ action | prettify }}</pre>
-            </tab>
-          </tabset>
-        </accordion-group>
-      </accordion>
-    </div>
-    <div id="entities" ng-show="main.entities.length">
-      <h3>Entities</h3>
-      <div>
-        <label class="checkbox">
-          <input type="checkbox" ng-model="isOneAtATime" id="oneAtATime" />
-          Open only one at a time
-        </label>
-      </div>
-      <br/>
-      <accordion close-others="isOneAtATime">
-        <accordion-group ng-repeat="entity in main.entities" heading="{{entity.heading}}" is-open="$first">
-          <div ng-show="entity.properties.length">
-            <h4>Properties</h4>
-            <pre>{{entity.properties}}</pre>
-          </div>
-          <div ng-show="entity.links.length">
-            <h4>Links</h4>
+            </div>
+          </div><!-- /#states -->
+        
+      </div><!-- /Right Column -->
+      
+
+        <div id="entities" ng-show="main.entities.length">
+          <h3>Entities
+
+            <div class="btn-group" id="links">
+              <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                Options
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-form" role="menu">
+                <li role="presentation" >
+                        <label class="checkbox">
+                          <input type="checkbox" ng-model="isOneAtATime" id="oneAtATime" />
+                          Open only one at a time
+                        </label>
+                </li>
+              </ul>
+             </div>
+        </h3>
+            <div ng-repeat="entity in main.entities" heading="{{entity.heading}}" is-open="$first">
+              
+              <div ng-show="entity.properties.length">
+                <h4>Properties</h4>
+                <pre>{{entity.properties}}</pre>
+              </div>
+              <div ng-show="entity.href">
+                <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
+              </div>
+            </div>
+        </div>
+
+        <div id="api" class="pure-u-1 pure-g-r">
+          <div class="pure-u-1 breadcrumbs">
+            <div class="content">
             <ul>
-              <li ng-repeat="link in entity.links">
-              <a ng-href="#/entity?url={{ link.href | encodeURIComponent }}"
-               class="entity-link {{ link.rel }}">{{ link.rel }}</a>
-              </li>
+              <li>API</li>
             </ul>
+            </div>
           </div>
-          <div ng-show="entity.href">
-            <button class="btn btn-default btn-primary" ng-click="go(entity.href)">Go</button>
+          
+          <div class="pure-u-1-2 request">
+            <div class="content">
+            
+              <h3><i class="fa fa-bolt"></i>  Request</h3>
+              <pre class="language-markup"><code>{{main.request}}</code></pre>
+              
+            </div>
           </div>
-        </accordion-group>
-      </accordion>
+          
+          <div class="pure-u-1-2 response">
+            <div class="content">
+            
+              <h3><i class="fa fa-bolt"></i>  Response</h3>
+              <pre class="language-markup"><code>{{main.data | prettify}}</code></pre>
+              
+            </div>
+          </div>
+          
+        </div>
+      
     </div>
-  </div>
+    
+  
+    
+    
+    
+  </div><!-- /.characteristic -->
+  
+<ng-include src="'partials/footer.html'"></ng-include>
+
 </div>

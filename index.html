@@ -1,50 +1,105 @@
 <!doctype html>
-<html lang="en" ng-app="surface">
+<html lang="en" ng-app="zetta">
   <head>
-    <title>Siren API Browser</title>
+    <title>Zetta Broswer</title>
     <meta charset="utf-8" />
     <meta name="fragment" content="!" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    
+<!--    Pure CSS    -->
+    <link rel="stylesheet" href="styles/vendor/pure-min.css">
+
+<!--    Code Highlighting   -->
+    <link href="styles/vendor/prism.css" rel="stylesheet" />
+    
+<!--    Multiple weights of Source Sans Pro   -->
+    <link href="styles/vendor/fonts/source_sans_pro200+300+400+700.css" rel="stylesheet">
+    <link href="styles/vendor/fonts/source_code_pro400+500+600+700.css" rel="stylesheet">
+
+<!-- Typkit fonts -->
+    
+    <script type="text/javascript" src="//use.typekit.net/rcx5hyq.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    
+<!--     Icons, yo!   -->
+    <link rel="stylesheet" href="styles/vendor/font-awesome-4.0.3/css/font-awesome.min.css">
+
+    <!-- Graph Styles -->
+    <!-- animations in angular -->
+    <link rel="stylesheet" href="styles/vendor/animate.css">
+    <!-- Formatter for JSON diff/patch -->
+	<link rel="stylesheet" href="styles/vendor/formatters/html.css">
+    
+<!-- maps -->
+    <link rel="stylesheet" href="styles/vendor/leaflet.css">
+
+<!--    Our Stylesheet    -->
     <link href="styles/web.css" rel="stylesheet" />
-    <script src="scripts/vendor/angular.min.js"></script>
+    <style type="text/css">
+      
+    </style>
+<!--    Load angular as soon as possible    -->
+    <script src="scripts/vendor/angular.js"></script>
+    
   </head>
   <body>
 
-   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-     <div class="container">
-       <div class="navbar-header">
-         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-           <span class="sr-only">Toggle navigation</span>
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-         </button>
-         <a class="navbar-brand" href="#">Siren API Browser</a>
-       </div>
-      </div>
-    </div>
-  </div>
+    
+    <div ui-view id="app_container"></div>
+        
 
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <!--<h1>Explore your data</h1>-->
-          <div ui-view></div>
-        </div>
-      </div>
-    </div> <!-- /container -->
 
-    <script src="scripts/vendor/jquery-1.9.1.min.js"></script>
+<!--    Library angular directives    -->
+    <script src="scripts/vendor/angular-animate.js"></script>
     <script src="scripts/vendor/angular-ui-router.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-    <script src="scripts/vendor/ui-bootstrap-custom-0.10.0.min.js"></script>
-    <script src="scripts/vendor/ui-bootstrap-custom-tpls-0.10.0.min.js"></script>
+	<script src="scripts/vendor/angular-sanitize.min.js"></script>
+    <script src="bower_components/angular-deckgrid/angular-deckgrid.js"></script>
+<!--    Maps    -->
+    <script src="scripts/vendor/leaflet.js"></script>
+    <script src="scripts/vendor/angular-leaflet-directive.js"></script>
+    <script src="bower_components/angular-encode-uri/dist/angular-encode-uri.min.js"></script>
+    
+<!--    Syntax Highlighting   -->
+    <script src="scripts/vendor/prism.js"></script>
+<!--    jQuery    -->
+    <script src="scripts/vendor/jquery-1.9.1.min.js"></script>
+    
+<!--    JSON diff/patch   -->
+    <script src="scripts/vendor/bundle-full.min.js"></script>
+	<script src="scripts/vendor/formatters.min.js"></script>
 
+<!--    Data Driven Documents (D3) + angular directive  -->
+	<script src="scripts/vendor/d3.min.js"></script>
+    
+<!--    Angular directive for smart scrolling to emulate console behavior   -->
+    <script src="scripts/vendor/scrollglue.js"></script>
+	
+<!--    Siren routing   -->
     <script src="scripts/siren/module.js"></script>
-
-    <script src="scripts/controllers.js"></script>
+    
+<!--    Controller    -->
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/app.js"></script>
+    <script src="scripts/controllers/entity.js"></script>
+	
+<!--    Our App   -->
+    <script src="scripts/services.js"></script>
+    <script src="scripts/filters.js"></script>
     <script src="scripts/app.js"></script>
+	
+	<script>
+	  $(document).ready(function(){
+
+        //  Responsive dropdown menu niceties
+			$('.dropdown-menu').on('click', function(e) {
+				if($(this).hasClass('dropdown-menu-form')) {
+					//e.stopPropagation();
+					e.preventDefault();
+				}
+			});  
+        
+		});
+	  
+	</script>
   </body>
 </html>
