@@ -24,28 +24,28 @@ sirenMainController.controller('MainCtrl', [
             name: "Mini Factory SF",
             appUrl: "http://zetta-cloud.herokuapp.com/mini-factory-san-francisco",
             location: {
-              lat:  37.807405, 
+              lat:  37.807405,
               lon: -122.430196,
               name: "San Francisco, CA"
             },
             online: true
-          },  
+          },
         {
             name: "Mini Factory Detroit",
             appUrl: "http://zetta-cloud.herokuapp.com/mini-factory-detroit",
             location: {
-              lat: 42.331389, 
+              lat: 42.331389,
               lon: -83.045833,
               name: "Detroit, MI"
             },
             online: true
           },
-          
+
           {
             name: "Mini Factory Bangalore",
             appUrl: "",
             location: {
-              lat: 12.966667, 
+              lat: 12.966667,
               lon: 77.566667,
               name: "Bangalore, India"
             },
@@ -55,7 +55,7 @@ sirenMainController.controller('MainCtrl', [
             name: "Mini Factory San Jose",
             appUrl: "",
             location: {
-              lat: 37.333333, 
+              lat: 37.333333,
               lon: -121.9,
               name: "San Jose, CA"
             },
@@ -81,10 +81,9 @@ sirenMainController.controller('MainCtrl', [
             },
             online: false
           }
-          
-      
+
+
         ]
     }
-    
-]); //closure for .controller
 
+]); //closure for .controller

@@ -14,7 +14,7 @@ sirenFilters.filter('encodeURIComponent', function() {
     };
   });
 
-//  Strip "/" and ":" characters from a URL. 
+//  Strip "/" and ":" characters from a URL.
 //  TODO: Let this handle the urlEncoded hashes construced by encodeURIComponent
 
 sirenFilters.filter('abc123', function(){
@@ -24,8 +24,8 @@ sirenFilters.filter('abc123', function(){
     }
   })
 
-//  Turn common english words into their plural equivalent. 
-//  Makes for prettier 1 or many lists, without doing things like "Displaying 1 word(s)". 
+//  Turn common english words into their plural equivalent.
+//  Makes for prettier 1 or many lists, without doing things like "Displaying 1 word(s)".
 
 //  * Smart enough to turn "entry" into "entries"
 
@@ -77,17 +77,27 @@ sirenFilters.filter('capitalize', function() {
 
 sirenFilters.filter('mapurl', function() {
   return function(project) {
-        var tilesUrl = {        
+        console.log(project);
+        var tilesUrl = {
           false: "alanguirand.i6m2j6kf",
           true: "alanguirand.i04decfa"
         }
-        var marker = {        
+        var marker = {
           false: "pin-l+aaa",
           true: "pin-l-star+f00"
         }
-     
+
     var url = "http://api.tiles.mapbox.com/v3/"+tilesUrl[project.online]+"/"+marker[project.online]+"("+project.location.lon+","+project.location.lat+",13)/"+project.location.lon+","+project.location.lat+",13/600x280.png";
-    //console.log(url);
+    console.log(url);
+    return url;
+  };
+});
+
+sirenFilters.filter('largemapurl', function(){
+  return function(project) {
+    var tilesUrl = "alanguirand.i04decfa";
+    var marker = "pin-l+f00";
+    var url =  "http://api.tiles.mapbox.com/v3/"+tilesUrl+"/"+marker+"("+project.location.lon+","+project.location.lat+")/"+project.location.lon+","+project.location.lat+",1/1280x100.png";
     return url;
   };
 });
