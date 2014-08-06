@@ -56,24 +56,46 @@ angular
       for(var i = 0; i < scope.action.fields.length; i++) {
         var field = scope.action.fields[i];
 
+        var controls = $('<div>').addClass('controls');
+
+        if (field.type === 'radio' || field.type === 'checkbox') {
+          angular.forEach(field.value, function(val) {
+            var input = $('<input>')
+              .attr('name', field.name)
+              .attr('id', scope.action.name + field.name + val.value)
+              .attr('type', field.type)
+              .attr('ng-model', 'action.fields[' + i + '].value')
+              .val(val.value);
+
+            $compile(input)(scope);
+
+            controls.append(input);
+
+            var label = $('<label>')
+              .attr('for', scope.action.name + field.name + val.value)
+              .text(val.title || val.value);
+
+            controls.append('  ');
+            controls.append(label);
+            controls.append($('<br>'));
+          });
+        } else {
+          var input = $('<input>')
+            .attr('name', field.name)
+            .attr('id', scope.action.name + field.name)
+            .attr('type', field.type || 'text')
+            .attr('ng-model', 'action.fields[' + i + '].value')
+            .val(field.value);
+
+          $compile(input)(scope);
+
+          controls.append(input);
+        }
+
         var label = $('<label>')
           .addClass('control-label')
           .attr('for', scope.action.name + field.name)
           .text(field.title || field.name);
-
-        var controls = $('<div>').addClass('controls');
-
-        var input = $('<input>')
-          .attr('name', field.name)
-          .attr('id', scope.action.name + field.name)
-          .attr('type', field.type || 'text')
-          .attr('ng-model', 'action.fields[' + i + '].value')
-          .val(field.value);
-
-
-        $compile(input)(scope);
-
-        controls.append(input);
 
         if (field.type !== 'hidden') {
           visible = true;
