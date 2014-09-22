@@ -59,12 +59,13 @@ angular
         var controls = $('<div>').addClass('controls');
 
         if (field.type === 'radio' || field.type === 'checkbox') {
-          angular.forEach(field.value, function(val) {
+          angular.forEach(field.value, function(val, key) {
+            model = (field.type === 'radio') ? 'action.fields[' + i + '].value' : 'action.fields[' + i + '].value['+ key +']';
             var input = $('<input>')
               .attr('name', field.name)
               .attr('id', scope.action.name + field.name + val.value)
               .attr('type', field.type)
-              .attr('ng-model', 'action.fields[' + i + '].value')
+              .attr('ng-model', model)
               .val(val.value);
 
             $compile(input)(scope);
