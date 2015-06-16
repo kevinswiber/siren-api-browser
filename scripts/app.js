@@ -21,7 +21,7 @@ angular
       });
   }])
   .controller('MainCtrl',
-      ['$scope', '$state', 'navigator', 'appState', SurfaceCtrls.MainCtrl])
+      ['$scope', '$state', '$http', 'navigator', 'appState', SurfaceCtrls.MainCtrl])
   .controller('EntityCtrl',
       ['$scope', '$state', '$http', '$location', 'navigator', SurfaceCtrls.EntityCtrl])
   .factory('appState', function() {

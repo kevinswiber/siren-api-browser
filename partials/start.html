@@ -1,10 +1,37 @@
 <div id="control-panel" ng-init="init()">
-  <form class="form-inline" role="form">
+  <form class="form-horizontal" role="form">
     <div class="form-group">
-      <label class="sr-only" for="url">Siren API URL</label>
-      <input type="text" size=60 class="form-control" id="url" name="url" ng-model="params.url" placeholder="Siren API URL" autofocus/>
+      <div class="input-group">
+        <label class="sr-only" for="url">Siren API URL</label>
+        <input type="text" size=60 class="form-control" id="url" name="url" ng-model="params.url" placeholder="Siren API URL" autofocus/>
+        <span class="input-group-btn">
+          <button class="btn btn-success btn-add" ng-click="addHeader()" text="Add Header">
+            <i class="glyphicon glyphicon-plus"></i>
+          </button>
+          <button class="btn btn-default btn-primary" ng-click="fetchUrl(params)">Go</button>
+        </span>
+      </div>
     </div>
-    <button class="btn btn-default btn-primary" ng-click="fetchUrl(params)">Go</button>
+    <div>
+      <strong ng-show="params.headers.length > 0">Headers</strong>
+      <div class="pull-left">
+        <div ng-repeat="header in params.headers" class="row">
+          <div class="form-group" >
+            <div class="col-xs-2">
+              <input type="text" class="form-control" ng-model="header.key" />
+            </div>
+            <div class="col-xs-6 input-group">
+              <input type="text" size=15 class="form-control" ng-model="header.value" />
+              <span class="input-group-btn">
+                <button class="btn btn-warn btn-danger" ng-click="removeHeader($index)">
+                  <i class="glyphicon glyphicon-remove"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </form>
 </div>
 <div id="entity" siren-view />
