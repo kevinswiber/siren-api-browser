@@ -106,7 +106,10 @@ angular
             var str = [];
             for(var p in obj)
               if (obj.hasOwnProperty(p)) {
-                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                console.log('obj[p]:' + obj[p]);
+                if (typeof obj[p] != 'undefined') {
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                }
               }
             return str.join("&");
           };
@@ -121,6 +124,7 @@ angular
 
           return deferred.promise;
         } else {
+
           if (contentType === 'application/json') {
             options.data = {};
             angular.forEach(action.fields, function(field) {
@@ -131,10 +135,13 @@ angular
             angular.forEach(action.fields, function(field) {
               data.push(encodeURIComponent(field.name) + '=' + encodeURIComponent(field.value));
             });
-
-            options.data = data.join('&');
+            if (data.length === 0) {
+                options.data = {};
+            } else {
+                options.data = data.join('&');
+            }
           }
-
+          
           var deferred = $q.defer();
 
           $http(options).success(function(data, status, headers, config) {
