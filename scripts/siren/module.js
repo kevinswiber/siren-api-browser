@@ -106,7 +106,6 @@ angular
             var str = [];
             for(var p in obj)
               if (obj.hasOwnProperty(p)) {
-                console.log('obj[p]:' + obj[p]);
                 if (typeof obj[p] != 'undefined') {
                     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                 }
@@ -124,8 +123,8 @@ angular
 
           return deferred.promise;
         } else {
-
-          if (contentType === 'application/json') {
+          if (contentType === 'application/json' 
+             || (contentType.startsWith('application/vnd') && contentType.endsWith('json')) ) {
             options.data = {};
             angular.forEach(action.fields, function(field) {
               options.data[field.name] = field.value;
