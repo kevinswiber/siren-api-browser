@@ -1,15 +1,42 @@
 var SurfaceCtrls = {};
 
-SurfaceCtrls.MainCtrl = function($scope, $state, navigator, appState) {
+SurfaceCtrls.MainCtrl = function($scope, $state, $http, navigator, appState) {
   $scope.init = function() {
-    $scope.params = { url: appState.url || '' };
+    $scope.params = {
+      url: appState.url || '',
+      headers: []
+    };
   };
 
   $scope.fetchUrl = function(params) {
-    var url = params.url;
+    var url = params.url,
+        headers = params.headers;
+
     appState.url = url;
+    headers.forEach(function (header) {
+      if (
+          header.key
+          && header.value
+          && header.key.length > 0
+          && header.value.length > 0
+      ) {
+        $http.defaults.headers.common[header.key] = header.value;
+      }
+    });
+
     navigator.transitionTo(url, { url: url });
   };
+
+  $scope.addHeader = function () {
+    $scope.params.headers.push({
+      key: '',
+      value: ''
+    });
+  }
+
+  $scope.removeHeader = function (index) {
+    $scope.params.headers.splice(index, 1);
+  }
 };
 
 SurfaceCtrls.HomeCtrl = function($scope, $state, navigator, appState) {
