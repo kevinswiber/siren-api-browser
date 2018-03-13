@@ -31,6 +31,8 @@ angular
   })
   .factory('navigator', ['$http', '$rootScope', '$q', '$state', 'classRouter',
       function($http, $rootScope, $q, $state, classRouter) {
+
+    $http.defaults.headers.common.Accept = 'application/vnd.siren+json, application/json, text/plain, */*';
     return {
       cache: [],
       current: null,
